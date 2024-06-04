@@ -610,7 +610,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 847768239}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-        m_MethodName: Move
+        m_MethodName: Walk
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -690,8 +690,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _gravity: -19.6
-  _moveSpeed: 10
-  _jumpForce: 6
+  _walkSpeed: 10
+  _jumpForce: 20
+  _checkMoveCnt: 0
   _vCam: {fileID: 1149667826}
 --- !u!1 &1107298260
 GameObject:
