@@ -5,7 +5,7 @@ using UnityEngine;
 public class BChara : MonoBehaviour
 {
     [Header("着地判定用Transform")]
-    [SerializeField]protected Transform _checkFoot;
+    [SerializeField] protected Transform _checkFoot;
 
     protected float _checkFootRadius = 0.2f;//着地判定の半径
 
@@ -63,8 +63,8 @@ public class BChara : MonoBehaviour
     protected bool CheckFoot()
     {
         return Physics.CheckSphere(
-            _checkFoot.position, 
-            _checkFootRadius, 
+            _checkFoot.position,
+            _checkFootRadius,
             _layerMask);//円形範囲を検知      
     }
 }

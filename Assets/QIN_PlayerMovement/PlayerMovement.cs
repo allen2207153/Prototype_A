@@ -69,7 +69,7 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Walk:
                 if (_movementInput.x == 0 && _movementInput.y == 0) { nm = Motion.Stand; }
-                if (_jumpFlag && CheckFoot()) { nm = Motion.TakeOff; }
+                if ( _jumpFlag && CheckFoot()) { nm = Motion.TakeOff; }
                 if (!CheckFoot()) { nm = Motion.Fall; }
                 break;
             case Motion.Jump:
@@ -106,7 +106,7 @@ public class PlayerMovement : BChara
                 HandleWalking();
                 break;
             case Motion.Landing:
-
+                _jumpFlag = false;//ジャンプを一回だけに制限する
                 break;
             case Motion.TakeOff:
 
@@ -140,10 +140,6 @@ public class PlayerMovement : BChara
         {
             _jumpFlag = true;
         }
-        else if (_ctx.phase == InputActionPhase.Canceled)
-        {
-            _jumpFlag = false;
-        }
     }
 
     /// <summary>
@@ -175,7 +171,8 @@ public class PlayerMovement : BChara
     /// </summary>
     private void HandleJumping()
     {
-        _velocity.y = _jumpForce;
+        _velocity.y = _jumpForce;//ジャンプ実行
+
         //_velocity.y = Mathf.Sqrt(_jumpForce * -2f * _gravity);
     }
 
