@@ -50,6 +50,7 @@ public class BChara : MonoBehaviour
 
             //モーションを更新
             _motion = nm_;
+            Debug.Log(_motion.ToString());
             //カウンタをリセット
             _moveCnt = 0;
             return true;
