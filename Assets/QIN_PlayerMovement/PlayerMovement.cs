@@ -69,7 +69,7 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Walk:
                 if (_movementInput.x == 0 && _movementInput.y == 0) { nm = Motion.Stand; }
-                if ( _jumpFlag && CheckFoot()) { nm = Motion.TakeOff; }
+                if (_jumpFlag && CheckFoot()) { nm = Motion.TakeOff; }
                 if (!CheckFoot()) { nm = Motion.Fall; }
                 break;
             case Motion.Jump:
@@ -205,5 +205,16 @@ public class PlayerMovement : BChara
 
         //キャラクターを重力に基づいて移動させます
         _cCtrl.Move(_velocity * Time.deltaTime);
+    }
+
+    public void Fire(InputAction.CallbackContext _ctx)
+    {
+        //InputActionPhase.Started;      <-これはGetKeyDown
+        //InputActionPhase.Performed;    <-これはGetKey
+        //InputActionPhase.Canceled;     <-これはGetKeyUp
+        if (_ctx.phase == InputActionPhase.Started)
+        {
+            Debug.Log("Fire!");
+        }
     }
 }
