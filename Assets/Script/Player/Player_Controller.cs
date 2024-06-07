@@ -27,8 +27,8 @@ public class Player_Controller : MonoBehaviour
         // 必要なコンポーネントを自動取得
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-        defaultCameraDir = Camera.main.transform.rotation;
-        defaultCameraOffset = Camera.main.transform.position - transform.position;
+       // defaultCameraDir = Camera.main.transform.rotation;
+       // defaultCameraOffset = Camera.main.transform.position - transform.position;
         defaultPosition = transform.position;
     }
 
@@ -89,10 +89,10 @@ public class Player_Controller : MonoBehaviour
             charaDir += 120 * Time.deltaTime;
         }*/
         // マウスでカメラ回転
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        /*float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         charaDir += mouseX;
         charaDir = Mathf.Repeat(charaDir, 360f);
-        Camera.main.transform.rotation = Quaternion.Euler(0, charaDir, 0) * defaultCameraDir;
+        Camera.main.transform.rotation = Quaternion.Euler(0, charaDir, 0) * defaultCameraDir;*/
 
 
         //Camera.main.transform.rotation = Quaternion.Euler(0, charaDir, 0) * defaultCameraDir;
@@ -131,7 +131,7 @@ public class Player_Controller : MonoBehaviour
         if (controller.isGrounded) moveDirection.y = 0;
 
         //カメラ位置を現在のキャラクター位置を基準に設定する
-        Camera.main.transform.position = transform.position + Quaternion.Euler(0, charaDir, 0) * defaultCameraOffset;
+        //Camera.main.transform.position = transform.position + Quaternion.Euler(0, charaDir, 0) * defaultCameraOffset;
 
        
     }
