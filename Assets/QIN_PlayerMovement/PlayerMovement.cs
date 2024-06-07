@@ -1,52 +1,52 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 
 public class PlayerMovement : BChara
 {
-    //d—Í‚Ì‘å‚«‚³‚ğİ’è‚µ‚Ü‚·
+    //é‡åŠ›ã®å¤§ãã•ã‚’è¨­å®šã—ã¾ã™
     [SerializeField] private float _gravity = -9.8f;
-    //ˆÚ“®‘¬“x‚ğİ’è‚µ‚Ü‚·
+    //ç§»å‹•é€Ÿåº¦ã‚’è¨­å®šã—ã¾ã™
     [SerializeField] private float _walkSpeed = 10f;
-    //ƒWƒƒƒ“ƒv—Í‚ğİ’è‚µ‚Ü‚·
+    //ã‚¸ãƒ£ãƒ³ãƒ—åŠ›ã‚’è¨­å®šã—ã¾ã™
     [SerializeField] private float _jumpForce = 20.0f;
 
-    [Header("_moveCnt‚Ì’l‚ğŠÏ‘ª‚·‚é‚¾‚¯")]
+    [Header("_moveCntã®å€¤ã‚’è¦³æ¸¬ã™ã‚‹ã ã‘")]
     [SerializeField] private int _checkMoveCnt;
 
-    //‰¼‘zƒJƒƒ‰‚ÌQÆ‚ğİ’è‚µ‚Ü‚·
+    //ä»®æƒ³ã‚«ãƒ¡ãƒ©ã®å‚ç…§ã‚’è¨­å®šã—ã¾ã™
     [Header("CinemachineVirtualCamera")]
     [SerializeField] private CinemachineVirtualCamera _vCam;
 
-    //ˆÚ“®“ü—Í‚ğ•Û‘¶‚·‚é•Ï”
+    //ç§»å‹•å…¥åŠ›ã‚’ä¿å­˜ã™ã‚‹å¤‰æ•°
     private Vector2 _movementInput = Vector2.zero;
-    //d—Í‚âƒWƒƒƒ“ƒv‚Ì‘¬“x‚ğ•Û‘¶‚·‚é•Ï”
+    //é‡åŠ›ã‚„ã‚¸ãƒ£ãƒ³ãƒ—ã®é€Ÿåº¦ã‚’ä¿å­˜ã™ã‚‹å¤‰æ•°
     private Vector3 _velocity = Vector3.zero;
 
-    //ƒLƒƒƒ‰ƒNƒ^[ƒRƒ“ƒgƒ[ƒ‰[‚ÌQÆ
+    //ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®å‚ç…§
     private CharacterController _cCtrl;
 
-    //ƒWƒƒƒ“ƒv‚Ìƒtƒ‰ƒO
+    //ã‚¸ãƒ£ãƒ³ãƒ—ã®ãƒ•ãƒ©ã‚°
     private bool _jumpFlag = false;
 
     void Start()
     {
-        //ƒLƒƒƒ‰ƒNƒ^[ƒRƒ“ƒgƒ[ƒ‰[‚ğæ“¾‚µ‚Ü‚·
+        //ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã‚’å–å¾—ã—ã¾ã™
         _cCtrl = GetComponent<CharacterController>();
     }
     private void FixedUpdate()
     {
-        _moveCnt++;//‘‰Á‚·‚é
+        _moveCnt++;//å¢—åŠ ã™ã‚‹
     }
     void Update()
     {
-        //_moveCnt‚Ì’l‚ğŠÏ‘ª‚·‚é‚¾‚¯
+        //_moveCntã®å€¤ã‚’è¦³æ¸¬ã™ã‚‹ã ã‘
         _checkMoveCnt = _moveCnt;
 
         Think();
         Move();
 
-        //d—Íˆ—‚ğÀs‚µ‚Ü‚·
+        //é‡åŠ›å‡¦ç†ã‚’å®Ÿè¡Œã—ã¾ã™
         HandleGravity();
 
 #if DEBUG
@@ -106,7 +106,7 @@ public class PlayerMovement : BChara
                 HandleWalking();
                 break;
             case Motion.Landing:
-
+                _jumpFlag = false;//ã‚¸ãƒ£ãƒ³ãƒ—ã‚’ä¸€å›ã ã‘ã«åˆ¶é™ã™ã‚‹
                 break;
             case Motion.TakeOff:
 
@@ -114,73 +114,70 @@ public class PlayerMovement : BChara
         }
     }
     /// <summary>
-    /// InputSystem‚ÌWalk_Action
+    /// InputSystemã®Walk_Action
     /// </summary>
     /// <param name="_ctx"></param>
     public void Walk(InputAction.CallbackContext _ctx)
     {
-        //“ü—Í‚ÌƒtƒF[ƒY‚ªPerformed‚Ìê‡AˆÚ“®“ü—Í‚ğ“Ç‚İæ‚è‚Ü‚·
+        //å…¥åŠ›ã®ãƒ•ã‚§ãƒ¼ã‚ºãŒPerformedã®å ´åˆã€ç§»å‹•å…¥åŠ›ã‚’èª­ã¿å–ã‚Šã¾ã™
         if (_ctx.phase == InputActionPhase.Performed)
         {
             _movementInput = _ctx.ReadValue<Vector2>();
         }
-        //“ü—Í‚ÌƒtƒF[ƒY‚ªCanceled‚Ìê‡AˆÚ“®“ü—Í‚ğƒŠƒZƒbƒg‚µ‚Ü‚·
+        //å…¥åŠ›ã®ãƒ•ã‚§ãƒ¼ã‚ºãŒCanceledã®å ´åˆã€ç§»å‹•å…¥åŠ›ã‚’ãƒªã‚»ãƒƒãƒˆã—ã¾ã™
         else if (_ctx.phase == InputActionPhase.Canceled)
         {
             _movementInput = Vector2.zero;
         }
     }
     /// <summary>
-    /// InputSystem‚ÌJump_Action
+    /// InputSystemã®Jump_Action
     /// </summary>
-    /// <param name="_ctx">InputSystem‚Ì•Ï”</param>
+    /// <param name="_ctx">InputSystemã®å¤‰æ•°</param>
     public void Jump(InputAction.CallbackContext _ctx)
     {
         if (_ctx.phase == InputActionPhase.Started)
         {
             _jumpFlag = true;
         }
-        else if (_ctx.phase == InputActionPhase.Canceled)
-        {
-            _jumpFlag = false;
-        }
     }
 
     /// <summary>
-    /// ˆÚ“®ˆ—‚ğÀs‚µ‚Ü‚·
+    /// ç§»å‹•å‡¦ç†ã‚’å®Ÿè¡Œã—ã¾ã™
     /// </summary>
     private void HandleWalking()
     {
-        //ˆÚ“®“ü—Í‚ÉŠî‚Ã‚¢‚Ä•ûŒüƒxƒNƒgƒ‹‚ğŒvZ‚µA³‹K‰»‚µ‚Ü‚·
+        //ç§»å‹•å…¥åŠ›ã«åŸºã¥ã„ã¦æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—ã—ã€æ­£è¦åŒ–ã—ã¾ã™
         Vector3 direction = new Vector3(_movementInput.x, 0f, _movementInput.y).normalized;
 
-        //•ûŒüƒxƒNƒgƒ‹‚Ì‘å‚«‚³‚ª0.1ˆÈã‚Ìê‡‚ÉˆÚ“®‚ğÀs‚µ‚Ü‚·
+        //æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã®å¤§ãã•ãŒ0.1ä»¥ä¸Šã®å ´åˆã«ç§»å‹•ã‚’å®Ÿè¡Œã—ã¾ã™
         if (direction.magnitude >= 0.1f)
         {
-            //Cinemachine‰¼‘zƒJƒƒ‰‚ÌTransform‚ğæ“¾‚µ‚Ü‚·
+            //Cinemachineä»®æƒ³ã‚«ãƒ¡ãƒ©ã®Transformã‚’å–å¾—ã—ã¾ã™
             Transform _camTransform = _vCam.transform;
-            //ƒJƒƒ‰‚Ì‘O•ûŒü‚ğæ“¾‚µ‚Ü‚·
+            //ã‚«ãƒ¡ãƒ©ã®å‰æ–¹å‘ã‚’å–å¾—ã—ã¾ã™
             Vector3 _forward = Vector3.Scale(_camTransform.forward, new Vector3(1, 0, 1)).normalized;
-            //ƒJƒƒ‰‚Ì‰E•ûŒü‚ğæ“¾‚µ‚Ü‚·
+            //ã‚«ãƒ¡ãƒ©ã®å³æ–¹å‘ã‚’å–å¾—ã—ã¾ã™
             Vector3 _right = Vector3.Scale(_camTransform.right, new Vector3(1, 0, 1)).normalized;
 
-            //‘O•ûŒü‚Æ‰E•ûŒü‚ğŠî‚ÉˆÚ“®•ûŒü‚ğŒvZ‚µ‚Ü‚·
+            //å‰æ–¹å‘ã¨å³æ–¹å‘ã‚’åŸºã«ç§»å‹•æ–¹å‘ã‚’è¨ˆç®—ã—ã¾ã™
             Vector3 _moveDirection = _forward * direction.z + _right * direction.x;
-            //ˆÚ“®“ü—Í‚Ì‘å‚«‚³‚ğŠî‚É‘¬“x‚ğ’²®‚µAƒvƒŒƒCƒ„[‚ğˆÚ“®‚³‚¹‚Ü‚·
+            //ç§»å‹•å…¥åŠ›ã®å¤§ãã•ã‚’åŸºã«é€Ÿåº¦ã‚’èª¿æ•´ã—ã€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ç§»å‹•ã•ã›ã¾ã™
             _cCtrl.Move(_moveDirection * _walkSpeed * _movementInput.magnitude * Time.deltaTime);
         }
     }
     /// <summary>
-    /// ƒWƒƒƒ“ƒvˆ—‚ğÀs‚µ‚Ü‚·
+    /// ã‚¸ãƒ£ãƒ³ãƒ—å‡¦ç†ã‚’å®Ÿè¡Œã—ã¾ã™
     /// </summary>
     private void HandleJumping()
     {
-        _velocity.y = _jumpForce;
+        _velocity.y = _jumpForce;//ã‚¸ãƒ£ãƒ³ãƒ—å®Ÿè¡Œ
+
         //_velocity.y = Mathf.Sqrt(_jumpForce * -2f * _gravity);
     }
 
     /// <summary>
-    /// d—ÍŒvZ
+    /// é‡åŠ›è¨ˆç®—
     /// </summary>
     private void HandleGravity()
     {
@@ -189,24 +186,35 @@ public class PlayerMovement : BChara
             case Motion.Landing:
                 if (_velocity.y < 0)
                 {
-                    _velocity.y = -2f; //ƒvƒŒƒCƒ„[‚ğ’n–Ê‚É•Û‚Â
+                    _velocity.y = -2f; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’åœ°é¢ã«ä¿ã¤
                 }
                 break;
             case Motion.Walk:
                 if (_velocity.y < 0)
                 {
-                    _velocity.y = -2f; //ƒvƒŒƒCƒ„[‚ğ’n–Ê‚É•Û‚Â
+                    _velocity.y = -2f; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’åœ°é¢ã«ä¿ã¤
                 }
                 break;
-            //d—Í‚ğ“K—p‚µ‚È‚¢ƒ‚[ƒVƒ‡ƒ“‚ğ’Ç‰Á
+            //é‡åŠ›ã‚’é©ç”¨ã—ãªã„ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ 
 
             default:
-                //d—Í‚ğ“K—p‚µ‚Ü‚·
+                //é‡åŠ›ã‚’é©ç”¨ã—ã¾ã™
                 _velocity.y += _gravity * Time.deltaTime;
                 break;
         }
 
-        //ƒLƒƒƒ‰ƒNƒ^[‚ğd—Í‚ÉŠî‚Ã‚¢‚ÄˆÚ“®‚³‚¹‚Ü‚·
+        //ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚’é‡åŠ›ã«åŸºã¥ã„ã¦ç§»å‹•ã•ã›ã¾ã™
         _cCtrl.Move(_velocity * Time.deltaTime);
+    }
+
+    public void Fire(InputAction.CallbackContext _ctx)
+    {
+        //InputActionPhase.Started;      <-ã“ã‚Œã¯GetKeyDown
+        //InputActionPhase.Performed;    <-ã“ã‚Œã¯GetKey
+        //InputActionPhase.Canceled;     <-ã“ã‚Œã¯GetKeyUp
+        if (_ctx.phase == InputActionPhase.Started)
+        {
+            Debug.Log("Fire!");
+        }
     }
 }

@@ -1,40 +1,40 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BChara : MonoBehaviour
 {
-    [Header("’…’n”»’è—pTransform")]
-    [SerializeField]protected Transform _checkFoot;
+    [Header("ç€åœ°åˆ¤å®šç”¨Transformm")]
+    [SerializeField] protected Transform _checkFoot;
 
-    protected float _checkFootRadius = 0.2f;//’…’n”»’è‚Ì”¼Œa
+    protected float _checkFootRadius = 0.2f;//ç€åœ°åˆ¤å®šã®åŠå¾„
 
-    [Header("’…’n”»’è—LŒø‚ÌƒŒƒCƒ„")]
-    [SerializeField] protected LayerMask _layerMask;//’…’n”»’è—LŒø‚ÌƒŒƒCƒ„
+    [Header("ç€åœ°åˆ¤å®šæœ‰åŠ¹ã®ãƒ¬ã‚¤ãƒ¤")]
+    [SerializeField] protected LayerMask _layerMask;//ç€åœ°åˆ¤å®šæœ‰åŠ¹ã®ãƒ¬ã‚¤ãƒ¤
 
     protected enum Motion
     {
-        Unnon = -1, //	–³Œø(g‚¦‚Ü‚¹‚ñj
-        Stand,      //	’â~
-        Walk,       //	•às
-        Attack,     //	UŒ‚
-        Jump,       //	ƒWƒƒƒ“ƒv
-        Fall,       //	—‰º
-        TakeOff,    //	”ò‚Ñ—§‚ÂuŠÔ
-        Landing,    //	’…’n
-        Jump2,      //2’iƒWƒƒƒ“ƒv
-        Fall2,      //‚Q’i—‰º
+        Unnon = -1, //	ç„¡åŠ¹(ä½¿ãˆã¾ã›ã‚“ï¼‰
+        Stand,      //	åœæ­¢
+        Walk,       //	æ­©è¡Œ
+        Attack,     //	æ”»æ’ƒ
+        Jump,       //	ã‚¸ãƒ£ãƒ³ãƒ—
+        Fall,       //	è½ä¸‹
+        TakeOff,    //	é£›ã³ç«‹ã¤ç¬é–“
+        Landing,    //	ç€åœ°
+        Jump2,      //2æ®µã‚¸ãƒ£ãƒ³ãƒ—
+        Fall2,      //ï¼’æ®µè½ä¸‹
     }
-    protected Motion _motion;//Œ»İ‚Ìƒ‚[ƒVƒ‡ƒ“
-    protected Motion _preMotion;//‘O‰ñ‚Ìƒ‚[ƒVƒ‡ƒ“‚ğ‹L˜^‚·‚é—p
+    protected Motion _motion;//ç¾åœ¨ã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³
+    protected Motion _preMotion;//å‰å›ã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¨˜éŒ²ã™ã‚‹ç”¨
 
-    protected int _moveCnt;//Œ»İƒ‚[ƒVƒ‡ƒ“‚É“ü‚éƒJƒEƒ“ƒ^[
-    protected int _perMoveCnt;//‘O‰ñ‚Ìƒ‚[ƒVƒ‡ƒ“‚É“ü‚éƒJƒEƒ“ƒ^[‚ÌÅŒã‚Ì’l
+    protected int _moveCnt;//ç¾åœ¨ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«å…¥ã‚‹ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼
+    protected int _perMoveCnt;//å‰å›ã®ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã«å…¥ã‚‹ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã®æœ€å¾Œã®å€¤
 
     /// <summary>
-    /// ƒ‚[ƒVƒ‡ƒ“XV
+    /// ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³æ›´æ–°
     /// </summary>
-    /// <param name="nm_">XV‚·‚éƒ‚[ƒVƒ‡ƒ“</param>
+    /// <param name="nm_">æ›´æ–°ã™ã‚‹ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³</param>
     /// <returns></returns>
     protected bool UpdataMotion(Motion nm_)
     {
@@ -44,27 +44,27 @@ public class BChara : MonoBehaviour
         }
         else
         {
-            //‘O‰ñ‚Ìî•ñ‚ğ‹L˜^‚·‚é
+            //å‰å›ã®æƒ…å ±ã‚’è¨˜éŒ²ã™ã‚‹
             _preMotion = _motion;
             _perMoveCnt = _moveCnt;
 
-            //ƒ‚[ƒVƒ‡ƒ“‚ğXV
+            //ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æ›´æ–°
             _motion = nm_;
             Debug.Log(_motion.ToString());
-            //ƒJƒEƒ“ƒ^‚ğƒŠƒZƒbƒg
+            //ã‚«ã‚¦ãƒ³ã‚¿ã‚’ãƒªã‚»ãƒƒãƒˆ
             _moveCnt = 0;
             return true;
         }
     }
     /// <summary>
-    /// ’…’n”»’è
+    /// ç€åœ°åˆ¤å®š
     /// </summary>
     /// <returns></returns>
     protected bool CheckFoot()
     {
         return Physics.CheckSphere(
-            _checkFoot.position, 
-            _checkFootRadius, 
-            _layerMask);//‰~Œ`”ÍˆÍ‚ğŒŸ’m      
+            _checkFoot.position,
+            _checkFootRadius,
+            _layerMask);//å††å½¢ç¯„å›²ã‚’æ¤œçŸ¥      
     }
 }
