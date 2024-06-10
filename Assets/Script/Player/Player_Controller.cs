@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,27 +8,27 @@ public class Player_Controller : MonoBehaviour
     Animator animator;
     public Vector3 moveDirection = Vector3.zero;
     public float gravity = 8;
-    public float rotateForce = 5; //‰ñ“]—Ê
-    public float runForce = 2.5f; //‘Oi—Ê
-    public float maxRunSpeed = 2; //‘Oi‘¬“x‚Ì§ŒÀ
-    public float jumpforce = 5; //ƒWƒƒƒ“ƒv—Ê
-    public float mouseSensitivity = 2.0f; //ƒJƒƒ‰ƒXƒs[ƒh
-    bool jumpableFlag = false;  //’n–Ê‚É‚Â‚¢‚Ä‚¢‚é‚©‚Ç‚¤‚©
-    float jumpableCount = 0.0f; public float x = 0.2f;  //ƒWƒƒƒ“ƒv‰Â”\‚ÈŠÔ 
+    public float rotateForce = 5; //å›è»¢é‡
+    public float runForce = 2.5f; //å‰é€²é‡
+    public float maxRunSpeed = 2; //å‰é€²é€Ÿåº¦ã®åˆ¶é™
+    public float jumpforce = 5; //ã‚¸ãƒ£ãƒ³ãƒ—é‡
+    public float mouseSensitivity = 2.0f; //ã‚«ãƒ¡ãƒ©ã‚¹ãƒ”ãƒ¼ãƒ‰
+    bool jumpableFlag = false;  //åœ°é¢ã«ã¤ã„ã¦ã„ã‚‹ã‹ã©ã†ã‹
+    float jumpableCount = 0.0f; public float x = 0.2f;  //ã‚¸ãƒ£ãƒ³ãƒ—å¯èƒ½ãªæ™‚é–“ 
     Vector3 defaultPosition;
 
-    Quaternion defaultCameraDir;    //ƒfƒtƒHƒ‹ƒg‚ÌƒJƒƒ‰ˆÊ’u
-    Vector3 defaultCameraOffset;    //ƒfƒtƒHƒ‹ƒg‚ÌƒJƒƒ‰ˆÊ’u•â³
-    float charaDir = 0;             //ƒLƒƒƒ‰ƒNƒ^[‚Ì•ûŒü
+    Quaternion defaultCameraDir;    //ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚«ãƒ¡ãƒ©ä½ç½®
+    Vector3 defaultCameraOffset;    //ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚«ãƒ¡ãƒ©ä½ç½®è£œæ­£
+    float charaDir = 0;             //ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®æ–¹å‘
 
     void Start()
     {
         Application.targetFrameRate = 60;
-        // •K—v‚ÈƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ©“®æ“¾
+        // å¿…è¦ãªã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’è‡ªå‹•å–å¾—
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-       // defaultCameraDir = Camera.main.transform.rotation;
-       // defaultCameraOffset = Camera.main.transform.position - transform.position;
+        defaultCameraDir = Camera.main.transform.rotation;
+        defaultCameraOffset = Camera.main.transform.position - transform.position;
         defaultPosition = transform.position;
     }
 
@@ -44,8 +44,8 @@ public class Player_Controller : MonoBehaviour
 
     void Update()
     {
-       if (controller == null) return;  //ƒLƒƒƒ‰ƒRƒ“ƒgƒ[ƒ‰[‚ª“ü‚Á‚Ä‚¢‚È‚¢ê‡‚ÍI—¹
-                                         //‰¡•ûŒü‚Ì“ü—Í‚Å•ûŒü“]Š·‚·‚é
+       if (controller == null) return;  //ã‚­ãƒ£ãƒ©ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãŒå…¥ã£ã¦ã„ãªã„å ´åˆã¯çµ‚äº†
+                                         //æ¨ªæ–¹å‘ã®å…¥åŠ›ã§æ–¹å‘è»¢æ›ã™ã‚‹
                                          // transform.Rotate(0, Input.GetAxis("Horizontal") * rotateForce, 0);
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -57,8 +57,8 @@ public class Player_Controller : MonoBehaviour
             return;
         }
 
-        //ƒWƒƒƒ“ƒv
-        if (controller.isGrounded)  //’n–Ê‚É’…’n‚µ‚Ä‚¢‚½‚ç
+        //ã‚¸ãƒ£ãƒ³ãƒ—
+        if (controller.isGrounded)  //åœ°é¢ã«ç€åœ°ã—ã¦ã„ãŸã‚‰
         {
             jumpableFlag = true;
             jumpableCount = x;
@@ -79,7 +79,7 @@ public class Player_Controller : MonoBehaviour
         }
 
 
-        //ƒJƒƒ‰‰ñ“]
+        //ã‚«ãƒ¡ãƒ©å›è»¢
         /*if(Input.GetKey(KeyCode.Z))
         {
             charaDir -= 120 * Time.deltaTime;
@@ -88,17 +88,17 @@ public class Player_Controller : MonoBehaviour
         {
             charaDir += 120 * Time.deltaTime;
         }*/
-        // ƒ}ƒEƒX‚ÅƒJƒƒ‰‰ñ“]
-        /*float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        // ãƒã‚¦ã‚¹ã§ã‚«ãƒ¡ãƒ©å›è»¢
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         charaDir += mouseX;
         charaDir = Mathf.Repeat(charaDir, 360f);
-        Camera.main.transform.rotation = Quaternion.Euler(0, charaDir, 0) * defaultCameraDir;*/
+        Camera.main.transform.rotation = Quaternion.Euler(0, charaDir, 0) * defaultCameraDir;
 
 
         //Camera.main.transform.rotation = Quaternion.Euler(0, charaDir, 0) * defaultCameraDir;
 
 
-        //ã•ûŒü‚Ì“ü—Í‚Åi‚Ş
+        //ä¸Šæ–¹å‘ã®å…¥åŠ›ã§é€²ã‚€
        
         //if (Input.GetAxis("Vertical") > 0.0f)
         if (Input.GetAxis("Vertical") != 0.0f || Input.GetAxis("Horizontal") != 0.0f)
@@ -108,7 +108,7 @@ public class Player_Controller : MonoBehaviour
             if (input.magnitude > 1.0f) input = input.normalized;
             moveDirection.z = input.z * runForce;
             moveDirection.x = input.x * runForce;
-            //ƒJƒƒ‰‚ÌŒü‚«‚ğŠî€‚ÉƒLƒƒƒ‰‚ÌŒü‚«‚ğ•Ï‚¦‚é
+            //ã‚«ãƒ¡ãƒ©ã®å‘ãã‚’åŸºæº–ã«ã‚­ãƒ£ãƒ©ã®å‘ãã‚’å¤‰ãˆã‚‹
             float Dir = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0, charaDir + Dir, 0);
         }
@@ -118,20 +118,20 @@ public class Player_Controller : MonoBehaviour
             moveDirection.x = 0;
         }
 
-        //d—ÍŒvZ
+        //é‡åŠ›è¨ˆç®—
         moveDirection.y -= gravity * Time.deltaTime;
 
-        //ˆÚ“®‚ğs‚¤
+        //ç§»å‹•ã‚’è¡Œã†
         //Vector3 globalDirection = transform.TransformDirection(moveDirection);
-        //ƒLƒƒƒ‰‚ÌŒü‚«‚É‘Oi‚·‚é
+        //ã‚­ãƒ£ãƒ©ã®å‘ãã«å‰é€²ã™ã‚‹
         Vector3 globalDirection = Quaternion.Euler(0, charaDir, 0) * moveDirection;
         controller.Move(globalDirection * Time.deltaTime);
 
-        //’n–Ê‚É’…’n‚µ‚Ä‚¢‚½‚çy•ûŒüˆÚ“®‚ğƒŠƒZƒbƒg‚·‚é
+        //åœ°é¢ã«ç€åœ°ã—ã¦ã„ãŸã‚‰yæ–¹å‘ç§»å‹•ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
         if (controller.isGrounded) moveDirection.y = 0;
 
-        //ƒJƒƒ‰ˆÊ’u‚ğŒ»İ‚ÌƒLƒƒƒ‰ƒNƒ^[ˆÊ’u‚ğŠî€‚Éİ’è‚·‚é
-        //Camera.main.transform.position = transform.position + Quaternion.Euler(0, charaDir, 0) * defaultCameraOffset;
+        //ã‚«ãƒ¡ãƒ©ä½ç½®ã‚’ç¾åœ¨ã®ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ä½ç½®ã‚’åŸºæº–ã«è¨­å®šã™ã‚‹
+        Camera.main.transform.position = transform.position + Quaternion.Euler(0, charaDir, 0) * defaultCameraOffset;
 
        
     }
