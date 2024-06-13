@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -704,12 +704,13 @@ MonoBehaviour:
   _checkFoot: {fileID: 627110260}
   _layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _gravity: -9.8
-  _walkSpeed: 10
+  _walkSpeedMax: 10
+  _walkAddSpeed: 0.8
   _jumpForce: 20
-  _checkMoveCnt: 0
   _vCam: {fileID: 1149667826}
+  _checkMoveCnt: 0
 --- !u!1 &1107298260
 GameObject:
   m_ObjectHideFlags: 3
