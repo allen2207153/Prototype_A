@@ -29,6 +29,7 @@ public class PlayerMovement : BChara
     //ジャンプのフラグ
     private bool _jumpFlag = false;
 
+
     void Start()
     {
         //キャラクターコントローラーを取得します

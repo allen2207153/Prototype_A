@@ -7,6 +7,7 @@ public class Player_Controller : MonoBehaviour
     CharacterController controller;
     Animator animator;
     public Vector3 moveDirection = Vector3.zero;
+    public GameObject avatar = null; // Avatarオブジェクトへの参照
     public float gravity = 8;
     public float rotateForce = 5; //回転量
     public float runForce = 2.5f; //前進量
@@ -109,8 +110,15 @@ public class Player_Controller : MonoBehaviour
             moveDirection.z = input.z * runForce;
             moveDirection.x = input.x * runForce;
             //カメラの向きを基準にキャラの向きを変える
-            float Dir = Mathf.Atan2(moveDirection.x, moveDirection.z) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, charaDir + Dir, 0);
+            if (avatar != null)
+            {
+                Vector3 rotateTarget = new Vector3(moveDirection.x, 0, moveDirection.z);
+                if (rotateTarget.magnitude > 0.1f)
+                {
+                    Quaternion lookRotation = Quaternion.LookRotation(rotateTarget);
+                    avatar.transform.rotation = Quaternion.Lerp(lookRotation, avatar.transform.rotation, 0.5f);
+                }
+            }
         }
         else
         {
@@ -122,16 +130,16 @@ public class Player_Controller : MonoBehaviour
         moveDirection.y -= gravity * Time.deltaTime;
 
         //移動を行う
-        //Vector3 globalDirection = transform.TransformDirection(moveDirection);
+        Vector3 globalDirection = transform.TransformDirection(moveDirection);
         //キャラの向きに前進する
-        Vector3 globalDirection = Quaternion.Euler(0, charaDir, 0) * moveDirection;
+        //Vector3 globalDirection = Quaternion.Euler(0, charaDir, 0) * moveDirection;
         controller.Move(globalDirection * Time.deltaTime);
 
         //地面に着地していたらy方向移動をリセットする
         if (controller.isGrounded) moveDirection.y = 0;
 
         //カメラ位置を現在のキャラクター位置を基準に設定する
-        Camera.main.transform.position = transform.position + Quaternion.Euler(0, charaDir, 0) * defaultCameraOffset;
+       //Camera.main.transform.position = transform.position + Quaternion.Euler(0, charaDir, 0) * defaultCameraOffset;
 
        
     }
