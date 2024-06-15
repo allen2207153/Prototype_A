@@ -65,6 +65,16 @@ public class BChara : MonoBehaviour
         return Physics.CheckSphere(
             _checkFoot.position,
             _checkFootRadius,
-            _layerMask);//円形範囲を検知      
+            _layerMask);//円形範囲を検知
+    }
+    /// <summary>
+    /// 着地判定の範囲を描く
+    /// </summary>
+    protected void OnDrawGizmos()
+    {
+        //黄色に設定
+        Gizmos.color = Color.yellow;
+        //着地判定の範囲を描く
+        Gizmos.DrawWireSphere(_checkFoot.position, _checkFootRadius);
     }
 }
