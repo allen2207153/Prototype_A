@@ -12,7 +12,10 @@ public class BChara : MonoBehaviour
     [Header("着地判定有効のレイヤ")]
     [SerializeField] protected LayerMask _layerMask;//着地判定有効のレイヤ
 
-    protected enum Motion
+    /// <summary>
+    /// GetMotion()メソッドを使いください
+    /// </summary>
+    public enum Motion
     {
         Unnon = -1, //	無効(使えません）
         Stand,      //	停止
@@ -25,7 +28,7 @@ public class BChara : MonoBehaviour
         Jump2,      //2段ジャンプ
         Fall2,      //２段落下
     }
-    protected Motion _motion;//現在のモーション
+    protected Motion _motion = Motion.Stand;//現在のモーション
     protected Motion _preMotion;//前回のモーションを記録する用
 
     protected int _moveCnt;//現在モーションに入るカウンター
@@ -76,5 +79,11 @@ public class BChara : MonoBehaviour
         Gizmos.color = Color.yellow;
         //着地判定の範囲を描く
         Gizmos.DrawWireSphere(_checkFoot.position, _checkFootRadius);
+    }
+
+    //public関数------------------------------------------------
+    public Motion GetMotion()
+    {
+        return _motion;
     }
 }
