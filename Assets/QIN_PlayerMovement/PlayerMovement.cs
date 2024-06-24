@@ -6,17 +6,22 @@ public class PlayerMovement : BChara
 {
     //重力の大きさを設定します
     [SerializeField] private float _gravity = -9.8f;
+
     //移動速度を設定します
-    [SerializeField] private float _walkSpeed = 10f;
+    [SerializeField] private float _walkSpeedMax = 10f;
+    //移動の加速------------------------------------
+    private float _walkSpeedMin = 0f;//移動開始速度
+    [SerializeField] private float _walkAddSpeed = 0.4f;//移動加速
+
     //ジャンプ力を設定します
     [SerializeField] private float _jumpForce = 20.0f;
-
-    [Header("_moveCntの値を観測するだけ")]
-    [SerializeField] private int _checkMoveCnt;
 
     //仮想カメラの参照を設定します
     [Header("CinemachineVirtualCamera")]
     [SerializeField] private CinemachineVirtualCamera _vCam;
+
+    [Header("_moveCntの値を観測用----------------------")]
+    [SerializeField] private int _checkMoveCnt;
 
     //移動入力を保存する変数
     private Vector2 _movementInput = Vector2.zero;
@@ -128,6 +133,9 @@ public class PlayerMovement : BChara
         else if (_ctx.phase == InputActionPhase.Canceled)
         {
             _movementInput = Vector2.zero;
+
+            //移動開始速度をリセット
+            _walkSpeedMin = 0f;
         }
     }
     /// <summary>
@@ -162,8 +170,14 @@ public class PlayerMovement : BChara
 
             //前方向と右方向を基に移動方向を計算します
             Vector3 _moveDirection = _forward * direction.z + _right * direction.x;
+
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
-            _cCtrl.Move(_moveDirection * _walkSpeed * _movementInput.magnitude * Time.deltaTime);
+            _cCtrl.Move(
+                _moveDirection *
+                ((_walkSpeedMin += _walkAddSpeed) < _walkSpeedMax ? _walkSpeedMin : _walkSpeedMax) *
+                _movementInput.magnitude *
+                Time.deltaTime
+                );
         }
     }
     /// <summary>
