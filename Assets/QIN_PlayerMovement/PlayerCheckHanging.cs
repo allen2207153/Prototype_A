@@ -11,10 +11,12 @@ public class PlayerCheckHanging : MonoBehaviour
         if (other.gameObject.tag == "HangingCollider")
         {
             _isCheckHangingOn = true;
+            PlayerEvent.CallCheckHanging(_isCheckHangingOn);
         }
         else
         {
             _isCheckHangingOn = false;
+            PlayerEvent.CallCheckHanging(_isCheckHangingOn);
         }
     }
     private void OnTriggerExit(Collider other)
@@ -22,11 +24,8 @@ public class PlayerCheckHanging : MonoBehaviour
         if (other.gameObject.tag == "HangingCollider")
         { 
             _isCheckHangingOn = false;
+            PlayerEvent.CallCheckHanging(_isCheckHangingOn);
         }
-    }
-    public bool GetIsCheckHangingOn()
-    {
-        return _isCheckHangingOn;
     }
 }
 

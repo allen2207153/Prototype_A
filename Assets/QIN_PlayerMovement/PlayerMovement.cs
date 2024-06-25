@@ -20,9 +20,8 @@ public class PlayerMovement : BChara
     [Header("CinemachineVirtualCamera")]
     [SerializeField] private CinemachineVirtualCamera _vCam;
 
-    [Header("PlayerCheckHangingが付いてるGameObjectを入れる")]
-    [SerializeField] private PlayerCheckHanging _playerCheckHanging;
-
+    //ぶら下がり
+    private bool _checkHanging=false;
     //ぶら下がるを一回だけに制限する用
     private bool _hangingFlag = true;
 
@@ -40,6 +39,17 @@ public class PlayerMovement : BChara
     //ジャンプのフラグ
     private bool _jumpFlag = false;
 
+    private void OnEnable()
+    {
+        //イベントを登録
+        PlayerEvent.CheckHanging += HandleCheckHanging;//ぶら下がるイベント
+    }
+    private void OnDisable()
+    {
+        //イベントを解除
+        PlayerEvent.CheckHanging -= HandleCheckHanging;
+    }
+
     void Start()
     {
         //キャラクターコントローラーを取得します
@@ -56,7 +66,6 @@ public class PlayerMovement : BChara
 
         Think();
         Move();
-        CheckHanging();
 
 
 #if DEBUG
@@ -87,7 +96,8 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Fall:
                 if (CheckFoot()) { nm = Motion.Landing; }
-                if (CheckHanging() && _hangingFlag == true) { nm = Motion.Hanging; }
+                //if (CheckHanging() && _hangingFlag == true) { nm = Motion.Hanging; }
+                if (_checkHanging && _hangingFlag == true) { nm = Motion.Hanging; }
                 break;
             case Motion.Landing:
                 if (CheckFoot()) { nm = Motion.Stand; }
@@ -96,7 +106,8 @@ public class PlayerMovement : BChara
                 if (_moveCnt >= 0) { nm = Motion.Jump; }
                 break;
             case Motion.Hanging:
-                if (CheckHanging() == false) { nm = Motion.Fall; }
+                //if (CheckHanging() == false) { nm = Motion.Fall; }
+                if (_checkHanging == false) { nm = Motion.Fall; }
                 if (_moveCnt >= 10 && _movementInput.y < -0.2f) { nm = Motion.Fall; }
                 break;
             case Motion.ClimbingUp:
@@ -256,9 +267,13 @@ public class PlayerMovement : BChara
     /// ぶら下がる判定
     /// </summary>
     /// <returns></returns>
-    protected bool CheckHanging()
+    private void HandleCheckHanging(bool checkHangingEventHandler)
     {
-        return _playerCheckHanging.GetIsCheckHangingOn();
+        if (_checkHanging == checkHangingEventHandler) { return; }
+        else
+        {
+            _checkHanging = checkHangingEventHandler;
+        }
     }
 
     public void Fire(InputAction.CallbackContext _ctx)
