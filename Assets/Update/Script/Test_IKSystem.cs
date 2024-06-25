@@ -1,19 +1,61 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class Test_IKSystem : MonoBehaviour
 {
     protected Animator animator;
 
+
+    public Transform character1;
+    public Transform character2;
     public bool ikActive = true;
     public Transform rightHandObj = null;
     public Transform leftHandObj = null;
     public Transform lookObj = null;
+    public float longPressDuration = 1.0f; // 持續時間的閾值
+    private float pressTime = 0.0f;
+    private bool isPressing = false;
+    public float followSpeed = 2.0f;
+    public Vector3 initialOffset;
+
 
     void Start()
     {
         animator = GetComponent<Animator>();
+    }
+
+    void Update()
+    {
+        // 檢測K鍵按下
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            isPressing = true;
+            pressTime = 0.0f; // 重置計時器
+            ikActive = true;
+        }
+
+        // 檢測K鍵釋放
+        if (Input.GetKeyUp(KeyCode.K))
+        {
+            isPressing = false;
+            ikActive = false;
+            initialOffset = character2.position - character1.position;
+        }
+
+        // 計算按下時間
+        if (isPressing)
+        {
+            pressTime += Time.deltaTime;
+
+            if (pressTime >= longPressDuration)
+            {
+                PerformLongPressAction();
+               
+
+            }
+        }
     }
 
     void OnAnimatorIK()
@@ -23,6 +65,7 @@ public class Test_IKSystem : MonoBehaviour
             // 如果 IK 被激活
             if (ikActive)
             {
+                character2.position = Vector3.Lerp(character2.position, character1.position + initialOffset, followSpeed * Time.deltaTime);
                 // 設置目標位置和權重
                 if (lookObj != null)
                 {
@@ -58,5 +101,10 @@ public class Test_IKSystem : MonoBehaviour
                 animator.SetLookAtWeight(0);
             }
         }
+    }
+    void PerformLongPressAction()
+    {
+        // 在這裡執行你想要的動作
+        Debug.Log("Long press action performed!");
     }
 }
