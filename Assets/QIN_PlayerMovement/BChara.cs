@@ -27,6 +27,8 @@ public class BChara : MonoBehaviour
         Landing,    //	着地
         Jump2,      //2段ジャンプ
         Fall2,      //２段落下
+        Hanging,    //ぶら下がる
+        ClimbingUp, //登り
     }
     protected Motion _motion = Motion.Stand;//現在のモーション
     protected Motion _preMotion;//前回のモーションを記録する用

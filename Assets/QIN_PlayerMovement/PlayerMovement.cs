@@ -20,6 +20,12 @@ public class PlayerMovement : BChara
     [Header("CinemachineVirtualCamera")]
     [SerializeField] private CinemachineVirtualCamera _vCam;
 
+    [Header("PlayerCheckHangingが付いてるGameObjectを入れる")]
+    [SerializeField] private PlayerCheckHanging _playerCheckHanging;
+
+    //ぶら下がるを一回だけに制限する用
+    private bool _hangingFlag = true;
+
     [Header("_moveCntの値を観測用----------------------")]
     [SerializeField] private int _checkMoveCnt;
 
@@ -50,9 +56,8 @@ public class PlayerMovement : BChara
 
         Think();
         Move();
+        CheckHanging();
 
-        //重力処理を実行します
-        HandleGravity();
 
 #if DEBUG
         if (CheckFoot())
@@ -82,6 +87,7 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Fall:
                 if (CheckFoot()) { nm = Motion.Landing; }
+                if (CheckHanging() && _hangingFlag == true) { nm = Motion.Hanging; }
                 break;
             case Motion.Landing:
                 if (CheckFoot()) { nm = Motion.Stand; }
@@ -89,12 +95,19 @@ public class PlayerMovement : BChara
             case Motion.TakeOff:
                 if (_moveCnt >= 0) { nm = Motion.Jump; }
                 break;
+            case Motion.Hanging:
+                if (CheckHanging() == false) { nm = Motion.Fall; }
+                if (_moveCnt >= 10 && _movementInput.y < -0.2f) { nm = Motion.Fall; }
+                break;
+            case Motion.ClimbingUp:
+                break;
         }
 
         UpdataMotion(nm);
     }
     private void Move()
     {
+        //各行動の処理---------------------------------
         switch (_motion)
         {
             case Motion.Stand:
@@ -112,9 +125,27 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Landing:
                 _jumpFlag = false;//ジャンプを一回だけに制限する
+                _hangingFlag = true;//ぶら下がるを一回だけに制限する
                 break;
             case Motion.TakeOff:
 
+                break;
+            case Motion.Hanging:
+                _hangingFlag = false;
+                break;
+            case Motion.ClimbingUp:
+                break;
+        }
+
+        //重力操作--------------------------------
+        switch (_motion)
+        {
+            //重力を使用されたくないcaseをここに追加
+            case Motion.Hanging:
+                break;
+            default:
+                //重力処理を実行します
+                HandleGravity();
                 break;
         }
     }
@@ -219,6 +250,15 @@ public class PlayerMovement : BChara
 
         //キャラクターを重力に基づいて移動させます
         _cCtrl.Move(_velocity * Time.deltaTime);
+    }
+
+    /// <summary>
+    /// ぶら下がる判定
+    /// </summary>
+    /// <returns></returns>
+    protected bool CheckHanging()
+    {
+        return _playerCheckHanging.GetIsCheckHangingOn();
     }
 
     public void Fire(InputAction.CallbackContext _ctx)
