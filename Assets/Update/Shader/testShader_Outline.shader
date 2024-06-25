@@ -28,7 +28,11 @@
         UsePass "Custom/testShader_Shade/COLOR_SHADE"
 
         //タグ設定：レンダリングキューを透明に設定
-        Tags { "Queue" = "Transparent"}
+        //タグ設定：URP対応
+        Tags {
+            "Queue" = "Transparent"
+            "RenderPipeline" = "UniversalPipeline"
+             }
 
         //ブレンドモードの設定：アルファブレンド
         Blend SrcAlpha OneMinusSrcAlpha
@@ -40,7 +44,7 @@
             Cull Front
 
             //プログラマブルなシェーダーの開始宣言
-            CGPROGRAM
+            HLSLPROGRAM
 
             //頂点シェーダーの設定
             #pragma vertex vert
@@ -52,13 +56,21 @@
             #pragma shader_feature USE_VERTEX_EXPANSION
 
             //UnityCG.cgincライブラリをインクルード
-            #include "UnityCG.cginc"
+            //#include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/SpaceTransforms.hlsl"
 
             //プロパティで定義されたアウトラインの幅を定義する変数
             float _OutlineWidth;
 
+            CBUFFER_START(UnityPerMaterial)
             //プロパティで定義されたアウトラインのカラーを定義する変数
             float4 _OutlineColor;
+
+            //プロパティで定義されたカラー情報を格納する変数
+            float4 _Color;
+
+            CBUFFER_END
 
             //頂点情報を格納する構造体の宣言
             struct appdata
@@ -81,7 +93,7 @@
             v2f vert(appdata v)
             {
                 v2f o;
-                o.pos = UnityObjectToClipPos(v.vertex); // 頂点位置をクリップ座標に変換
+                o.pos = TransformObjectToHClip(v.vertex); // 頂点位置をクリップ座標に変換
                 float3 n = 0; //法線ベクトルの初期化
                 
                 //USE_VERTEXT_EXPANSION フェイーチャーが有効な場合、頂点を拡張法線を使用して計算
@@ -102,7 +114,8 @@
                 #endif
 
                 //法線情報からビューからプロジェクション座標に変換
-                float2 offset = TransformViewToProjection(n.xy);
+                //float2 offset = TransformViewToProjection(n.xy);
+                float2 offset = mul((float2x2)UNITY_MATRIX_P, n.xy);
 
                 //座標にアウトラインのオフセットを追加
                 o.pos.xy += offset * _OutlineWidth;
@@ -110,11 +123,9 @@
                 return o;
             };
 
-            //プロパティで定義されたカラー情報を格納する変数
-            float4 _Color;
-
             //フラグメントシェーダー関数の宣言
-            fixed4 frag(v2f i) : SV_Target
+            //fixed4はHLSLに対応しないためhalf4に変換する
+            half4 frag(v2f i) : SV_Target
             {
                 //最終的なカラーをアウトラインカラーで初期化
                 float4 final_color = _OutlineColor; 
@@ -126,7 +137,7 @@
             }
 
             //プログラマブルなシェーダーの終了宣言
-            ENDCG
+            ENDHLSL
         }
     }
 
