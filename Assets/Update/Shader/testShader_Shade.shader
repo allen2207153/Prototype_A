@@ -16,7 +16,11 @@
     SubShader
     {
         //タグ設定：レンダリングキューを透明に設定
-        Tags { "Queue" = "Transparent"}
+        //タグ設定：URP対応
+        Tags {
+            "Queue" = "Transparent"
+            "RenderPipeline" = "UniversalPipeline"
+             }
 
         //ブレンドモードの設定：アルファブレンド
         Blend SrcAlpha OneMinusSrcAlpha
@@ -29,7 +33,7 @@
             Name "COLOR_SHADE"
 
             //プログラマブルなシェーダーの開始宣言
-            CGPROGRAM
+            HLSLPROGRAM
 
             //頂点シェーダーの設定
             #pragma vertex vert
@@ -37,11 +41,24 @@
             //フラグメントシェーダーの指定
             #pragma fragment frag
 
-            //UnityCG.cgincライブラリをインクルード
-            #include "UnityCG.cginc"
+            //Universal Pipeline shadow keywords
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS_CASCADE
+            #pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
+            #pragma multi_compile _ _SHADOWS_SOFT
 
+            //UnityCG.cgincライブラリをインクルード
+            //#include "UnityCG.cginc"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            
+            CBUFFER_START(UnityPerMaterial)
             //プロパティで定義されたシェーダーの強度を定義する変数
             float _Strength;
+
+            //プロパティで定義されたカラー情報を格納する変数
+            float4 _Color;
+            CBUFFER_END
 
             //頂点情報を格納する構造体の宣言
             struct appdata
@@ -65,19 +82,20 @@
             v2f vert(appdata v)
             {
                 v2f o;
-                o.pos = UnityObjectToClipPos(v.vertex); // 頂点位置をクリップ座標に変換
-                o.worldNormal = UnityObjectToWorldNormal(v.normal); //法線情報をワールド空間に変換
+                o.pos = TransformObjectToHClip(v.vertex); // 頂点位置をクリップ座標に変換
+                o.worldNormal = TransformObjectToWorldNormal(v.normal); //法線情報をワールド空間に変換
                 return o;
             };
 
-            //プロパティで定義されたカラー情報を格納する変数
-            float4 _Color;
+            
 
             //フラグメントシェーダー関数の宣言
-            fixed4 frag(v2f i) : SV_Target
+            //fixed4はHLSLに対応しないためhalf4に変換する
+            half4 frag(v2f i) : SV_Target
             {
                 //ライトの方向ベクトルを計算
-                float3 l = normalize(_WorldSpaceLightPos0.xyz); 
+                //
+                Light l = GetMainLight(); 
 
                 //法線ベクトルを計算
                 float3 n = normalize(i.worldNormal); 
@@ -95,7 +113,7 @@
             }
 
             //プログラマブルなシェーダーの終了宣言
-            ENDCG
+            ENDHLSL
         }
     }
 
