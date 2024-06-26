@@ -24,7 +24,7 @@
     //   ここにシェーダーの実際の描画ロジックを記述します。
     SubShader
     {
-        //"Custom/testShader_Shade/COLOR_SHADE"
+        //"Custom/testShader_Shade/COLOR_SHADE" パスを使用
         UsePass "Custom/testShader_Shade/COLOR_SHADE"
 
         //タグ設定：レンダリングキューを透明に設定

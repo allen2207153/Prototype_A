@@ -20,6 +20,7 @@
 
         //ブレンドモードの設定：アルファブレンド
         Blend SrcAlpha OneMinusSrcAlpha
+       
 
         //シェーダーのマスを定義
         Pass
