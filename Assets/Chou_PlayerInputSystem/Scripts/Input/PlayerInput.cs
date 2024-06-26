@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,6 +12,8 @@ public class PlayerInput : ScriptableObject, PlayerInputActions.IGamePlayActions
     public event UnityAction _onJump = delegate { };
     public event UnityAction _onSprint = delegate { };
     public event UnityAction<Vector2> _onLook = delegate { };
+    public event UnityAction _onGrab = delegate { };
+    public event UnityAction _onStopGrab = delegate { };
 
     PlayerInputActions _inputActions;
 
@@ -38,6 +40,18 @@ public class PlayerInput : ScriptableObject, PlayerInputActions.IGamePlayActions
         _inputActions.GamePlay.Disable();
     }
 
+    public void OnGrab(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            _onGrab.Invoke();
+        }
+
+        if (context.phase == InputActionPhase.Canceled)
+        {
+            _onStopGrab.Invoke();
+        }
+    }
 
     public void OnMove(InputAction.CallbackContext context)
     {
