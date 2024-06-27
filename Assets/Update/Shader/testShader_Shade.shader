@@ -82,7 +82,7 @@
             v2f vert(appdata v)
             {
                 v2f o;
-                o.pos = TransformObjectToHClip(v.vertex); // 頂点位置をクリップ座標に変換
+                o.pos = TransformObjectToHClip(v.vertex.xyz); // 頂点位置をクリップ座標に変換
                 o.worldNormal = TransformObjectToWorldNormal(v.normal); //法線情報をワールド空間に変換
                 return o;
             };

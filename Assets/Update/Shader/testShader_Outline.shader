@@ -40,6 +40,8 @@
         //シェーダーのマスを定義
         Pass
         {
+            Tags{ "LightMode" = "UniversalForward" }
+
             //カリングをフロントに設定
             Cull Front
 
@@ -58,7 +60,6 @@
             //UnityCG.cgincライブラリをインクルード
             //#include "UnityCG.cginc"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/SpaceTransforms.hlsl"
 
             //プロパティで定義されたアウトラインの幅を定義する変数
             float _OutlineWidth;
