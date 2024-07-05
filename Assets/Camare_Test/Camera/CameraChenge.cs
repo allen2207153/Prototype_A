@@ -10,6 +10,7 @@ public class CameraChenge : MonoBehaviour
     [SerializeField] private GameObject _chi1;
     [SerializeField] private GameObject _chi2;
 
+    [Header("現在のカメラ")]
     public GameObject _Rchi;
     // Start is called before the first frame update
     void Start()
@@ -38,14 +39,17 @@ public class CameraChenge : MonoBehaviour
 
     public void Cange(int c)
     {
+        PlayerMovement_CameraTest _CameraTest = GetComponent<PlayerMovement_CameraTest>();
         
         switch (c)
         {
             case 1:
                 _Rchi = _chi1;
+                _CameraTest._vCam = _Rchi;
                 break;
             case 2:
                 _Rchi = _chi2;
+                _CameraTest._vCam = _Rchi;
                 break;
         }
     }
