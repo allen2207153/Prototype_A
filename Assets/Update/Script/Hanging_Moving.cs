@@ -8,20 +8,25 @@ public class Hanging_Moving : MonoBehaviour
     public Transform man;
     public Transform girl;
     public float followSpeed = 2f;
-    private bool ikOn;
+    public bool ikOn;
     public Vector3 initialOffset;
-
      void Awake()
     {
-        ikOn = GetComponent<Test_IKSystem>().ikActive;
+        
     }
 
      void Update()
     {
+        ikOn = GetComponent<Test_IKSystem>().ikActive;
+        Debug.Log(ikOn);
         if(ikOn)
         {
             girl.position = Vector3.Lerp(girl.position, man.position + initialOffset, followSpeed * Time.deltaTime);
             Debug.Log("isHanging");
+        }
+        else
+        {
+            Debug.Log("is not hanging");
         }
     }
 }

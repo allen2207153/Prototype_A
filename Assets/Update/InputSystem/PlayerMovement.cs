@@ -1,9 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using UnityEngine.EventSystems;
 
 public class PlayerMovement : BChara
 {
+    //追加
+
+    Animator animator;
+
+    Quaternion targetRotation;
+
     //重力の大きさを設定します
     [SerializeField] private float _gravity = -9.8f;
     //移動速度を設定します
@@ -24,15 +31,27 @@ public class PlayerMovement : BChara
     private Vector3 _velocity = Vector3.zero;
 
     //キャラクターコントローラーの参照
+
+
     private CharacterController _cCtrl;
 
     //ジャンプのフラグ
     private bool _jumpFlag = false;
 
+    void Awake()
+    {
+        TryGetComponent(out animator);    
+
+        targetRotation = transform.rotation;
+    }
+
     void Start()
     {
+
         //キャラクターコントローラーを取得します
         _cCtrl = GetComponent<CharacterController>();
+
+        var playerinput = GetComponent<PlayerInput>();
     }
     private void FixedUpdate()
     {
@@ -42,12 +61,18 @@ public class PlayerMovement : BChara
     {
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
-
+        //Debug.Log(this.transform.rotation);
         Think();
         Move();
 
         //重力処理を実行します
         HandleGravity();
+
+        //追加
+        var rotationSpeed = 600 * Time.deltaTime;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
+        animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeed, 0.1f, Time.deltaTime);
+        _walkSpeed = Input.GetKey(KeyCode.LeftShift) ? 10 : 5;
 
 #if DEBUG
         if (CheckFoot())
@@ -97,6 +122,7 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Walk:
                 HandleWalking();
+               
                 break;
             case Motion.Jump:
                 if (_moveCnt == 0) { HandleJumping(); }
@@ -163,8 +189,11 @@ public class PlayerMovement : BChara
             //前方向と右方向を基に移動方向を計算します
             Vector3 _moveDirection = _forward * direction.z + _right * direction.x;
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
+
+            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
             _cCtrl.Move(_moveDirection * _walkSpeed * _movementInput.magnitude * Time.deltaTime);
         }
+        
     }
     /// <summary>
     /// ジャンプ処理を実行します
@@ -217,4 +246,31 @@ public class PlayerMovement : BChara
             Debug.Log("Fire!");
         }
     }
+
+
+
+    ////追加
+    //void move()
+    //{
+    //    Vector3 direction = new Vector3(_movementInput.x, 0f, _movementInput.y).normalized;
+       
+    //    // inputDirection.z = Input.GetAxis("Horizontal");
+    //    // inputDirection.x = Input.GetAxis("Vertical");
+
+
+        
+
+    //    if (direction.magnitude>=0.1)
+    //    {
+    //        transform.rotation = Quaternion.LookRotation(direction,Vector3.up);
+    //        Transform this.transform = transform;
+    //        inputDirection = _velocity * direction.x + _velocity* direction.z;
+    //        _cCtrl.Move(inputDirection * _walkSpeed * _movementInput.magnitude * Time.deltaTime);
+
+
+    //    }
+        
+    //     animator.SetFloat("Speed", direction.magnitude * _walkSpeed, 0.1f, Time.deltaTime);
+    //}
+
 }
