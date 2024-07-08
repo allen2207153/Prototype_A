@@ -1,0 +1,599 @@
+fileFormatVersion: 2
+guid: 5131ab509e1ee5b4498a3f263238d9a3
+ModelImporter:
+  serializedVersion: 22200
+  internalIDToNameTable: []
+  externalObjects: {}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: "Avatar Rig Configuration mis-match. Inbetween bone rotation
+      in configuration does not match rotation in animation file:\n\t'girl_Spine1'
+      : rotation error = 8.233233 deg\n"
+    animationImportErrors: 
+    animationImportWarnings: "\nClip 'walk_girl' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'girl_Spine1' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n"
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: walk_girl
+      takeName: walk_girl
+      internalID: 5147522917889702039
+      firstFrame: 0
+      lastFrame: 72
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human:
+    - boneName: girl_Hips
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftUpLeg
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightUpLeg
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftLeg
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightLeg
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftFoot
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightFoot
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_Spine
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_Neck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_Head
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftShoulder
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightShoulder
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftArm
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightArm
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftForeArm
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightForeArm
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftHand
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightHand
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftFootMiddle1
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightFootMiddle1
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftHandThumb1
+      humanName: Left Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftHandThumb2
+      humanName: Left Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftHandThumb3
+      humanName: Left Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftHandMiddle1
+      humanName: Left Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftHandMiddle2
+      humanName: Left Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_LeftHandMiddle3
+      humanName: Left Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightHandThumb1
+      humanName: Right Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightHandThumb2
+      humanName: Right Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightHandMiddle1
+      humanName: Right Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: girl_RightHandMiddle2
+      humanName: Right Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: walk_girl(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: G_girl
+      parentName: walk_girl(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: girl_body
+      parentName: G_girl
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: all_con
+      parentName: walk_girl(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: girl_root
+      parentName: all_con
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.4637518, y: 0.4637518, z: 0.4637518}
+    - name: girl_Hips
+      parentName: girl_root
+      position: {x: 2.0863085e-10, y: 0.98013484, z: 0.0000000033772396}
+      rotation: {x: 0.000000002699391, y: -0.000000010797564, z: -6.7484773e-10, w: 1}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
+    - name: girl_LeftUpLeg
+      parentName: girl_Hips
+      position: {x: -0.11740826, y: -0.09267955, z: 0}
+      rotation: {x: -0.000000002699391, y: 0.000000010797564, z: 0.0000000011229887,
+        w: 1}
+      scale: {x: 1, y: 0.9999999, z: 0.99999994}
+    - name: girl_LeftLeg
+      parentName: girl_LeftUpLeg
+      position: {x: -1.915202e-17, y: -0.35929585, z: 0}
+      rotation: {x: -0, y: 1.2653434e-10, z: -6.168529e-10, w: 1}
+      scale: {x: 1, y: 1.0000001, z: 1.0000001}
+    - name: girl_LeftFoot
+      parentName: girl_LeftLeg
+      position: {x: -3.830404e-17, y: -0.3563588, z: -5.844733e-22}
+      rotation: {x: 5.6705687e-20, y: -1.2653523e-10, z: 1.6871257e-10, w: 1}
+      scale: {x: 1, y: 0.99999994, z: 0.9999999}
+    - name: girl_LeftToeBase
+      parentName: girl_LeftFoot
+      position: {x: -0.00000008426999, y: -0.14595228, z: 0.12954721}
+      rotation: {x: -0, y: -0, z: 7.175267e-30, w: 1}
+      scale: {x: 1, y: 1.0000001, z: 1.0000001}
+    - name: girl_LeftFootMiddle1
+      parentName: girl_LeftToeBase
+      position: {x: -0.00006715021, y: 9.000001e-11, z: 0}
+      rotation: {x: -7.9486887e-25, y: 1.7763568e-15, z: -8.881784e-16, w: 1}
+      scale: {x: 1, y: 0.99999994, z: 0.9999999}
+    - name: girl_LeftFootMiddle2
+      parentName: girl_LeftFootMiddle1
+      position: {x: -6.0000005e-11, y: -1.5999999e-10, z: 0.10838115}
+      rotation: {x: -0, y: -0, z: 1.411971e-39, w: 1}
+      scale: {x: 1, y: 1.0000001, z: 1.0000001}
+    - name: girl_RightUpLeg
+      parentName: girl_Hips
+      position: {x: 0.11558192, y: -0.09267955, z: 0}
+      rotation: {x: -0.000000024294518, y: 0.000000010797564, z: 5.06136e-10, w: 1}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: girl_RightLeg
+      parentName: girl_RightUpLeg
+      position: {x: 0.000000027159999, y: -0.35929585, z: 0.00000439024}
+      rotation: {x: 0.000000021595127, y: 3.374243e-10, z: 2.530679e-10, w: 1}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
+    - name: girl_RightFoot
+      parentName: girl_RightLeg
+      position: {x: -0.00000000919, y: -0.3563588, z: -5.844733e-22}
+      rotation: {x: 0.000000010797564, y: -3.374243e-10, z: -8.434564e-11, w: 1}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: girl_RightToeBase
+      parentName: girl_RightFoot
+      position: {x: 0.00001085381, y: -0.14595228, z: 0.12954749}
+      rotation: {x: -0, y: -0.000041891268, z: 2.2124054e-12, w: 1}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: girl_RightFootMiddle1
+      parentName: girl_RightToeBase
+      position: {x: 0.00008911982, y: 3.3999997e-10, z: -0.000004682067}
+      rotation: {x: -0.000000021595127, y: 0.00016756511, z: -1.3180739e-12, w: 1}
+      scale: {x: 0.9999999, y: 1, z: 1.0000001}
+    - name: girl_RightFootMiddle2
+      parentName: girl_RightFootMiddle1
+      position: {x: -0.000027241347, y: -1.3999998e-10, z: 0.10838115}
+      rotation: {x: -0, y: -0.00025134766, z: -5.4279103e-12, w: 1}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: girl_Spine
+      parentName: girl_Hips
+      position: {x: -0, y: 0.10113973, z: 0}
+      rotation: {x: 0.000000008098173, y: 0.000000005398782, z: 0.0000000016871194,
+        w: 1}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
+    - name: girl_Spine1
+      parentName: girl_Spine
+      position: {x: -0, y: 0.1331475, z: 0}
+      rotation: {x: -0, y: 8.881784e-16, z: -0.0000000010122717, w: 1}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
+    - name: girl_LeftShoulder
+      parentName: girl_Spine1
+      position: {x: -0.07, y: 0.23431171, z: 0}
+      rotation: {x: -0, y: -0, z: -0, w: 1}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.9999999}
+    - name: girl_LeftArm
+      parentName: girl_LeftShoulder
+      position: {x: -0.07658942, y: 0.0000017651922, z: 0}
+      rotation: {x: -0.000000010797546, y: 0.000000008098241, z: 0.0000064414207,
+        w: 1}
+      scale: {x: 1.0000002, y: 1.0000002, z: 1.0000001}
+    - name: girl_LeftForeArm
+      parentName: girl_LeftArm
+      position: {x: -0.3221776, y: 0.00001485132, z: 0}
+      rotation: {x: -0.000000010797878, y: -0.000000008096924, z: -0.000115560906,
+        w: 1}
+      scale: {x: 1.0000001, y: 0.99999994, z: 0.9999999}
+    - name: girl_LeftHand
+      parentName: girl_LeftForeArm
+      position: {x: -0.3169069, y: -0.00015628971, z: 0}
+      rotation: {x: 1.0602186e-11, y: -2.1202595e-11, z: 0.0009817379, w: 0.9999995}
+      scale: {x: 0.9999998, y: 0.99999994, z: 1.0000001}
+    - name: girl_LeftHandThumb1
+      parentName: girl_LeftHand
+      position: {x: -0.008873654, y: -0.039225366, z: 0.07232225}
+      rotation: {x: -0.0010847742, y: 0.31957486, z: -0.020159964, w: 0.947346}
+      scale: {x: 1.0000002, y: 0.99999994, z: 0.99999994}
+    - name: girl_LeftHandThumb2
+      parentName: girl_LeftHandThumb1
+      position: {x: -0.08737037, y: -0.00074564514, z: 7.1675643e-10}
+      rotation: {x: 0.000000011146689, y: 0.000000007495088, z: 0.018574828, w: 0.9998275}
+      scale: {x: 0.9999999, y: 1, z: 1.0000001}
+    - name: girl_LeftHandThumb3
+      parentName: girl_LeftHandThumb2
+      position: {x: -0.031158388, y: 0.0008917958, z: 0}
+      rotation: {x: 0.000000021568471, y: 0.000000010784236, z: -0.049665496, w: 0.99876595}
+      scale: {x: 0.99999994, y: 0.9999998, z: 0.99999976}
+    - name: girl_LeftHandMiddle1
+      parentName: girl_LeftHand
+      position: {x: -0.10808659, y: 0.005366675, z: 0}
+      rotation: {x: -0.00000014783045, y: -0.00003108572, z: -0.005101104, w: 0.999987}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: girl_LeftHandMiddle2
+      parentName: girl_LeftHandMiddle1
+      position: {x: -0.045938767, y: -0.00031391985, z: 0.0000028570196}
+      rotation: {x: -0.000002726781, y: 0.00037311463, z: 0.018074416, w: 0.9998366}
+      scale: {x: 1.0000001, y: 1, z: 1}
+    - name: girl_LeftHandMiddle3
+      parentName: girl_LeftHandMiddle2
+      position: {x: -0.040599465, y: 0.0011246941, z: -0.000027778971}
+      rotation: {x: -0.000016739474, y: -0.0018959937, z: -0.046663404, w: 0.99890894}
+      scale: {x: 0.9999999, y: 0.99999994, z: 1}
+    - name: girl_RightShoulder
+      parentName: girl_Spine1
+      position: {x: 0.06999999, y: 0.23431171, z: 0}
+      rotation: {x: -0, y: -0, z: -0, w: 1}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.9999999}
+    - name: girl_RightArm
+      parentName: girl_RightShoulder
+      position: {x: 0.076588765, y: 0.000004332, z: 0}
+      rotation: {x: -0.000000020921261, y: -0.000000037791487, z: -0.000020214726,
+        w: 1}
+      scale: {x: 1.0000001, y: 1.0000002, z: 1.0000001}
+    - name: girl_RightForeArm
+      parentName: girl_RightArm
+      position: {x: 0.32236215, y: 0.000013043751, z: 0}
+      rotation: {x: -0.0000000074076034, y: 0.000000043180176, z: 0.00036409183, w: 0.99999994}
+      scale: {x: 0.99999994, y: 1, z: 0.9999997}
+    - name: girl_RightHand
+      parentName: girl_RightForeArm
+      position: {x: 0.31555092, y: -0.00021707153, z: 0}
+      rotation: {x: 0.000000008772982, y: 8.146728e-11, z: -0.0030953295, w: 0.99999523}
+      scale: {x: 0.9999999, y: 1, z: 1.0000001}
+    - name: girl_RightHandThumb1
+      parentName: girl_RightHand
+      position: {x: 0.0101945745, y: -0.03947094, z: 0.042828143}
+      rotation: {x: -0.004749391, y: -0.339292, z: 0.029241465, w: 0.9402145}
+      scale: {x: 0.9999999, y: 0.99999976, z: 1}
+    - name: girl_RightHandThumb2
+      parentName: girl_RightHandThumb1
+      position: {x: 0.08856489, y: -0.0023836503, z: 0.0070767663}
+      rotation: {x: -0.000000003285182, y: -0.000000020728525, z: -0.05853679, w: 0.9982853}
+      scale: {x: 1.0000004, y: 1.0000001, z: 1.0000001}
+    - name: girl_RightHandThumb3
+      parentName: girl_RightHandThumb2
+      position: {x: 0.029825883, y: 0.0026988627, z: 0.00088820315}
+      rotation: {x: 7.0266154e-10, y: 0.000000018382837, z: 0.15600753, w: 0.9877559}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
+    - name: girl_RightHandMiddle1
+      parentName: girl_RightHand
+      position: {x: 0.10854975, y: 0.0056063593, z: 0.013054584}
+      rotation: {x: 0.0002779047, y: -0.017450754, z: 0.016080802, w: 0.9997184}
+      scale: {x: 0.99999994, y: 0.9999998, z: 1}
+    - name: girl_RightHandMiddle2
+      parentName: girl_RightHandMiddle1
+      position: {x: 0.047410287, y: -0.0012668419, z: -0.0033526858}
+      rotation: {x: 0.0048311143, y: 0.20772858, z: -0.056548648, w: 0.9765386}
+      scale: {x: 0.99999994, y: 1, z: 1.0000001}
+    - name: girl_RightHandMiddle3
+      parentName: girl_RightHandMiddle2
+      position: {x: 0.037886694, y: 0.0035182803, z: 0.014294024}
+      rotation: {x: 0.027374137, y: -0.87033516, z: 0.12283962, w: 0.476107}
+      scale: {x: 1.0000002, y: 1, z: 1.0000001}
+    - name: girl_Neck
+      parentName: girl_Spine1
+      position: {x: -0, y: 0.35297713, z: 0}
+      rotation: {x: -6.8312897e-18, y: 0.0000000067484764, z: -0.0000000020245436,
+        w: 1}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999976}
+    - name: girl_Head
+      parentName: girl_Neck
+      position: {x: -0, y: 0.38263136, z: 0}
+      rotation: {x: -0, y: -0, z: 4.6100797e-26, w: 1}
+      scale: {x: 1.0000002, y: 1.0000001, z: 0.99999994}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 3
+  humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
