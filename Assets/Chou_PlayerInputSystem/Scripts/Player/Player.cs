@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,8 +16,19 @@ public class Player : MonoBehaviour
     [SerializeField] float _gravity = -9.81f;
     [SerializeField] float _lookSpeed = 10f;
     [SerializeField] float _maxLookAngle = 30f;
-    [SerializeField] float _minLookAngle = -50f;
+    [SerializeField] float _minLookAngle = -10f;
     [SerializeField] Transform _cameraBoom;
+
+#if true
+    [SerializeField] Transform _leftHand;
+    [SerializeField] Transform _rightHand;
+    [SerializeField] float _grabDistance = 1.5f;
+    [SerializeField] float _slowMoveFactor = 0.5f; // 押している時や引っ張っている時速度のレート
+
+    private Rigidbody _rigidbody;
+    private bool _isInteracting = false;
+    private GameObject _currentBox;
+#endif
 
     CharacterController _controller;
 
@@ -42,6 +53,8 @@ public class Player : MonoBehaviour
         _input._onJump += Jump;
         _input._onSprint += Sprint;
         _input._onLook += Look;
+        _input._onGrab += OnStartGrab;
+        _input._onStopGrab += OnStopGrab;
     }
 
     void OnDisable()
@@ -51,6 +64,8 @@ public class Player : MonoBehaviour
         _input._onJump -= Jump;
         _input._onSprint -= Sprint;
         _input._onLook -= Look;
+        _input._onGrab -= OnStartGrab;
+        _input._onStopGrab -= OnStopGrab;
     }
 
     // Start is called before the first frame update
@@ -70,6 +85,11 @@ public class Player : MonoBehaviour
             _moveSpeed = _walkSpeed;
         }
 
+        if (_isInteracting)
+        {
+            _moveSpeed *= _slowMoveFactor;
+        }
+
         // Check if the player is grounded
         _isGrounded = _controller.isGrounded;
         if (_isGrounded && _velocity.y < 0)
@@ -83,6 +103,55 @@ public class Player : MonoBehaviour
         Vector3 move = new Vector3(_currentMoveInput.x, 0, _currentMoveInput.y);
         move = Quaternion.Euler(0, _cameraBoom.eulerAngles.y, 0) * move;
         _controller.Move((move * _moveSpeed +_velocity) * Time.deltaTime);
+
+
+        // Grab Box
+        if (_isInteracting && _currentBox != null && _currentMoveInput != Vector2.zero)
+        {
+            Vector3 targetPosition = transform.position + transform.forward * 1.5f;
+            _currentBox.transform.position = new Vector3(targetPosition.x, _currentBox.transform.position.y, targetPosition.z);
+            //_currentBox.transform.position = Vector3.Lerp(_currentBox.transform.position, targetPosition, Time.deltaTime * _moveSpeed);
+            _currentBox.transform.rotation = Quaternion.identity; // 箱の回転を防ぐ
+        }
+
+    }
+
+    void OnStartGrab()
+    {
+        Collider[] _hitColliders = Physics.OverlapSphere(transform.position, _grabDistance);
+        foreach (var hitCollider in _hitColliders)
+        {
+            if (hitCollider.CompareTag("Box"))
+            {
+                _currentBox = hitCollider.gameObject;
+                _isInteracting = true;
+                MoveHands(true);
+                break;
+            }
+        }
+    }
+
+    void OnStopGrab()
+    {
+        _isInteracting = false;
+        _currentBox = null;
+        MoveHands(false);
+    }
+
+    void MoveHands(bool interacting)
+    {
+        if (interacting)
+        {
+            Debug.Log("Setting hands to grab position");
+            _leftHand.localRotation = Quaternion.Euler(90, 0, 0);
+            _rightHand.localRotation = Quaternion.Euler(90, 0, 0);
+        }
+        else
+        {
+            Debug.Log("Resetting hands to initial position");
+            _leftHand.localRotation = Quaternion.identity; // Reset to initial rotation
+            _rightHand.localRotation = Quaternion.identity; // Reset to initial rotation
+        }
     }
 
     void Move(Vector2 moveInput)
