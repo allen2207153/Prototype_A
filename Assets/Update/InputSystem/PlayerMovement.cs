@@ -5,10 +5,9 @@ using UnityEngine.EventSystems;
 
 public class PlayerMovement : BChara
 {
-    //追加
+    //追加時間：20240709＿ワンユールン
 
     Animator animator;
-
     Quaternion targetRotation;
 
     //重力の大きさを設定します
@@ -40,8 +39,8 @@ public class PlayerMovement : BChara
 
     void Awake()
     {
+        //追加時間：20240709＿ワンユールン
         TryGetComponent(out animator);    
-
         targetRotation = transform.rotation;
     }
 
@@ -50,8 +49,6 @@ public class PlayerMovement : BChara
 
         //キャラクターコントローラーを取得します
         _cCtrl = GetComponent<CharacterController>();
-
-        var playerinput = GetComponent<PlayerInput>();
     }
     private void FixedUpdate()
     {
@@ -68,7 +65,7 @@ public class PlayerMovement : BChara
         //重力処理を実行します
         HandleGravity();
 
-        //追加
+        //追加時間：20240709＿ワンユールン
         var rotationSpeed = 600 * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeed, 0.1f, Time.deltaTime);
@@ -190,6 +187,7 @@ public class PlayerMovement : BChara
             Vector3 _moveDirection = _forward * direction.z + _right * direction.x;
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
 
+            //追加時間：20240709＿ワンユールン
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
             _cCtrl.Move(_moveDirection * _walkSpeed * _movementInput.magnitude * Time.deltaTime);
         }
@@ -248,29 +246,5 @@ public class PlayerMovement : BChara
     }
 
 
-
-    ////追加
-    //void move()
-    //{
-    //    Vector3 direction = new Vector3(_movementInput.x, 0f, _movementInput.y).normalized;
-       
-    //    // inputDirection.z = Input.GetAxis("Horizontal");
-    //    // inputDirection.x = Input.GetAxis("Vertical");
-
-
-        
-
-    //    if (direction.magnitude>=0.1)
-    //    {
-    //        transform.rotation = Quaternion.LookRotation(direction,Vector3.up);
-    //        Transform this.transform = transform;
-    //        inputDirection = _velocity * direction.x + _velocity* direction.z;
-    //        _cCtrl.Move(inputDirection * _walkSpeed * _movementInput.magnitude * Time.deltaTime);
-
-
-    //    }
-        
-    //     animator.SetFloat("Speed", direction.magnitude * _walkSpeed, 0.1f, Time.deltaTime);
-    //}
 
 }
