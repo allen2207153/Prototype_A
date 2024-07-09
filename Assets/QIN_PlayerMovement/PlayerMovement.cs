@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
-using UnityEngine.EventSystems;
 
 public class PlayerMovement : BChara
 {
@@ -10,19 +9,30 @@ public class PlayerMovement : BChara
     Animator animator;
     Quaternion targetRotation;
 
+
     //重力の大きさを設定します
     [SerializeField] private float _gravity = -9.8f;
+
     //移動速度を設定します
-    [SerializeField] private float _walkSpeed = 10f;
+    [SerializeField] private float _walkSpeedMax = 10f;
+    //移動の加速------------------------------------
+    private float _walkSpeedMin = 0f;//移動開始速度
+    [SerializeField] private float _walkAddSpeed = 0.4f;//移動加速
+
     //ジャンプ力を設定します
     [SerializeField] private float _jumpForce = 20.0f;
-
-    [Header("_moveCntの値を観測するだけ")]
-    [SerializeField] private int _checkMoveCnt;
 
     //仮想カメラの参照を設定します
     [Header("CinemachineVirtualCamera")]
     [SerializeField] private CinemachineVirtualCamera _vCam;
+
+    //ぶら下がり
+    private bool _checkHanging = false;
+    //ぶら下がるを一回だけに制限する用
+    private bool _hangingFlag = true;
+
+    [Header("_moveCntの値を観測用----------------------")]
+    [SerializeField] private int _checkMoveCnt;
 
     //移動入力を保存する変数
     private Vector2 _movementInput = Vector2.zero;
@@ -30,23 +40,31 @@ public class PlayerMovement : BChara
     private Vector3 _velocity = Vector3.zero;
 
     //キャラクターコントローラーの参照
-
-
     private CharacterController _cCtrl;
 
     //ジャンプのフラグ
     private bool _jumpFlag = false;
 
+    private void OnEnable()
+    {
+        //イベントを登録
+        PlayerEvent.CheckHanging += HandleCheckHanging;//ぶら下がるイベント
+    }
+    private void OnDisable()
+    {
+        //イベントを解除
+        PlayerEvent.CheckHanging -= HandleCheckHanging;
+    }
+
     void Awake()
     {
         //追加時間：20240709＿ワンユールン
-        TryGetComponent(out animator);    
+        TryGetComponent(out animator);
         targetRotation = transform.rotation;
     }
 
     void Start()
     {
-
         //キャラクターコントローラーを取得します
         _cCtrl = GetComponent<CharacterController>();
     }
@@ -58,18 +76,14 @@ public class PlayerMovement : BChara
     {
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
-        //Debug.Log(this.transform.rotation);
+
         Think();
         Move();
-
-        //重力処理を実行します
-        HandleGravity();
 
         //追加時間：20240709＿ワンユールン
         var rotationSpeed = 600 * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
-        animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeed, 0.1f, Time.deltaTime);
-        _walkSpeed = Input.GetKey(KeyCode.LeftShift) ? 10 : 5;
+        animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);
 
 #if DEBUG
         if (CheckFoot())
@@ -99,6 +113,8 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Fall:
                 if (CheckFoot()) { nm = Motion.Landing; }
+                //if (CheckHanging() && _hangingFlag == true) { nm = Motion.Hanging; }
+                if (_checkHanging && _hangingFlag == true) { nm = Motion.Hanging; }
                 break;
             case Motion.Landing:
                 if (CheckFoot()) { nm = Motion.Stand; }
@@ -106,12 +122,20 @@ public class PlayerMovement : BChara
             case Motion.TakeOff:
                 if (_moveCnt >= 0) { nm = Motion.Jump; }
                 break;
+            case Motion.Hanging:
+                //if (CheckHanging() == false) { nm = Motion.Fall; }
+                if (_checkHanging == false) { nm = Motion.Fall; }
+                if (_moveCnt >= 10 && _movementInput.y < -0.2f) { nm = Motion.Fall; }
+                break;
+            case Motion.ClimbingUp:
+                break;
         }
 
         UpdataMotion(nm);
     }
     private void Move()
     {
+        //各行動の処理---------------------------------
         switch (_motion)
         {
             case Motion.Stand:
@@ -119,7 +143,6 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Walk:
                 HandleWalking();
-               
                 break;
             case Motion.Jump:
                 if (_moveCnt == 0) { HandleJumping(); }
@@ -130,9 +153,27 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Landing:
                 _jumpFlag = false;//ジャンプを一回だけに制限する
+                _hangingFlag = true;//ぶら下がるを一回だけに制限する
                 break;
             case Motion.TakeOff:
 
+                break;
+            case Motion.Hanging:
+                _hangingFlag = false;
+                break;
+            case Motion.ClimbingUp:
+                break;
+        }
+
+        //重力操作--------------------------------
+        switch (_motion)
+        {
+            //重力を使用されたくないcaseをここに追加
+            case Motion.Hanging:
+                break;
+            default:
+                //重力処理を実行します
+                HandleGravity();
                 break;
         }
     }
@@ -151,6 +192,9 @@ public class PlayerMovement : BChara
         else if (_ctx.phase == InputActionPhase.Canceled)
         {
             _movementInput = Vector2.zero;
+
+            //移動開始速度をリセット
+            _walkSpeedMin = 0f;
         }
     }
     /// <summary>
@@ -185,13 +229,19 @@ public class PlayerMovement : BChara
 
             //前方向と右方向を基に移動方向を計算します
             Vector3 _moveDirection = _forward * direction.z + _right * direction.x;
-            //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
+
 
             //追加時間：20240709＿ワンユールン
             transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
-            _cCtrl.Move(_moveDirection * _walkSpeed * _movementInput.magnitude * Time.deltaTime);
+
+            //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
+            _cCtrl.Move(
+                _moveDirection *
+                ((_walkSpeedMin += _walkAddSpeed) < _walkSpeedMax ? _walkSpeedMin : _walkSpeedMax) *
+                _movementInput.magnitude *
+                Time.deltaTime
+                );
         }
-        
     }
     /// <summary>
     /// ジャンプ処理を実行します
@@ -234,6 +284,19 @@ public class PlayerMovement : BChara
         _cCtrl.Move(_velocity * Time.deltaTime);
     }
 
+    /// <summary>
+    /// ぶら下がる判定
+    /// </summary>
+    /// <returns></returns>
+    private void HandleCheckHanging(bool checkHangingEventHandler)
+    {
+        if (_checkHanging == checkHangingEventHandler) { return; }
+        else
+        {
+            _checkHanging = checkHangingEventHandler;
+        }
+    }
+
     public void Fire(InputAction.CallbackContext _ctx)
     {
         //InputActionPhase.Started;      <-これはGetKeyDown
@@ -244,7 +307,4 @@ public class PlayerMovement : BChara
             Debug.Log("Fire!");
         }
     }
-
-
-
 }
