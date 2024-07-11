@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: def_mat
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: 4800000, guid: eb99207bd2a58e7428ef057a641510be, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -19,7 +19,6 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap:
     IgnoreProjection: False
-    RenderType: Opaque
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -413,6 +412,14 @@ Material:
     - _Is_ViewCoord_Scroll: 0
     - _Is_ViewShift: 0
     - _LightDirection_MaskOn: 0
+    - _LimShadeColorWeight1: 0.5
+    - _LimShadeColorWeight2: 0.5
+    - _LimShadeMaskMinPower: 0.3
+    - _LimShadeMaskPowerWeight: 2
+    - _LimShadeMinPower1: 0.3
+    - _LimShadeMinPower2: 0.3
+    - _LimShadePowerWeight1: 10
+    - _LimShadePowerWeight2: 2
     - _LinkDetailsWithBase: 1
     - _MatCap: 1
     - _MaterialID: 1
@@ -566,6 +573,8 @@ Material:
     - _HighlightMaskColor: {r: 1, g: 1, b: 0, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
+    - _LimShadeColor1: {r: 0, g: 0, b: 0, a: 1}
+    - _LimShadeColor2: {r: 0, g: 0, b: 0, a: 1}
     - _MatCapColor: {r: 0.31132078, g: 0.2523852, b: 0.24817553, a: 1}
     - _OutlineMaskColor: {r: 0, g: 0, b: 0, a: 1}
     - _Outline_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
