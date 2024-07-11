@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     [SerializeField] Transform _rightHand;
     [SerializeField] float _grabDistance = 1.5f;
     [SerializeField] float _slowMoveFactor = 0.5f; // 押している時や引っ張っている時速度のレート
+    [SerializeField] float _pushForce = 2f; //　押す力
 
     private Rigidbody _rigidbody;
     private bool _isInteracting = false;
@@ -106,12 +107,29 @@ public class Player : MonoBehaviour
 
 
         // Grab Box
-        if (_isInteracting && _currentBox != null && _currentMoveInput != Vector2.zero)
+        if (_isInteracting && _currentBox != null)
         {
-            Vector3 targetPosition = transform.position + transform.forward * 1.5f;
-            _currentBox.transform.position = new Vector3(targetPosition.x, _currentBox.transform.position.y, targetPosition.z);
+            //Vector3 targetPosition = transform.position + transform.forward * 1.5f;
+            //_currentBox.transform.position = new Vector3(targetPosition.x, 1, targetPosition.z);
             //_currentBox.transform.position = Vector3.Lerp(_currentBox.transform.position, targetPosition, Time.deltaTime * _moveSpeed);
-            _currentBox.transform.rotation = Quaternion.identity; // 箱の回転を防ぐ
+            //_currentBox.transform.rotation = Quaternion.identity; // 箱の回転を防ぐ
+
+            Rigidbody boxRigidbody = _currentBox.GetComponent<Rigidbody>();
+            Vector3 direction = transform.forward * _currentMoveInput.y + transform.right * _currentMoveInput.x;
+            //boxRigidbody.AddForce(direction * _pushForce);
+            float distance = Vector3.Distance(transform.position, boxRigidbody.position);
+            if (distance < 3)
+            {
+                if (_currentMoveInput.y < 0)
+                {
+                    _pushForce = 3f;
+                }
+                else
+                {
+                    _pushForce = 2f;
+                }
+                boxRigidbody.velocity = direction * _pushForce;
+            }
         }
 
     }
