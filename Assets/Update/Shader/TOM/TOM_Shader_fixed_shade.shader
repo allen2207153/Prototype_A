@@ -1,4 +1,4 @@
-﻿Shader "Custom/TOM"
+﻿Shader "Custom/TOM_fixed_shade"
 {
     Properties
     {
@@ -233,6 +233,9 @@
                 //ダンジェントスペースの法線をワールドスペースに変換する
                 i.normal = i.tangent * localNormal.x + i.binormal * localNormal.y + i.normal * localNormal.z;
                 
+                //ライティング情報をゲットする
+                Light light = GetMainLight();
+
                 //工程１陰1の計算をする
                 float limPower = 1 - max(0, dot(i.normal, i.viewDir));
                 float limShadePower = inverseLerp(_LimShadeMinPower1, 1, limPower);
@@ -250,7 +253,7 @@
                 col.rgb = lerp(col.rgb, albedo.rgb, limShadeMaskPower);
 
                 //工程４リムライト
-                Light light = GetMainLight();
+                
                 float limLightPower = 1 - max(0, dot(i.normal, -light.direction));
                 float3 limLight = pow(saturate(limPower * limLightPower), _LimLightPower) * light.color;
                 col.rgb += limLight * _LimLightWeight;
