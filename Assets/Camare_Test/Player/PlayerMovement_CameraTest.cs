@@ -44,7 +44,7 @@ public class PlayerMovement_CameraTest : BChara
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
         //現在のカメラを取得
-        CameraChenge cameraChenge = GetComponent<CameraChenge>();
+        CameraChange cameraChenge = GetComponent<CameraChange>();
         //_vCam = cameraChenge._Rchi;
         
 

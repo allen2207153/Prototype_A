@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028331, g: 0.2257133, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -740,7 +740,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _zone0: {fileID: 1647459871}
   _zone1: {fileID: 1077492961}
-  cameraChenge: {fileID: 584361775}
+  cameraChange: {fileID: 584361775}
 --- !u!1 &584361774
 GameObject:
   m_ObjectHideFlags: 0
@@ -772,8 +772,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _vCam0: {fileID: 939888547}
   _vCam1: {fileID: 711859816}
+  _vCam2: {fileID: 0}
+  _vCam3: {fileID: 0}
+  _vCam4: {fileID: 0}
+  _vCam5: {fileID: 0}
+  _vCam6: {fileID: 0}
+  _vCam7: {fileID: 0}
+  _vCamList: []
   _CameraTest: {fileID: 571467151}
   _nowvCam: {fileID: 0}
+  _hPriority: 100
+  _rPriority: 10
 --- !u!4 &584361776
 Transform:
   m_ObjectHideFlags: 0
