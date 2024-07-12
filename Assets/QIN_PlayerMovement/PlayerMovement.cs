@@ -6,7 +6,7 @@ public class PlayerMovement : BChara
 {
     //追加時間：20240709＿ワンユールン
 
-    //Animator animator;
+    Animator animator;
 
 
     //重力の大きさを設定します
@@ -64,7 +64,7 @@ public class PlayerMovement : BChara
     void Awake()
     {
         //追加時間：20240709＿ワンユールン
-        //TryGetComponent(out animator);
+        TryGetComponent(out animator);
         targetRotation = transform.rotation;
     }
 
@@ -236,7 +236,7 @@ public class PlayerMovement : BChara
 
             //追加時間：20240709＿ワンユールン— ->修正_20240711_チンキントウ
             targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-
+            _walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 5;
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
             _cCtrl.Move(
                 _moveDirection *
@@ -307,7 +307,7 @@ public class PlayerMovement : BChara
         //追加時間：20240709＿ワンユールン
         var rotationSpeed = _rotationSpeed * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
-        //animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);
+        animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);
     }
 
     public void Fire(InputAction.CallbackContext _ctx)
