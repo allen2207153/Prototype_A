@@ -22,13 +22,12 @@ public class Player : MonoBehaviour
 #if true
     [SerializeField] Transform _leftHand;
     [SerializeField] Transform _rightHand;
-    [SerializeField] float _grabDistance = 1.5f;
-    [SerializeField] float _slowMoveFactor = 0.5f; // 押している時や引っ張っている時速度のレート
-    [SerializeField] float _pushForce = 2f; //　押す力
+    //[SerializeField] float _grabDistance = 1.5f;
+    //[SerializeField] float _slowMoveFactor = 0.5f; // 押している時や引っ張っている時速度のレート
+    //[SerializeField] float _pushForce = 2f; //　押す力
 
-    private Rigidbody _rigidbody;
-    private bool _isInteracting = false;
-    private GameObject _currentBox;
+    //private bool _isInteracting = false;
+    //private GameObject _currentBox;
 #endif
 
     CharacterController _controller;
@@ -42,9 +41,12 @@ public class Player : MonoBehaviour
     float _currentPitch = 0f; // Current Pitch
     Vector2 _currentMoveInput = Vector2.zero;
 
+    Push _pushObject;
+
     void Awake()
     {
         _controller = GetComponent<CharacterController>();
+        _pushObject = GetComponent<Push>();
     }
 
     void OnEnable()
@@ -86,9 +88,9 @@ public class Player : MonoBehaviour
             _moveSpeed = _walkSpeed;
         }
 
-        if (_isInteracting)
+        if (_pushObject.IsInteracting())
         {
-            _moveSpeed *= _slowMoveFactor;
+            _moveSpeed *= _pushObject.GetSlowMoveFactor();
         }
 
         // Check if the player is grounded
@@ -105,58 +107,24 @@ public class Player : MonoBehaviour
         move = Quaternion.Euler(0, _cameraBoom.eulerAngles.y, 0) * move;
         _controller.Move((move * _moveSpeed +_velocity) * Time.deltaTime);
 
-
-        // Grab Box
-        if (_isInteracting && _currentBox != null)
-        {
-            //Vector3 targetPosition = transform.position + transform.forward * 1.5f;
-            //_currentBox.transform.position = new Vector3(targetPosition.x, 1, targetPosition.z);
-            //_currentBox.transform.position = Vector3.Lerp(_currentBox.transform.position, targetPosition, Time.deltaTime * _moveSpeed);
-            //_currentBox.transform.rotation = Quaternion.identity; // 箱の回転を防ぐ
-
-            Rigidbody boxRigidbody = _currentBox.GetComponent<Rigidbody>();
-            Vector3 direction = transform.forward * _currentMoveInput.y + transform.right * _currentMoveInput.x;
-            //boxRigidbody.AddForce(direction * _pushForce);
-            float distance = Vector3.Distance(transform.position, boxRigidbody.position);
-            if (distance < 3)
-            {
-                if (_currentMoveInput.y < 0)
-                {
-                    _pushForce = 3f;
-                }
-                else
-                {
-                    _pushForce = 2f;
-                }
-                boxRigidbody.velocity = direction * _pushForce;
-            }
-        }
-
     }
 
     void OnStartGrab()
     {
-        Collider[] _hitColliders = Physics.OverlapSphere(transform.position, _grabDistance);
-        foreach (var hitCollider in _hitColliders)
-        {
-            if (hitCollider.CompareTag("Box"))
-            {
-                _currentBox = hitCollider.gameObject;
-                _isInteracting = true;
-                MoveHands(true);
-                break;
-            }
-        }
+        _pushObject.StartGrab();
     }
 
     void OnStopGrab()
     {
-        _isInteracting = false;
-        _currentBox = null;
-        MoveHands(false);
+        _pushObject.StopGrab();
     }
 
-    void MoveHands(bool interacting)
+    public Vector2 GetCurrentMoveInput()
+    { 
+        return _currentMoveInput;
+    }
+
+    public void MoveHands(bool interacting)
     {
         if (interacting)
         {

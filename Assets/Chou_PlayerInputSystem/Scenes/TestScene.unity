@@ -742,9 +742,8 @@ GameObject:
   - component: {fileID: 1384013200}
   - component: {fileID: 1384013199}
   - component: {fileID: 1384013198}
-  - component: {fileID: 1384013203}
-  - component: {fileID: 1384013205}
   - component: {fileID: 1384013204}
+  - component: {fileID: 1384013203}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -776,9 +775,6 @@ MonoBehaviour:
   _cameraBoom: {fileID: 67202744}
   _leftHand: {fileID: 1061816243}
   _rightHand: {fileID: 609176860}
-  _grabDistance: 1.5
-  _slowMoveFactor: 0.5
-  _pushForce: 2
 --- !u!136 &1384013199
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -905,69 +901,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1384013196}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Script: {fileID: 11500000, guid: 28db3db99d7900e46b9d05dfc208a06d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 51d051610d2846947b78e6b4b145998b,
-    type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c054356e-9702-4c00-b04b-e0838300bfa7
-    m_ActionName: Player/Walk[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 67ee3471-b310-4f55-b5a8-e775baa98426
-    m_ActionName: Player/Jump[/Keyboard/space]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d1fee3e9-deed-4d40-88ee-0fd1943cd553
-    m_ActionName: Player/Camera[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 929b467f-ee3e-4410-b370-9f610e745341
-    m_ActionName: Player/Fire[/Keyboard/x]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!114 &1384013205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1384013196}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f393a07f5c16954f8edbfe02cebc258, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _checkFoot: {fileID: 1263827525}
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  _gravity: -9.8
-  _walkSpeedMax: 10
-  _walkAddSpeed: 0.4
-  _jumpForce: 20
-  _vCam: {fileID: 0}
-  _rotationSpeed: 600
-  _checkMoveCnt: 0
+  _grabDistance: 1.5
+  _pushForce: 2
+  _slowMoveFactor: 0.5
 --- !u!1 &1449070802
 GameObject:
   m_ObjectHideFlags: 0
