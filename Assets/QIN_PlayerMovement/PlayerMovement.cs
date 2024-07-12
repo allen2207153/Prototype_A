@@ -6,8 +6,7 @@ public class PlayerMovement : BChara
 {
     //追加時間：20240709＿ワンユールン
 
-    Animator animator;
-    Quaternion targetRotation;
+    //Animator animator;
 
 
     //重力の大きさを設定します
@@ -25,6 +24,12 @@ public class PlayerMovement : BChara
     //仮想カメラの参照を設定します
     [Header("CinemachineVirtualCamera")]
     [SerializeField] private CinemachineVirtualCamera _vCam;
+
+    [Header("キャラの回転スピード")]
+    [SerializeField] private float _rotationSpeed = 600f;
+
+    //回転の角度を保存する変数
+    private Quaternion targetRotation;
 
     //ぶら下がり
     private bool _checkHanging = false;
@@ -59,7 +64,7 @@ public class PlayerMovement : BChara
     void Awake()
     {
         //追加時間：20240709＿ワンユールン
-        TryGetComponent(out animator);
+        //TryGetComponent(out animator);
         targetRotation = transform.rotation;
     }
 
@@ -72,6 +77,7 @@ public class PlayerMovement : BChara
     {
         _moveCnt++;//増加する
     }
+
     void Update()
     {
         //_moveCntの値を観測するだけ
@@ -80,10 +86,6 @@ public class PlayerMovement : BChara
         Think();
         Move();
 
-        //追加時間：20240709＿ワンユールン
-        var rotationSpeed = 600 * Time.deltaTime;
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
-        animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);
 
 #if DEBUG
         if (CheckFoot())
@@ -143,6 +145,7 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Walk:
                 HandleWalking();
+                SmoothRotation();
                 break;
             case Motion.Jump:
                 if (_moveCnt == 0) { HandleJumping(); }
@@ -231,8 +234,8 @@ public class PlayerMovement : BChara
             Vector3 _moveDirection = _forward * direction.z + _right * direction.x;
 
 
-            //追加時間：20240709＿ワンユールン
-            transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            //追加時間：20240709＿ワンユールン— ->修正_20240711_チンキントウ
+            targetRotation = Quaternion.LookRotation(direction, Vector3.up);
 
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
             _cCtrl.Move(
@@ -295,6 +298,16 @@ public class PlayerMovement : BChara
         {
             _checkHanging = checkHangingEventHandler;
         }
+    }
+    /// <summary>
+    /// 回転をスムーズにする
+    /// </summary>
+    void SmoothRotation()
+    {
+        //追加時間：20240709＿ワンユールン
+        var rotationSpeed = _rotationSpeed * Time.deltaTime;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
+        //animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);
     }
 
     public void Fire(InputAction.CallbackContext _ctx)
