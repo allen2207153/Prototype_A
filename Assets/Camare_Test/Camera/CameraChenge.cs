@@ -7,51 +7,49 @@ using Cinemachine;
 public class CameraChenge : MonoBehaviour
 {
     [Header("ブレンドしたいカメラ")]
-    [SerializeField] private GameObject _chi1;
-    [SerializeField] private GameObject _chi2;
+    [SerializeField] private CinemachineVirtualCamera _vCam0;
+    [SerializeField] private CinemachineVirtualCamera _vCam1;
+    [Header("PlayerMovementスクリプト")]
+    [SerializeField] private PlayerMovement_CameraTest _CameraTest;
 
     [Header("現在のカメラ")]
-    public GameObject _Rchi;
+    public CinemachineVirtualCamera _nowvCam; 
     // Start is called before the first frame update
     void Start()
     {
-        _Rchi = _chi1;
+        _nowvCam = _vCam0;
     }
 
     // Update is called once per frame
     void Update()
     {
         
-        if(Input.GetKey(KeyCode.U))
-        {
-            if(_chi1.activeInHierarchy)
-            {
-                _chi1.SetActive(false);
-                Cange(2);
-            }
-            else
-            {
-                _chi1.SetActive(true);
-                Cange(1);
-            }
-        }
     }
 
     public void Cange(int c)
     {
-        PlayerMovement_CameraTest _CameraTest = GetComponent<PlayerMovement_CameraTest>();
         
         switch (c)
         {
             case 1:
-                _Rchi = _chi1;
-                _CameraTest._vCam = _Rchi;
+                //現在のカメラを更新
+                _nowvCam = _vCam0;
+                //優先度を変更
+                _vCam0.Priority = 100;
+                //他カメラの優先度をリセット
+                _vCam1.Priority = 10;
+                _CameraTest._vCam = _nowvCam;
                 break;
             case 2:
-                _Rchi = _chi2;
-                _CameraTest._vCam = _Rchi;
+                //現在のカメラを更新
+                _nowvCam = _vCam1;
+                //優先度を変更
+                _vCam1.Priority = 100;
+                //他カメラの優先度をリセット
+                _vCam0.Priority = 10;
+                _CameraTest._vCam = _nowvCam;
                 break;
         }
     }
-
+    
 }

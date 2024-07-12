@@ -16,7 +16,7 @@ public class PlayerMovement_CameraTest : BChara
 
     //仮想カメラの参照を設定します
     [Header("CinemachineVirtualCamera")]
-    public GameObject _vCam;
+    public CinemachineVirtualCamera _vCam;
 
     //移動入力を保存する変数
     private Vector2 _movementInput = Vector2.zero;
@@ -46,7 +46,7 @@ public class PlayerMovement_CameraTest : BChara
         //現在のカメラを取得
         CameraChenge cameraChenge = GetComponent<CameraChenge>();
         //_vCam = cameraChenge._Rchi;
-        Debug.Log(_vCam);
+        
 
         Think();
         Move();
