@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class BChara : MonoBehaviour
 {
+
+    //頭上
+    //追加時間：20240713＿八子遥輝
+    [Header("頭上判定用Transformm")]
+    [SerializeField] protected Transform _checkHead;
+    protected float _checkHeadRadius = 0.2f;//頭上判定の半径
+
+    //追加時間：20240713＿八子遥輝
+    [Header("頭上判定有効のレイヤ")]
+    [SerializeField] protected LayerMask _layerMaskHead;//頭上判定有効のレイヤ
+
+    //足元
     [Header("着地判定用Transformm")]
     [SerializeField] protected Transform _checkFoot;
 
@@ -61,6 +73,23 @@ public class BChara : MonoBehaviour
             return true;
         }
     }
+
+
+    //追加時間：20240713＿八子遥輝
+    /// <summary>
+    /// 頭上判定
+    /// </summary>
+    /// <returns></returns>
+    protected bool CheckHead()
+    {
+        return Physics.CheckSphere(
+            _checkHead.position,
+            _checkHeadRadius,
+            _layerMaskHead);//円形範囲を検知
+    }
+
+
+
     /// <summary>
     /// 着地判定
     /// </summary>
@@ -72,17 +101,25 @@ public class BChara : MonoBehaviour
             _checkFootRadius,
             _layerMask);//円形範囲を検知
     }
+
+
+    //更新_追加時間：20240713＿八子遥輝
     /// <summary>
-    /// 着地判定の範囲を描く
+    /// 頭上と着地判定の範囲を描く
     /// </summary>
     protected void OnDrawGizmos()
     {
+        //追加時間：20240713＿八子遥輝
+        //黄色に設定
+        Gizmos.color = Color.yellow;
+        //頭上判定の範囲を描く
+        Gizmos.DrawWireSphere(_checkHead.position, _checkHeadRadius);
+
         //黄色に設定
         Gizmos.color = Color.yellow;
         //着地判定の範囲を描く
         Gizmos.DrawWireSphere(_checkFoot.position, _checkFootRadius);
     }
-
     //public関数------------------------------------------------
     public Motion GetMotion()
     {

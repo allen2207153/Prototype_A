@@ -78,19 +78,22 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -82460630921057815}
-    m_Position: {x: 240, y: 220, z: 0}
+    m_Position: {x: 250, y: 170, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3162862613154943496}
     m_Position: {x: -30, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 728628512483514789}
-    m_Position: {x: 120, y: 290, z: 0}
+    m_Position: {x: 120.66667, y: 265, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3955101795496480039}
     m_Position: {x: 250, y: 120, z: 0}
   - serializedVersion: 1
-    m_State: {fileID: -8472326712831371774}
-    m_Position: {x: 350, y: 160, z: 0}
+    m_State: {fileID: 869151439723608770}
+    m_Position: {x: 377, y: 277, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 3200550916066921127}
+    m_Position: {x: 401.60098, y: 67.110214, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions:
@@ -98,10 +101,10 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_EntryPosition: {x: 30, y: 110, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: -8472326712831371774}
+  m_DefaultState: {fileID: 3200550916066921127}
 --- !u!1102 &-82460630921057815
 AnimatorState:
   serializedVersion: 6
@@ -143,7 +146,7 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -328,7 +331,7 @@ BlendTree:
       type: 3}
     m_Threshold: 5
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 10
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Blend
     m_Mirror: 0
@@ -337,7 +340,7 @@ BlendTree:
       type: 3}
     m_Threshold: 10
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 2
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Blend
     m_Mirror: 0

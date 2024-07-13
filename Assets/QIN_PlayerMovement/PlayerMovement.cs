@@ -88,6 +88,11 @@ public class PlayerMovement : BChara
 
 
 #if DEBUG
+        //追加時間：20240713＿八子遥輝
+        if (CheckHead())
+        {
+            Debug.Log("CheckHead");
+        }
         if (CheckFoot())
         {
             //Debug.Log("checkfoot");
@@ -111,7 +116,7 @@ public class PlayerMovement : BChara
                 if (!CheckFoot()) { nm = Motion.Fall; }
                 break;
             case Motion.Jump:
-                if (_velocity.y < 0) { nm = Motion.Fall; }
+                if (_velocity.y < 0|| CheckHead()) { nm = Motion.Fall; }// 更新_追加時間：20240713＿八子遥輝
                 break;
             case Motion.Fall:
                 if (CheckFoot()) { nm = Motion.Landing; }
@@ -149,6 +154,8 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Jump:
                 if (_moveCnt == 0) { HandleJumping(); }
+              
+
                 HandleWalking();
                 break;
             case Motion.Fall:
@@ -236,7 +243,7 @@ public class PlayerMovement : BChara
 
             //追加時間：20240709＿ワンユールン— ->修正_20240711_チンキントウ
             targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-            _walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 5;
+            _walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 2;
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
             _cCtrl.Move(
                 _moveDirection *
@@ -276,6 +283,10 @@ public class PlayerMovement : BChara
                 }
                 break;
             //重力を適用しないモーションを追加
+
+            case Motion.Fall://追加時間:20240713_八子遥輝
+                _velocity.y -=1;
+                break;
 
             default:
                 //重力を適用します
