@@ -50,6 +50,13 @@ public class PlayerMovement : BChara
     //ジャンプのフラグ
     private bool _jumpFlag = false;
 
+    private PlayerClimbing _playerClimbing;
+
+    [Header("登るの位置----デバッグ観測用-----")]
+    [SerializeField] private Vector3 _climbVec3;
+
+    [SerializeField] private float _playerJumpHight = 2f;
+
     private void OnEnable()
     {
         //イベントを登録
@@ -72,6 +79,8 @@ public class PlayerMovement : BChara
     {
         //キャラクターコントローラーを取得します
         _cCtrl = GetComponent<CharacterController>();
+        _playerClimbing = new PlayerClimbing();
+        _climbVec3 = Vector3.zero;
     }
     private void FixedUpdate()
     {
@@ -102,12 +111,36 @@ public class PlayerMovement : BChara
         {
             case Motion.Stand:
                 if (_movementInput.x != 0 || _movementInput.y != 0) { nm = Motion.Walk; }
-                if (_jumpFlag && CheckFoot()) { nm = Motion.TakeOff; }
+
+                if (_jumpFlag && CheckFoot())
+                {
+                    if (_playerClimbing.ClimbDetect(_cCtrl.transform, _movementInput, out _climbVec3))
+                    {
+                        nm = Motion.JumpToHangingTakeOff;
+                    }
+                    else
+                    {
+                        nm = Motion.TakeOff;
+                    }
+                }
+
                 if (!CheckFoot()) { nm = Motion.Fall; }
                 break;
             case Motion.Walk:
                 if (_movementInput.x == 0 && _movementInput.y == 0) { nm = Motion.Stand; }
-                if (_jumpFlag && CheckFoot()) { nm = Motion.TakeOff; }
+
+                if (_jumpFlag && CheckFoot())
+                {
+                    if (_playerClimbing.ClimbDetect(_cCtrl.transform, _movementInput, out _climbVec3))
+                    {
+                        nm = Motion.JumpToHangingTakeOff;
+                    }
+                    else
+                    {
+                        nm = Motion.TakeOff;
+                    }
+                }        
+
                 if (!CheckFoot()) { nm = Motion.Fall; }
                 break;
             case Motion.Jump:
@@ -124,6 +157,12 @@ public class PlayerMovement : BChara
             case Motion.TakeOff:
                 if (_moveCnt >= 0) { nm = Motion.Jump; }
                 break;
+            case Motion.JumpToHangingTakeOff:
+                if (_moveCnt >= 0) { nm = Motion.JumpToHanging; }
+                break;
+            case Motion.JumpToHanging:
+                if (_moveCnt > 5) { nm=Motion.Fall; }
+                break;
             case Motion.Hanging:
                 //if (CheckHanging() == false) { nm = Motion.Fall; }
                 if (_checkHanging == false) { nm = Motion.Fall; }
@@ -137,15 +176,18 @@ public class PlayerMovement : BChara
     }
     private void Move()
     {
+        Vector3 climbVec3Handeler = default(Vector3);
         //各行動の処理---------------------------------
         switch (_motion)
         {
             case Motion.Stand:
-
+                _playerClimbing.ClimbDetect(_cCtrl.transform, _movementInput, out _climbVec3);
                 break;
             case Motion.Walk:
+                _playerClimbing.ClimbDetect(_cCtrl.transform, _movementInput, out _climbVec3);
                 HandleWalking();
                 SmoothRotation();
+                climbVec3Handeler = _climbVec3;
                 break;
             case Motion.Jump:
                 if (_moveCnt == 0) { HandleJumping(); }
@@ -160,6 +202,12 @@ public class PlayerMovement : BChara
                 break;
             case Motion.TakeOff:
 
+                break;
+            case Motion.JumpToHangingTakeOff:
+                break;
+            case Motion.JumpToHanging:
+                //Vector3 moveVector = climbVec3Handeler - _cCtrl.transform.position;
+                //_cCtrl.Move(moveVector);
                 break;
             case Motion.Hanging:
                 _hangingFlag = false;

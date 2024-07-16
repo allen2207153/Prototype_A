@@ -17,18 +17,20 @@ public class BChara : MonoBehaviour
     /// </summary>
     public enum Motion
     {
-        Unnon = -1, //	無効(使えません）
-        Stand,      //	停止
-        Walk,       //	歩行
-        Attack,     //	攻撃
-        Jump,       //	ジャンプ
-        Fall,       //	落下
-        TakeOff,    //	飛び立つ瞬間
-        Landing,    //	着地
-        Jump2,      //2段ジャンプ
-        Fall2,      //２段落下
-        Hanging,    //ぶら下がる
-        ClimbingUp, //登り
+        Unnon = -1,   //	無効(使えません）
+        Stand,        //	停止
+        Walk,         //	歩行
+        Attack,       //	攻撃
+        Jump,         //	ジャンプ
+        Fall,         //	落下
+        TakeOff,      //	飛び立つ瞬間
+        Landing,      //	着地
+        Jump2,        //2段ジャンプ
+        Fall2,        //２段落下
+        JumpToHangingTakeOff,
+        JumpToHanging,//ぶら下がる前のジャンプ（Jumpとは違う動き方）
+        Hanging,      //ぶら下がる
+        ClimbingUp,   //登り
     }
     protected Motion _motion = Motion.Stand;//現在のモーション
     protected Motion _preMotion;//前回のモーションを記録する用
