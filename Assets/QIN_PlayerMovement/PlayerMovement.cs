@@ -55,7 +55,11 @@ public class PlayerMovement : BChara
     [Header("登るの位置----デバッグ観測用-----")]
     [SerializeField] private Vector3 _climbVec3;
 
-    [SerializeField] private float _playerJumpHight = 2f;
+    [Header("登るの無効高さ")]
+    [SerializeField] private float _invalidClimbHeight = 2f;
+
+    [Header("登る位置のＹ軸の値")]
+    [SerializeField] private float _playerClimbOffset_Y = 0.8f;
 
     private void OnEnable()
     {
@@ -85,6 +89,7 @@ public class PlayerMovement : BChara
     private void FixedUpdate()
     {
         _moveCnt++;//増加する
+        //_playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
     }
 
     void Update()
@@ -119,7 +124,9 @@ public class PlayerMovement : BChara
 
                 if (_jumpFlag && CheckFoot())
                 {
-                    if (_playerClimbing.ClimbDetect(_cCtrl.transform, _movementInput, out _climbVec3))
+                    //登るの位置は0でなく、登る可能の高さ以上になると登る
+                    if (_climbVec3 != Vector3.zero &&
+                        _climbVec3.y - _cCtrl.transform.position.y > _invalidClimbHeight)
                     {
                         nm = Motion.JumpToHangingTakeOff;
                     }
@@ -136,7 +143,9 @@ public class PlayerMovement : BChara
 
                 if (_jumpFlag && CheckFoot())
                 {
-                    if (_playerClimbing.ClimbDetect(_cCtrl.transform, _movementInput, out _climbVec3))
+                    //登るの位置は0でなく、登る可能の高さ以上になると登る
+                    if (_climbVec3 != Vector3.zero &&
+                        _climbVec3.y - _cCtrl.transform.position.y > _invalidClimbHeight)
                     {
                         nm = Motion.JumpToHangingTakeOff;
                     }
@@ -144,12 +153,12 @@ public class PlayerMovement : BChara
                     {
                         nm = Motion.TakeOff;
                     }
-                }        
+                }
 
                 if (!CheckFoot()) { nm = Motion.Fall; }
                 break;
             case Motion.Jump:
-                if (_velocity.y < 0|| CheckHead()) { nm = Motion.Fall; }// 更新_追加時間：20240713＿八子遥輝
+                if (_velocity.y < 0 || CheckHead()) { nm = Motion.Fall; }// 更新_追加時間：20240713＿八子遥輝
                 break;
             case Motion.Fall:
                 if (CheckFoot()) { nm = Motion.Landing; }
@@ -166,7 +175,8 @@ public class PlayerMovement : BChara
                 if (_moveCnt >= 0) { nm = Motion.JumpToHanging; }
                 break;
             case Motion.JumpToHanging:
-                if (_moveCnt > 5) { nm=Motion.Fall; }
+                if (_jumpFlag) { nm = Motion.TakeOff; }
+                //if (_moveCnt > 5) { nm = Motion.Fall; }
                 break;
             case Motion.Hanging:
                 //if (CheckHanging() == false) { nm = Motion.Fall; }
@@ -181,22 +191,23 @@ public class PlayerMovement : BChara
     }
     private void Move()
     {
-        Vector3 climbVec3Handeler = default(Vector3);
+        //_playerClimbing.ClimbDetect(_cCtrl.transform, _movementInput, out _climbVec3);
+        Vector3 climbVec3Handler;
+        Vector3 _targetPos = default(Vector3);
         //各行動の処理---------------------------------
         switch (_motion)
         {
             case Motion.Stand:
-                _playerClimbing.ClimbDetect(_cCtrl.transform, _movementInput, out _climbVec3);
+                _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 break;
             case Motion.Walk:
-                _playerClimbing.ClimbDetect(_cCtrl.transform, _movementInput, out _climbVec3);
+                _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 HandleWalking();
                 SmoothRotation();
-                climbVec3Handeler = _climbVec3;
+                climbVec3Handler = _climbVec3;
                 break;
             case Motion.Jump:
                 if (_moveCnt == 0) { HandleJumping(); }
-              
 
                 HandleWalking();
                 break;
@@ -204,17 +215,19 @@ public class PlayerMovement : BChara
                 HandleWalking();
                 break;
             case Motion.Landing:
-                _jumpFlag = false;//ジャンプを一回だけに制限する
+                _jumpFlag = false;//ジャンプを一回だけに制限する（Landing後ジャンプ可能にする）
                 _hangingFlag = true;//ぶら下がるを一回だけに制限する
                 break;
             case Motion.TakeOff:
 
                 break;
             case Motion.JumpToHangingTakeOff:
+                _jumpFlag = false;//ジャンプ可能にする
+                _climbVec3.y -= _playerClimbOffset_Y;//キャラの登るの位置を計算
                 break;
             case Motion.JumpToHanging:
-                //Vector3 moveVector = climbVec3Handeler - _cCtrl.transform.position;
-                //_cCtrl.Move(moveVector);
+                //if (_moveCnt == 0) { _climbVec3.y -= 0.4f; }
+                PlayerMoveToTarget(_climbVec3, 8f);
                 break;
             case Motion.Hanging:
                 _hangingFlag = false;
@@ -227,6 +240,10 @@ public class PlayerMovement : BChara
         switch (_motion)
         {
             //重力を使用されたくないcaseをここに追加
+            case Motion.JumpToHangingTakeOff:
+                break;
+            case Motion.JumpToHanging:
+                break;
             case Motion.Hanging:
                 break;
             default:
@@ -235,6 +252,7 @@ public class PlayerMovement : BChara
                 break;
         }
     }
+
     /// <summary>
     /// InputSystemのWalk_Action
     /// </summary>
@@ -332,8 +350,9 @@ public class PlayerMovement : BChara
                 break;
             //重力を適用しないモーションを追加
 
+            //TODO:checkHeadの重力のデバッグ
             case Motion.Fall://追加時間:20240713_八子遥輝
-                _velocity.y -=1;
+                _velocity.y -= 1;
                 break;
 
             default:
@@ -367,6 +386,22 @@ public class PlayerMovement : BChara
         var rotationSpeed = _rotationSpeed * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);
+    }
+    /// <summary>
+    /// キャラが指定する位置に移動
+    /// </summary>
+    /// <param name="targetPos">目標位置</param>
+    /// <param name="moveSpeed">移動のスピード</param>
+    private void PlayerMoveToTarget(Vector3 targetPos, float moveSpeed)
+    {
+        // キャラの位置を取得
+        Vector3 currentPosition = _cCtrl.transform.position;
+
+        // 移動のベクトルを計算
+        Vector3 moveVector = Vector3.MoveTowards(currentPosition, targetPos, moveSpeed * Time.deltaTime);
+
+        // キャラを移動させる
+        _cCtrl.Move(moveVector - currentPosition);
     }
 
     public void Fire(InputAction.CallbackContext _ctx)
