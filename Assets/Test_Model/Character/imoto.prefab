@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &612828688834028424
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8142629335849038366}
+  m_Layer: 7
+  m_Name: CheckHead
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8142629335849038366
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612828688834028424}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.027, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5067858862488263476}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4338637732266580722
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,6 +367,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1376848754604889122}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8142629335849038366}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
@@ -352,11 +387,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7977157101134989076}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d6822b655a610e64e9482f6623a2522e,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3584114167130047648}
+      addedObject: {fileID: 1003689209297607512}
   m_SourcePrefab: {fileID: 100100000, guid: d6822b655a610e64e9482f6623a2522e, type: 3}
 --- !u!4 &5067858862488263476 stripped
 Transform:
@@ -398,7 +429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f393a07f5c16954f8edbfe02cebc258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _checkHead: {fileID: 1376848754604889122}
+  _checkHead: {fileID: 8142629335849038366}
   _layerMaskHead:
     serializedVersion: 2
     m_Bits: 0
@@ -413,6 +444,9 @@ MonoBehaviour:
   _vCam: {fileID: 0}
   _rotationSpeed: 600
   _checkMoveCnt: 0
+  _climbVec3: {x: 0, y: 0, z: 0}
+  _invalidClimbHeight: 2
+  _playerClimbOffset_Y: 0.8
 --- !u!114 &1300301056309253691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,7 +462,7 @@ MonoBehaviour:
   player: {fileID: 0}
   speed: 5
   rotationSpeed: 720
---- !u!143 &7977157101134989076
+--- !u!143 &1003689209297607512
 CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -454,30 +488,3 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.48, z: 0}
---- !u!54 &3584114167130047648
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5557290639162196366}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
