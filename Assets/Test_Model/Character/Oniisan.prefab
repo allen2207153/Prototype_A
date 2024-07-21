@@ -136,7 +136,7 @@ Transform:
   - {fileID: 7694860516606602572}
   - {fileID: 2236884960306343445}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6318924890195682275
 Animator:
@@ -289,7 +289,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _gravity: -9.8
-  _walkSpeedMax: 1.68
+  _walkSpeedMax: 5
   _walkAddSpeed: 0.8
   _jumpForce: 8
   _vCam: {fileID: 0}
@@ -305,7 +305,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728079890304295715}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d3450451648118458bdec58d6c39df5, type: 3}
   m_Name: 
@@ -1553,8 +1553,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3438769173440121682}
   - {fileID: 5058937476016896756}
+  - {fileID: 3438769173440121682}
   m_Father: {fileID: 4688607019292575524}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

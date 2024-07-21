@@ -263,12 +263,13 @@ public class PlayerMovement : BChara
         if (_ctx.phase == InputActionPhase.Performed)
         {
             _movementInput = _ctx.ReadValue<Vector2>();
+            animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax);
         }
         //入力のフェーズがCanceledの場合、移動入力をリセットします
         else if (_ctx.phase == InputActionPhase.Canceled)
         {
             _movementInput = Vector2.zero;
-
+           animator.SetFloat("Speed",0.0f);
             //移動開始速度をリセット
             _walkSpeedMin = 0f;
         }
@@ -309,7 +310,7 @@ public class PlayerMovement : BChara
 
             //追加時間：20240709＿ワンユールン— ->修正_20240711_チンキントウ
             targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-            _walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 2;
+            
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
             _cCtrl.Move(
                 _moveDirection *
@@ -385,7 +386,7 @@ public class PlayerMovement : BChara
         //追加時間：20240709＿ワンユールン
         var rotationSpeed = _rotationSpeed * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
-        animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);
+        
     }
     /// <summary>
     /// キャラが指定する位置に移動

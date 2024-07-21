@@ -389,6 +389,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1003689209297607512}
   m_SourcePrefab: {fileID: 100100000, guid: d6822b655a610e64e9482f6623a2522e, type: 3}
+--- !u!95 &1203738854940492110 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: d6822b655a610e64e9482f6623a2522e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4746265922108456159}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5067858862488263476 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
@@ -454,14 +460,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5557290639162196366}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3ad9eb4b0851da4e8ab797f7a815b77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  speed: 5
-  rotationSpeed: 720
+  animator: {fileID: 1203738854940492110}
+  followDistance: 0.8
+  stopDistance: 1
+  followKey: 102
+  activationRadius: 3
+  speedLerpRate: 5
 --- !u!143 &1003689209297607512
 CharacterController:
   m_ObjectHideFlags: 0
