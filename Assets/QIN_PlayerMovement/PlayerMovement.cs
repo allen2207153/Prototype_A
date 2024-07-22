@@ -4,6 +4,14 @@ using Cinemachine;
 
 public class PlayerMovement : BChara
 {
+    //追加時間：20240723＿チョウハク
+    bool _isPushPressed = false;
+    bool _pushState = false;
+    Transform _interactPoint;
+    MovableObject _movableObject;
+    PlayerSensor _playerSensor;
+
+
     //追加時間：20240709＿ワンユールン
 
     Animator animator;
@@ -85,6 +93,9 @@ public class PlayerMovement : BChara
         _cCtrl = GetComponent<CharacterController>();
         _playerClimbing = new PlayerClimbing();
         _climbVec3 = Vector3.zero;
+
+        //追加時間：20240723＿チョウハク
+        _playerSensor = GetComponent<PlayerSensor>();
     }
     private void FixedUpdate()
     {
@@ -290,6 +301,8 @@ public class PlayerMovement : BChara
     /// </summary>
     private void HandleWalking()
     {
+        //20240723＿チョウハク
+        Push();
         //移動入力に基づいて方向ベクトルを計算し、正規化します
         Vector3 direction = new Vector3(_movementInput.x, 0f, _movementInput.y).normalized;
 
@@ -306,17 +319,40 @@ public class PlayerMovement : BChara
             //前方向と右方向を基に移動方向を計算します
             Vector3 _moveDirection = _forward * direction.z + _right * direction.x;
 
+            //追加時間：20240709＿ワンユールン— ->修正_20240711_チンキントウ ->修正20240723_チョウハク
+            if (!_pushState)
+            {
+                targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+                _walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 2;
+            } 
 
-            //追加時間：20240709＿ワンユールン— ->修正_20240711_チンキントウ
-            targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-            _walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 2;
-            //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
-            _cCtrl.Move(
-                _moveDirection *
-                ((_walkSpeedMin += _walkAddSpeed) < _walkSpeedMax ? _walkSpeedMin : _walkSpeedMax) *
-                _movementInput.magnitude *
-                Time.deltaTime
-                );
+            //20240723＿チョウハク
+            if (_pushState)
+            {
+                animator.ApplyBuiltinRootMotion();
+                animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
+                    new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
+            }
+            else
+            {
+                //20240723＿チョウハク
+                Vector3 playerDeltaMovement = _moveDirection *
+               ((_walkSpeedMin += _walkAddSpeed) < _walkSpeedMax ? _walkSpeedMin : _walkSpeedMax) *
+               _movementInput.magnitude *
+               Time.deltaTime;
+                //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
+                _cCtrl.Move(playerDeltaMovement);
+                //20240723＿チョウハク
+                if (_movableObject)
+                {
+                    playerDeltaMovement = _cCtrl.transform.InverseTransformDirection(playerDeltaMovement);
+                    playerDeltaMovement.x = 0;
+                    playerDeltaMovement = _cCtrl.transform.TransformDirection(playerDeltaMovement);
+                    playerDeltaMovement.y = 0f;
+                    _movableObject.transform.Translate(playerDeltaMovement);
+                }
+            }
+
         }
     }
     /// <summary>
@@ -414,4 +450,37 @@ public class PlayerMovement : BChara
             Debug.Log("Fire!");
         }
     }
+
+    //追加時間：20240723＿チョウハク
+    public void OnPush(InputAction.CallbackContext _ctx)
+    {
+        _isPushPressed = _ctx.ReadValueAsButton();
+    }
+    /// <summary>
+    /// プレイヤが押す機能の処理
+    /// </summary>
+    void Push()
+    {
+        if ( _isPushPressed)
+        {
+            _movableObject = _playerSensor.MovableObjectCheck(_cCtrl.transform);
+            if (_movableObject)
+            {
+                _interactPoint = _movableObject.GetInteractPoint(_cCtrl.transform);
+                _pushState = true;
+            }
+        }
+        else if (!_isPushPressed)
+        {
+            _pushState = false;
+        }
+        else if (_pushState)
+        {
+            if (Vector3.Distance(_interactPoint.position, _cCtrl.transform.position) > 1f)
+            {
+                _pushState = false;
+            }
+        }
+    }
+
 }
