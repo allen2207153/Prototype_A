@@ -31,7 +31,7 @@ public class PlayerMovement : BChara
 
     //仮想カメラの参照を設定します
     [Header("CinemachineVirtualCamera")]
-    [SerializeField] private CinemachineVirtualCamera _vCam;
+    public CinemachineVirtualCamera _vCam;
 
     [Header("キャラの回転スピード")]
     [SerializeField] private float _rotationSpeed = 600f;
