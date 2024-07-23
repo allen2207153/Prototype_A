@@ -169,7 +169,8 @@ public class PlayerMovement : BChara
                 if (!CheckFoot()) { nm = Motion.Fall; }
                 break;
             case Motion.Jump:
-                if (_velocity.y < 0 || CheckHead()) { nm = Motion.Fall; }// 更新_追加時間：20240713＿八子遥輝
+                if (_velocity.y < 0) { nm = Motion.Fall; }// 更新_追加時間：20240713＿八子遥輝->20240723_チンキントウ
+                if (CheckHead()) { _velocity.y = -0.01f; }// 更新_追加時間：20240723_チンキントウ
                 break;
             case Motion.Fall:
                 if (CheckFoot()) { nm = Motion.Landing; }
@@ -324,7 +325,7 @@ public class PlayerMovement : BChara
             {
                 targetRotation = Quaternion.LookRotation(direction, Vector3.up);
                 _walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 2;
-            } 
+            }
 
             //20240723＿チョウハク
             if (_pushState)
@@ -383,12 +384,6 @@ public class PlayerMovement : BChara
                 {
                     _velocity.y = -2f; //プレイヤーを地面に保つ
                 }
-                break;
-            //重力を適用しないモーションを追加
-
-            //TODO:checkHeadの重力のデバッグ
-            case Motion.Fall://追加時間:20240713_八子遥輝
-                _velocity.y -= 1;
                 break;
 
             default:
@@ -461,7 +456,7 @@ public class PlayerMovement : BChara
     /// </summary>
     void Push()
     {
-        if ( _isPushPressed)
+        if (_isPushPressed)
         {
             _movableObject = _playerSensor.MovableObjectCheck(_cCtrl.transform);
             if (_movableObject)
