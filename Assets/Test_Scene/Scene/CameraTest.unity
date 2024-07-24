@@ -1320,7 +1320,7 @@ GameObject:
   - component: {fileID: 723635169}
   - component: {fileID: 723635168}
   - component: {fileID: 723635167}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1563,7 +1563,7 @@ GameObject:
   - component: {fileID: 925185158}
   - component: {fileID: 925185157}
   - component: {fileID: 925185156}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2173,12 +2173,27 @@ PrefabInstance:
       objectReference: {fileID: 939888547}
     - target: {fileID: 2741538203547998338, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
         type: 3}
+      propertyPath: _playerClimbSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741538203547998338, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: _playerClimbOffset
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741538203547998338, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
       propertyPath: _invalidClimbHeight
       value: 3.4
       objectReference: {fileID: 0}
     - target: {fileID: 2741538203547998338, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
         type: 3}
       propertyPath: _playerClimbOffset_Y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2741538203547998338, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: _playerHangingOffset_Y
       value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []

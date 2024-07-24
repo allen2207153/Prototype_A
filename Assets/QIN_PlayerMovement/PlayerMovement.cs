@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using System;
 
 public class PlayerMovement : BChara
 {
@@ -60,15 +61,22 @@ public class PlayerMovement : BChara
 
     private PlayerClimbing _playerClimbing;
 
-    [Header("登るの位置----デバッグ観測用-----")]
+    [Header("Raycastにより登るの判定位置----デバッグ観測用-----")]
     [SerializeField] private Vector3 _climbVec3;
+    private Vector3 _perClimbVec3;
+    private bool _isClimbingUp = false;
 
-    [Header("登るの無効高さ")]
+    [Header("「ジャンプしてぶら下がる」無効の高さ")]
     [SerializeField] private float _invalidClimbHeight = 2f;
 
-    [Header("登る位置のＹ軸の値")]
-    [SerializeField] private float _playerClimbOffset_Y = 0.8f;
+    [Header("ぶら下がる位置のＹ軸のオフセット量（プレイヤの身長による調節してください）")]
+    [SerializeField] private float _playerHangingOffset_Y = 0.8f;
 
+    [Header("プレイヤ登る時の移動量（登った後固まったら調節してください）")]
+    [SerializeField] private float _playerClimbOffset = 0.1f;
+
+    [Header("プレイヤ登る時のスピード")]
+    [SerializeField] private float _playerClimbSpeed = 2f;
     private void OnEnable()
     {
         //イベントを登録
@@ -175,7 +183,7 @@ public class PlayerMovement : BChara
             case Motion.Fall:
                 if (CheckFoot()) { nm = Motion.Landing; }
                 //if (CheckHanging() && _hangingFlag == true) { nm = Motion.Hanging; }
-                if (_checkHanging && _hangingFlag == true) { nm = Motion.Hanging; }
+                if (_checkHanging && _hangingFlag == true) { nm = Motion.Hanging_ByCollider; }
                 break;
             case Motion.Landing:
                 if (CheckFoot()) { nm = Motion.Stand; }
@@ -187,15 +195,20 @@ public class PlayerMovement : BChara
                 if (_moveCnt >= 0) { nm = Motion.JumpToHanging; }
                 break;
             case Motion.JumpToHanging:
-                if (_jumpFlag) { nm = Motion.TakeOff; }
-                //if (_moveCnt > 5) { nm = Motion.Fall; }
+                if ((_climbVec3 - _cCtrl.transform.position).magnitude < 0.12f) { nm = Motion.Hanging_ByJump; }
                 break;
-            case Motion.Hanging:
+            case Motion.Hanging_ByJump:
+                if (_jumpFlag) { nm = Motion.ClimbingUp; }
+                if (_moveCnt >= 10 && _movementInput.y > 0.2f) { nm = Motion.ClimbingUp; }
+                if (_moveCnt >= 10 && _movementInput.y < -0.2f) { nm = Motion.Fall; }
+                break;
+            case Motion.Hanging_ByCollider:
                 //if (CheckHanging() == false) { nm = Motion.Fall; }
                 if (_checkHanging == false) { nm = Motion.Fall; }
                 if (_moveCnt >= 10 && _movementInput.y < -0.2f) { nm = Motion.Fall; }
                 break;
             case Motion.ClimbingUp:
+                if (!_isClimbingUp) { nm = Motion.Fall; }
                 break;
         }
 
@@ -204,8 +217,7 @@ public class PlayerMovement : BChara
     private void Move()
     {
         //_playerClimbing.ClimbDetect(_cCtrl.transform, _movementInput, out _climbVec3);
-        Vector3 climbVec3Handler;
-        Vector3 _targetPos = default(Vector3);
+
         //各行動の処理---------------------------------
         switch (_motion)
         {
@@ -216,7 +228,7 @@ public class PlayerMovement : BChara
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 HandleWalking();
                 SmoothRotation();
-                climbVec3Handler = _climbVec3;
+                _perClimbVec3 = _climbVec3;
                 break;
             case Motion.Jump:
                 if (_moveCnt == 0) { HandleJumping(); }
@@ -235,16 +247,21 @@ public class PlayerMovement : BChara
                 break;
             case Motion.JumpToHangingTakeOff:
                 _jumpFlag = false;//ジャンプ可能にする
-                _climbVec3.y -= _playerClimbOffset_Y;//キャラの登るの位置を計算
+                _isClimbingUp = true;//「登る」を可能にする
+                _climbVec3.y -= _playerHangingOffset_Y;//キャラのぶら下がるの位置を計算
                 break;
             case Motion.JumpToHanging:
                 //if (_moveCnt == 0) { _climbVec3.y -= 0.4f; }
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
-            case Motion.Hanging:
+            case Motion.Hanging_ByJump:
+                PlayerMoveToTarget(_climbVec3, 8f);
+                break;
+            case Motion.Hanging_ByCollider:
                 _hangingFlag = false;
                 break;
             case Motion.ClimbingUp:
+                HandleClimbingUp();
                 break;
         }
 
@@ -256,7 +273,11 @@ public class PlayerMovement : BChara
                 break;
             case Motion.JumpToHanging:
                 break;
-            case Motion.Hanging:
+            case Motion.Hanging_ByJump:
+                break;
+            case Motion.Hanging_ByCollider:
+                break;
+            case Motion.ClimbingUp:
                 break;
             default:
                 //重力処理を実行します
@@ -435,6 +456,15 @@ public class PlayerMovement : BChara
         _cCtrl.Move(moveVector - currentPosition);
     }
 
+    private void HandleClimbingUp()
+    {
+        Vector3 targetPos = _perClimbVec3 + new Vector3(0f, _playerClimbOffset, 0f);
+        PlayerMoveToTarget(targetPos, _playerClimbSpeed);
+        if (_cCtrl.transform.position == targetPos)//登るの位置に到達したら
+        {
+            _isClimbingUp = false;//フラグを変更し、Fallモーションに切り替えを
+        }
+    }
     public void Fire(InputAction.CallbackContext _ctx)
     {
         //InputActionPhase.Started;      <-これはGetKeyDown
