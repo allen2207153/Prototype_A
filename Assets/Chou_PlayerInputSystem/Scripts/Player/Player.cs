@@ -95,23 +95,7 @@ public class Player : MonoBehaviour
 
         Push();
 
-        if (_isPushing)
-        {
-            _moveSpeed *= _pushObject.GetSlowMoveFactor();
-            //_movableBox.transform.Translate(new Vector3(transform.position.x, 0, transform.position.z));
-            Rigidbody boxRigidbody = _movableBox.GetComponent<Rigidbody>();
-            Vector3 direction = transform.forward * GetCurrentMoveInput().y + transform.right * GetCurrentMoveInput().x;
-
-            if (GetCurrentMoveInput().y < 0)
-            {
-                _pushForce = 10f;
-            }
-            else
-            {
-                _pushForce = 8f;
-            }
-            boxRigidbody.AddForce(direction * _pushForce);
-        }
+ 
 
         // Check if the player is grounded
         _isGrounded = _controller.isGrounded;
@@ -138,11 +122,30 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("Push");
                 _isPushing = true;
+                _moveSpeed *= _pushObject.GetSlowMoveFactor();
+                //_movableBox.transform.Translate(new Vector3(transform.position.x, 0, transform.position.z));
+                Rigidbody boxRigidbody = _movableBox.GetComponent<Rigidbody>();
+                Vector3 direction = transform.forward * GetCurrentMoveInput().y + transform.right * GetCurrentMoveInput().x;
+
+                if (GetCurrentMoveInput().y < 0)
+                {
+                    _pushForce = 10f;
+                }
+                else
+                {
+                    _pushForce = 8f;
+                }
+                Debug.Log("Applying force to the box");
+
+                boxRigidbody.velocity = direction * _pushForce;
             }
             else
             {
-                Debug.Log("Push End");
-                _isPushing = false;
+                if (_isPushing)
+                {
+                    Debug.Log("Push End");
+                    _isPushing = false;
+                } 
             }
         }
         else if (!_isPushPressed)

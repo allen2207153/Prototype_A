@@ -41,7 +41,8 @@ public class BChara : MonoBehaviour
         Fall2,        //２段落下
         JumpToHangingTakeOff,
         JumpToHanging,//ぶら下がる前のジャンプ（Jumpとは違う動き方）
-        Hanging,      //ぶら下がる
+        Hanging_ByJump,//ぶら下がる
+        Hanging_ByCollider,      //コライダーによるぶら下がる
         ClimbingUp,   //登り
     }
     protected Motion _motion = Motion.Stand;//現在のモーション
