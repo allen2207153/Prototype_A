@@ -381,7 +381,7 @@ public class Yako_PlayerMovement : Yako_BChara
             if (!_pushState)
             {
                 targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-                _walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 2;
+               //_walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 2;
             }
 
             //20240723＿チョウハク

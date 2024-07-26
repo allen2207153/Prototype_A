@@ -22,8 +22,10 @@ public class FollowPlayer : MonoBehaviour
     public MultiParentConstraint npcHandSync;
     public KeyCode holdHandKey = KeyCode.H;
     [SerializeField]private bool isHoldingHands = false;
-    public Vector3 initialOffset; // 初始偏移量，用于保持NPC在玩家身后
+    public Vector3 initialOffset;
 
+    private Test_IKSystem IKactive;
+    public bool playerHand;
     void Start()
     {
         if (animator == null)
@@ -34,6 +36,9 @@ public class FollowPlayer : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         lastPlayerPosition = player.position + initialOffset; // 初期プレイヤー位置を設定
         currentNPCSpeed = 0f; // 初期のNPCの速度を0に設定
+
+        IKactive = GetComponent<Test_IKSystem>();
+        playerHand = GetComponent<Test_IKSystem>().ikActive;
     }
 
     void Update()
@@ -49,6 +54,7 @@ public class FollowPlayer : MonoBehaviour
         {
             isHoldingHands = !isHoldingHands;
             isFollowing = !isFollowing; // フラグをトグル
+            IKactive.ikActive = true;
         }
 
         if (isHoldingHands)
@@ -83,11 +89,11 @@ public class FollowPlayer : MonoBehaviour
         }
         else
         {
-            // 取消牵手
+            
             playerMultiRotationCons.weight = 0.0f;
             npcMultiRotationCons.weight = 0.0f;
             npcHandSync.weight = 0.0f;
-
+            IKactive.ikActive = false;
             // NPCがプレイヤーを追従している場合
             if (isFollowing)
             {

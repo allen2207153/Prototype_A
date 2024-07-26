@@ -1110,7 +1110,7 @@ GameObject:
   - component: {fileID: 723635169}
   - component: {fileID: 723635168}
   - component: {fileID: 723635167}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1553,6 +1553,18 @@ MonoBehaviour:
   m_BoundingShape2D: {fileID: 0}
   m_ConfineScreenEdges: 1
   m_Damping: 0
+--- !u!114 &1032515264 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2151068964131336803, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+    type: 3}
+  m_PrefabInstance: {fileID: 1240244433}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3f3ca27b7413c4da1cc334571946bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1071932188
 GameObject:
   m_ObjectHideFlags: 0
@@ -1846,11 +1858,77 @@ PrefabInstance:
       propertyPath: m_Name
       value: Oniisan
       objectReference: {fileID: 0}
-    - target: {fileID: 2741538203547998338, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+    - target: {fileID: 1609489108643095158, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899348148528868176, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_Actions
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: 3553d2d98e0417447bf82088eafd3597,
+        type: 3}
+    - target: {fileID: 1899348148528868176, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899348148528868176, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_ActionId
+      value: 9fe5d0d2-b351-4a69-8867-6e43533b99b5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899348148528868176, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_ActionName
+      value: Player/Crouch[/Keyboard/z]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899348148528868176, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899348148528868176, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899348148528868176, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1032515264}
+    - target: {fileID: 1899348148528868176, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899348148528868176, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Crouch
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899348148528868176, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Yako_PlayerMovement, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899348148528868176, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[5].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2151068964131336803, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
         type: 3}
       propertyPath: _vCam
       value: 
       objectReference: {fileID: 939888547}
+    - target: {fileID: 9048537226149724727, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      propertyPath: ikActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2332,6 +2410,16 @@ PrefabInstance:
       objectReference: {fileID: 847667644}
     - target: {fileID: 1300301056309253691, guid: 66ef736c5f79d6e488dc73029989e8d3,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1300301056309253691, guid: 66ef736c5f79d6e488dc73029989e8d3,
+        type: 3}
+      propertyPath: activationRadius
+      value: 2.886
+      objectReference: {fileID: 0}
+    - target: {fileID: 1300301056309253691, guid: 66ef736c5f79d6e488dc73029989e8d3,
+        type: 3}
       propertyPath: playerMultiRotationCons
       value: 
       objectReference: {fileID: 12279610}
@@ -2390,6 +2478,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5256595680715813007, guid: 66ef736c5f79d6e488dc73029989e8d3,
+        type: 3}
+      propertyPath: _vCam
+      value: 
+      objectReference: {fileID: 939888547}
     - target: {fileID: 5534279775108154408, guid: 66ef736c5f79d6e488dc73029989e8d3,
         type: 3}
       propertyPath: leftHandObj
@@ -2400,11 +2493,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: imoto
       objectReference: {fileID: 0}
-    - target: {fileID: 7841316062225873519, guid: 66ef736c5f79d6e488dc73029989e8d3,
-        type: 3}
-      propertyPath: _vCam
-      value: 
-      objectReference: {fileID: 939888547}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

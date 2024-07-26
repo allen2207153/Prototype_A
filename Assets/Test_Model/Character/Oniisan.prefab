@@ -107,10 +107,10 @@ GameObject:
   - component: {fileID: 6318924890195682275}
   - component: {fileID: 1899348148528868176}
   - component: {fileID: 7490126278120195681}
-  - component: {fileID: 2741538203547998338}
   - component: {fileID: 9048537226149724727}
   - component: {fileID: 5333204848106944494}
   - component: {fileID: 6956345269322285552}
+  - component: {fileID: 2151068964131336803}
   m_Layer: 7
   m_Name: Oniisan
   m_TagString: Player
@@ -136,7 +136,7 @@ Transform:
   - {fileID: 2236884960306343445}
   - {fileID: 6057790967049509638}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6318924890195682275
 Animator:
@@ -148,7 +148,7 @@ Animator:
   m_GameObject: {fileID: 728079890304295715}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8ec0dc2977fa8c64e92d0946550c4fff, type: 3}
-  m_Controller: {fileID: 9100000, guid: ad5d6a36442241a4196f81caa059b87c, type: 2}
+  m_Controller: {fileID: 9100000, guid: fe3b0c4b8ab56dc4fbc4775af85f96d4, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -187,8 +187,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2741538203547998338}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 2151068964131336803}
+        m_TargetAssemblyTypeName: Yako_PlayerMovement, Assembly-CSharp
         m_MethodName: Walk
         m_Mode: 0
         m_Arguments:
@@ -200,11 +200,11 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: c054356e-9702-4c00-b04b-e0838300bfa7
-    m_ActionName: Player/Move[/Keyboard/upArrow,/Keyboard/rightArrow,/Keyboard/downArrow,/Keyboard/leftArrow]
+    m_ActionName: Player/Walk[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2741538203547998338}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 2151068964131336803}
+        m_TargetAssemblyTypeName: Yako_PlayerMovement, Assembly-CSharp
         m_MethodName: Jump
         m_Mode: 0
         m_Arguments:
@@ -216,25 +216,13 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 67ee3471-b310-4f55-b5a8-e775baa98426
-    m_ActionName: Player/Jump[/Keyboard/space]
+    m_ActionName: Player/Jump[/Keyboard/space,/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: d1fee3e9-deed-4d40-88ee-0fd1943cd553
     m_ActionName: Player/Camera[/XInputControllerWindows/rightStick,/Mouse/position]
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2741538203547998338}
-        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
-        m_MethodName: Fire
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 929b467f-ee3e-4410-b370-9f610e745341
     m_ActionName: Player/Fire[/Keyboard/x]
   - m_PersistentCalls:
@@ -272,36 +260,6 @@ CharacterController:
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.72, z: 0}
---- !u!114 &2741538203547998338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 728079890304295715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f393a07f5c16954f8edbfe02cebc258, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _checkHead: {fileID: 2236884960306343445}
-  _layerMaskHead:
-    serializedVersion: 2
-    m_Bits: 256
-  _checkFoot: {fileID: 94989429034269081}
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  _gravity: -9.8
-  _walkSpeedMax: 5
-  _walkAddSpeed: 0.8
-  _jumpForce: 8
-  _vCam: {fileID: 0}
-  _rotationSpeed: 600
-  _checkMoveCnt: 0
-  _climbVec3: {x: 0, y: 0, z: 0}
-  _invalidClimbHeight: 3.4
-  _playerClimbOffset_Y: 1.55
 --- !u!114 &9048537226149724727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -391,6 +349,38 @@ MonoBehaviour:
   - m_Rig: {fileID: 3216794108132804259}
     m_Active: 1
   m_Effectors: []
+--- !u!114 &2151068964131336803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728079890304295715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b3f3ca27b7413c4da1cc334571946bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _checkHead: {fileID: 2236884960306343445}
+  _layerMaskHead:
+    serializedVersion: 2
+    m_Bits: 256
+  _checkFoot: {fileID: 94989429034269081}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _gravity: -9.8
+  _walkSpeedMax: 4
+  _walkAddSpeed: 0.4
+  _jumpForce: 10
+  _vCam: {fileID: 0}
+  _rotationSpeed: 600
+  _checkMoveCnt: 0
+  _climbVec3: {x: 0, y: 0, z: 0}
+  _invalidClimbHeight: 2
+  _playerHangingOffset_Y: 0.8
+  _playerClimbOffset: 0.1
+  _playerClimbSpeed: 2
 --- !u!1 &1330790003422908037
 GameObject:
   m_ObjectHideFlags: 0
