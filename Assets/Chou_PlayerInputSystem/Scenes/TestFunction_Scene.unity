@@ -464,7 +464,7 @@ GameObject:
   - component: {fileID: 143441930}
   - component: {fileID: 143441929}
   - component: {fileID: 143441928}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -843,7 +843,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 391692450}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 728079890304295715, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1362473562}
   m_SourcePrefab: {fileID: 100100000, guid: f8a6b32fdc5e5d04aab182c8736fcf21, type: 3}
 --- !u!1 &201091599 stripped
 GameObject:
@@ -971,7 +975,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 284503066}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: InteractPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1003,7 +1007,7 @@ GameObject:
   m_Component:
   - component: {fileID: 292792357}
   - component: {fileID: 292792358}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: InteractPoint (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1390,7 +1394,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 163088141}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1362473556}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f393a07f5c16954f8edbfe02cebc258, type: 3}
@@ -2902,7 +2906,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1356794645}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: InteractPoint (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2924,6 +2928,31 @@ Transform:
   m_Father: {fileID: 143441932}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &1362473556 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 728079890304295715, guid: f8a6b32fdc5e5d04aab182c8736fcf21,
+    type: 3}
+  m_PrefabInstance: {fileID: 163088141}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1362473562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362473556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fad08a9e37fe4d4fb962a1b9ae3cb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movableLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  _checkDistance: 1
+  _pushAngle: 45
+  _pushHitNormal: {x: 0, y: 0, z: 0}
+  _movableObjectHeight: 0.5
 --- !u!1 &1437485537
 GameObject:
   m_ObjectHideFlags: 0
@@ -4224,7 +4253,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2123843381}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: InteractPoint (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
