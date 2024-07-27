@@ -4,30 +4,22 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using System;
+using UnityEngine.UIElements;
 
 [Serializable]
-public class VCamDate
+public class VCamDate 
 {
-    public CinemachineVirtualCamera _vCam;
+     public CinemachineVirtualCamera _vCam;
 }
 
 
 public class CameraChange : MonoBehaviour
 {
     [Header("ブレンドしたいカメラ")]
-    [SerializeField] private CinemachineVirtualCamera _vCam0;
-    [SerializeField] private CinemachineVirtualCamera _vCam1;
-    [SerializeField] private CinemachineVirtualCamera _vCam2;
-    [SerializeField] private CinemachineVirtualCamera _vCam3;
-    [SerializeField] private CinemachineVirtualCamera _vCam4;
-    [SerializeField] private CinemachineVirtualCamera _vCam5;
-    [SerializeField] private CinemachineVirtualCamera _vCam6;
-    [SerializeField] private CinemachineVirtualCamera _vCam7;
-    
     [SerializeField]
     VCamDate[] _vCamList;
     [Header("PlayerMovementスクリプト")]
-    [SerializeField] private PlayerMovement_CameraTest _CameraTest;
+    [SerializeField] private Yako_PlayerMovement _playerMovement;
 
     [Header("現在のカメラ")]
     public CinemachineVirtualCamera _nowvCam;
@@ -39,7 +31,7 @@ public class CameraChange : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _nowvCam = _vCam0;
+        _nowvCam = _vCamList[0]._vCam; ;
     }
 
     // Update is called once per frame
@@ -50,151 +42,23 @@ public class CameraChange : MonoBehaviour
 
     public void Change(int c)
     {
-        
-        switch (c)
-        {
-            case 0:
-                //現在のカメラを更新
-                _nowvCam = _vCam0;
-                //優先度を変更
-                _vCam0.Priority = _hPriority;
-                //他カメラの優先度をリセット
-                _vCam1.Priority = _rPriority;
-                /*追加したら対応しているPriorityとcaseを解除
-                _vCam2.Priority = _rPriority;
-                _vCam3.Priority = _rPriority;
-                _vCam4.Priority = _rPriority;
-                _vCam5.Priority = _rPriority;
-                _vCam6.Priority = _rPriority;
-                _vCam7.Priority = _rPriority;
-                */
-                //
-                _CameraTest._vCam = _nowvCam;
-                break;
-            case 1:
-                //現在のカメラを更新
-                _nowvCam = _vCam1;
-                //優先度を変更
-                _vCam1.Priority = _hPriority;
-                //他カメラの優先度をリセット
-                _vCam0.Priority = _rPriority;
-                /*追加したら対応しているPriorityとcaseを解除
-                _vCam2.Priority = _rPriority;
-                _vCam3.Priority = _rPriority;
-                _vCam4.Priority = _rPriority;
-                _vCam5.Priority = _rPriority;
-                _vCam6.Priority = _rPriority;
-                _vCam7.Priority = _rPriority;
-                */
-                //
-                _CameraTest._vCam = _nowvCam;
-                break;
-                /*
-            case 2:
-                //現在のカメラを更新
-                _nowvCam = _vCam2;
-                //優先度を変更
-                _vCam2.Priority = _hPriority;
-                //他カメラの優先度をリセット
-                追加したら対応しているPriorityとcaseを解除
-                _vCam0.Priority = _rPriority;
-                _vCam1.Priority = _rPriority;
-                _vCam3.Priority = _rPriority;
-                _vCam4.Priority = _rPriority;
-                _vCam5.Priority = _rPriority;
-                _vCam6.Priority = _rPriority;
-                _vCam7.Priority = _rPriority;
-                //
-                _CameraTest._vCam = _nowvCam;
-                break;
-            case 3:
-                //現在のカメラを更新
-                _nowvCam = _vCam3;
-                //優先度を変更
-                _vCam3.Priority = _hPriority;
-                //他カメラの優先度をリセット
-                追加したら対応しているPriorityとcaseを解除
-                _vCam0.Priority = _rPriority;
-                _vCam1.Priority = _rPriority;
-                _vCam2.Priority = _rPriority;
-                _vCam4.Priority = _rPriority;
-                _vCam5.Priority = _rPriority;
-                _vCam6.Priority = _rPriority;
-                _vCam7.Priority = _rPriority;
-                //
-                _CameraTest._vCam = _nowvCam;
-                break;
-            case 4:
-                //現在のカメラを更新
-                _nowvCam = _vCam4;
-                //優先度を変更
-                _vCam4.Priority = _hPriority;
-                //他カメラの優先度をリセット
-                追加したら対応しているPriorityとcaseを解除
-                _vCam0.Priority = _rPriority;
-                _vCam1.Priority = _rPriority;
-                _vCam2.Priority = _rPriority;
-                _vCam3.Priority = _rPriority;
-                _vCam5.Priority = _rPriority;
-                _vCam6.Priority = _rPriority;
-                _vCam7.Priority = _rPriority;
-                //
-                _CameraTest._vCam = _nowvCam;
-                break;
-            case 5:
-                //現在のカメラを更新
-                _nowvCam = _vCam5;
-                //優先度を変更
-                _vCam5.Priority = _hPriority;
-                //他カメラの優先度をリセット
-                追加したら対応しているPriorityとcaseを解除
-                _vCam0.Priority = _rPriority;
-                _vCam1.Priority = _rPriority;
-                _vCam2.Priority = _rPriority;
-                _vCam3.Priority = _rPriority;
-                _vCam4.Priority = _rPriority;
-                _vCam6.Priority = _rPriority;
-                _vCam7.Priority = _rPriority;
-                //
-                _CameraTest._vCam = _nowvCam;
-                break;
-            case 6:
-                //現在のカメラを更新
-                _nowvCam = _vCam6;
-                //優先度を変更
-                _vCam6.Priority = _hPriority;
-                //他カメラの優先度をリセット
-                追加したら対応しているPriorityとcaseを解除
-                _vCam0.Priority = _rPriority;
-                _vCam1.Priority = _rPriority;
-                _vCam2.Priority = _rPriority;
-                _vCam3.Priority = _rPriority;
-                _vCam4.Priority = _rPriority;
-                _vCam5.Priority = _rPriority;
-                _vCam7.Priority = _rPriority;
-                //
-                _CameraTest._vCam = _nowvCam;
-                break;
-            case 7:
-                //現在のカメラを更新
-                _nowvCam = _vCam7;
-                //優先度を変更
-                _vCam7.Priority = _hPriority;
-                //他カメラの優先度をリセット
-                追加したら対応しているPriorityとcaseを解除
-                _vCam0.Priority = _rPriority;
-                _vCam1.Priority = _rPriority;
-                _vCam2.Priority = _rPriority;
-                _vCam3.Priority = _rPriority;
-                _vCam4.Priority = _rPriority;
-                _vCam5.Priority = _rPriority;
-                _vCam6.Priority = _rPriority;
-                //
-                _CameraTest._vCam = _nowvCam;
-                break;
-                */
 
+        // 現在のカメラを更新
+        _nowvCam = _vCamList[c]._vCam;
+        // 優先度を変更
+        _nowvCam.Priority = _hPriority;
+
+        // 他カメラの優先度をリセット
+        for (int i = 0; i < _vCamList.Length; i++)
+        {
+            if (i != c)
+            {
+                _vCamList[i]._vCam.Priority = _rPriority;
+            }
         }
+
+        // PlayerMovementスクリプトに更新したカメラを設定
+        _playerMovement._vCam = _nowvCam;
     }
     
 }
