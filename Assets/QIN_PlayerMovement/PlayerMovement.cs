@@ -77,15 +77,22 @@ public class PlayerMovement : BChara
 
     [Header("プレイヤ登る時のスピード")]
     [SerializeField] private float _playerClimbSpeed = 2f;
+
+
+    //PlayerTriggerAction
+    [SerializeField] private bool _jumpTrigger = false;
+
     private void OnEnable()
     {
         //イベントを登録
         PlayerEvent.CheckHanging += HandleCheckHanging;//ぶら下がるイベント
+        PlayerEvent.CheckCollider += SetTriggerActions;
     }
     private void OnDisable()
     {
         //イベントを解除
         PlayerEvent.CheckHanging -= HandleCheckHanging;
+        PlayerEvent.CheckCollider -= SetTriggerActions;
     }
 
     void Awake()
@@ -149,7 +156,8 @@ public class PlayerMovement : BChara
                     {
                         nm = Motion.JumpToHangingTakeOff;
                     }
-                    else
+
+                    else if (_jumpTrigger)
                     {
                         nm = Motion.TakeOff;
                     }
@@ -168,7 +176,8 @@ public class PlayerMovement : BChara
                     {
                         nm = Motion.JumpToHangingTakeOff;
                     }
-                    else
+
+                    else if (_jumpTrigger)
                     {
                         nm = Motion.TakeOff;
                     }
@@ -314,7 +323,11 @@ public class PlayerMovement : BChara
     {
         if (_ctx.phase == InputActionPhase.Started)
         {
-            _jumpFlag = true;
+            if (_jumpTrigger == true)
+            {
+                _jumpFlag = true;
+
+            }
         }
     }
 
@@ -432,7 +445,7 @@ public class PlayerMovement : BChara
     /// <summary>
     /// 回転をスムーズにする
     /// </summary>
-    void SmoothRotation()
+    private void SmoothRotation()
     {
         //追加時間：20240709＿ワンユールン
         var rotationSpeed = _rotationSpeed * Time.deltaTime;
@@ -464,6 +477,31 @@ public class PlayerMovement : BChara
         {
             _isClimbingUp = false;//フラグを変更し、Fallモーションに切り替えを
         }
+    }
+
+    //playerTriggerAction-------------------------------------------------------------------------------
+    private void SetTriggerActions(Collider colliderEventHandler, bool checkEnterOrExitHandler)
+    {
+        IPlayerTriggerAction _pta = colliderEventHandler.GetComponent<IPlayerTriggerAction>();
+        if (_pta != null)
+        {
+            if (checkEnterOrExitHandler == true)
+            {
+                _pta.TriggerAction(this);
+            }
+            else
+            {
+                _pta.EndAction(this);
+            }
+        }
+        else
+        {
+            Debug.Log("Unknown trigger");
+        }
+    }
+    public void SetJumpTrigger(bool jumpTrigger)
+    {
+        _jumpTrigger = jumpTrigger;
     }
     public void Fire(InputAction.CallbackContext _ctx)
     {
@@ -507,5 +545,4 @@ public class PlayerMovement : BChara
             }
         }
     }
-
 }
