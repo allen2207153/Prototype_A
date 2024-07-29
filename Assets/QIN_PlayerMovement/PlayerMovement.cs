@@ -80,7 +80,9 @@ public class PlayerMovement : BChara
 
 
     //PlayerTriggerAction
+    [Header("----デバッグ観測用-----")]
     [SerializeField] private bool _jumpTrigger = false;
+    [SerializeField] private bool _hangTrigger = false;
 
     private void OnEnable()
     {
@@ -152,7 +154,8 @@ public class PlayerMovement : BChara
                 {
                     //登るの位置は0でなく、登る可能の高さ以上になると登る
                     if (_climbVec3 != Vector3.zero &&
-                        _climbVec3.y - _cCtrl.transform.position.y > _invalidClimbHeight)
+                        _climbVec3.y - _cCtrl.transform.position.y > _invalidClimbHeight &&
+                        _hangTrigger == true)
                     {
                         nm = Motion.JumpToHangingTakeOff;
                     }
@@ -172,7 +175,8 @@ public class PlayerMovement : BChara
                 {
                     //登るの位置は0でなく、登る可能の高さ以上になると登る
                     if (_climbVec3 != Vector3.zero &&
-                        _climbVec3.y - _cCtrl.transform.position.y > _invalidClimbHeight)
+                        _climbVec3.y - _cCtrl.transform.position.y > _invalidClimbHeight &&
+                        _hangTrigger == true)
                     {
                         nm = Motion.JumpToHangingTakeOff;
                     }
@@ -323,10 +327,10 @@ public class PlayerMovement : BChara
     {
         if (_ctx.phase == InputActionPhase.Started)
         {
-            if (_jumpTrigger == true)
+            if (_jumpTrigger == true ||
+                _hangTrigger == true)
             {
                 _jumpFlag = true;
-
             }
         }
     }
@@ -502,6 +506,10 @@ public class PlayerMovement : BChara
     public void SetJumpTrigger(bool jumpTrigger)
     {
         _jumpTrigger = jumpTrigger;
+    }
+    public void SetHangTrigger(bool hangTrigger)
+    {
+        _hangTrigger = hangTrigger;
     }
     public void Fire(InputAction.CallbackContext _ctx)
     {
