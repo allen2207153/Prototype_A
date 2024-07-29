@@ -354,19 +354,16 @@ public class PlayerMovement : BChara
            _movementInput.magnitude *
            Time.deltaTime;
 
-            Vector3 normalMovement = _moveDirection *
-           ((_walkSpeedMin += _walkAddSpeed) < _walkSpeedMax ? _walkSpeedMin : _walkSpeedMax) *
-           _movementInput.magnitude *
-           Time.deltaTime;
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
-            _cCtrl.Move(normalMovement);
+            
+            _cCtrl.Move(playerDeltaMovement);
 
             //20240723＿チョウハク
             if (_pushState)
             {
-                animator.ApplyBuiltinRootMotion();
-                animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
-                    new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
+                //animator.ApplyBuiltinRootMotion();
+                //animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
+                    //new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
 
                 
                 //20240723＿チョウハク
@@ -515,7 +512,7 @@ public class PlayerMovement : BChara
         }
         else
         {
-            _pushState = false;
+            _pushState = false;      
         }
         if (_pushState)
         {

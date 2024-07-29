@@ -384,6 +384,16 @@ public class Yako_PlayerMovement : Yako_BChara
                 _walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 2;
             }
 
+            //20240729＿チョウハク
+            Vector3 playerDeltaMovement = _moveDirection *
+           ((_walkSpeedMin += _walkAddSpeed) < _walkSpeedMax ? _walkSpeedMin : _walkSpeedMax) *
+           _movementInput.magnitude *
+           Time.deltaTime;
+
+            //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
+
+            _cCtrl.Move(playerDeltaMovement);
+
             //20240723＿チョウハク
             if (_pushState)
             {
@@ -393,13 +403,7 @@ public class Yako_PlayerMovement : Yako_BChara
             }
             else
             {
-                //20240723＿チョウハク
-                Vector3 playerDeltaMovement = _moveDirection *
-               ((_walkSpeedMin += _walkAddSpeed) < _walkSpeedMax ? _walkSpeedMin : _walkSpeedMax) *
-               _movementInput.magnitude *
-               Time.deltaTime;
-                //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
-                _cCtrl.Move(playerDeltaMovement);
+            
                 //20240723＿チョウハク
                 if (_movableObject)
                 {
@@ -515,7 +519,16 @@ public class Yako_PlayerMovement : Yako_BChara
     //追加時間：20240723＿チョウハク
     public void OnPush(InputAction.CallbackContext _ctx)
     {
-        _isPushPressed = _ctx.ReadValueAsButton();
+        //_isPushPressed = _ctx.ReadValueAsButton();
+        //追加時間：20240729＿チョウハク
+        if (_ctx.phase == InputActionPhase.Started)
+        {
+            _isPushPressed = true;
+        }
+        else if (_ctx.phase == InputActionPhase.Canceled)
+        {
+            _isPushPressed = false;
+        }
     }
     /// <summary>
     /// プレイヤが押す機能の処理
