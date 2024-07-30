@@ -381,25 +381,24 @@ public class Yako_PlayerMovement : Yako_BChara
             if (!_pushState)
             {
                 targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-               //_walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 2;
+               _walkSpeedMax = Input.GetKey(KeyCode.LeftShift) ? 10 : 2;
             }
+
+            //20240730＿チョウハク
+            Vector3 playerDeltaMovement = _moveDirection *
+           ((_walkSpeedMin += _walkAddSpeed) < _walkSpeedMax ? _walkSpeedMin : _walkSpeedMax) *
+           _movementInput.magnitude *
+           Time.deltaTime;
+            //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
+            _cCtrl.Move(playerDeltaMovement);
 
             //20240723＿チョウハク
             if (_pushState)
             {
-                animator.ApplyBuiltinRootMotion();
-                animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
-                    new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
-            }
-            else
-            {
-                //20240723＿チョウハク
-                Vector3 playerDeltaMovement = _moveDirection *
-               ((_walkSpeedMin += _walkAddSpeed) < _walkSpeedMax ? _walkSpeedMin : _walkSpeedMax) *
-               _movementInput.magnitude *
-               Time.deltaTime;
-                //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
-                _cCtrl.Move(playerDeltaMovement);
+                //animator.ApplyBuiltinRootMotion();
+                //animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
+                    //new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
+
                 //20240723＿チョウハク
                 if (_movableObject)
                 {
@@ -515,7 +514,18 @@ public class Yako_PlayerMovement : Yako_BChara
     //追加時間：20240723＿チョウハク
     public void OnPush(InputAction.CallbackContext _ctx)
     {
-        _isPushPressed = _ctx.ReadValueAsButton();
+        //_isPushPressed = _ctx.ReadValueAsButton();
+
+        //20240730_チョウハク
+        if (_ctx.phase == InputActionPhase.Started)
+        {
+            _isPushPressed = true;
+        }
+        else if (_ctx.phase == InputActionPhase.Canceled)
+        {
+            _isPushPressed = false;
+        }
+
     }
     /// <summary>
     /// プレイヤが押す機能の処理

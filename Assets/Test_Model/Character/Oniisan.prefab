@@ -110,7 +110,6 @@ GameObject:
   - component: {fileID: 9048537226149724727}
   - component: {fileID: 5333204848106944494}
   - component: {fileID: 6956345269322285552}
-  - component: {fileID: 2151068964131336803}
   - component: {fileID: 6570889903684527609}
   m_Layer: 7
   m_Name: Oniisan
@@ -138,7 +137,7 @@ Transform:
   - {fileID: 6057790967049509638}
   - {fileID: 4586643698187274521}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6318924890195682275
 Animator:
@@ -233,7 +232,7 @@ MonoBehaviour:
     m_ActionName: Player/Push[/Keyboard/g]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2151068964131336803}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Yako_PlayerMovement, Assembly-CSharp
         m_MethodName: Crouch
         m_Mode: 0
@@ -367,38 +366,6 @@ MonoBehaviour:
   - m_Rig: {fileID: 3216794108132804259}
     m_Active: 1
   m_Effectors: []
---- !u!114 &2151068964131336803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 728079890304295715}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b3f3ca27b7413c4da1cc334571946bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _checkHead: {fileID: 2236884960306343445}
-  _layerMaskHead:
-    serializedVersion: 2
-    m_Bits: 256
-  _checkFoot: {fileID: 94989429034269081}
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  _gravity: -9.8
-  _walkSpeedMax: 4
-  _walkAddSpeed: 0.4
-  _jumpForce: 10
-  _vCam: {fileID: 0}
-  _rotationSpeed: 600
-  _checkMoveCnt: 0
-  _climbVec3: {x: 0, y: 0, z: 0}
-  _invalidClimbHeight: 2
-  _playerHangingOffset_Y: 0.8
-  _playerClimbOffset: 0.1
-  _playerClimbSpeed: 2
 --- !u!114 &6570889903684527609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,6 +399,7 @@ MonoBehaviour:
   _playerClimbOffset: 0.1
   _playerClimbSpeed: 2
   _jumpTrigger: 0
+  _hangTrigger: 0
 --- !u!1 &1330790003422908037
 GameObject:
   m_ObjectHideFlags: 0
