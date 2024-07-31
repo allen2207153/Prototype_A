@@ -59,6 +59,9 @@ public class PlayerMovement : BChara
     //ジャンプのフラグ
     private bool _jumpFlag = false;
 
+    //しゃがみのフラグ
+    private bool _crouchFlag = false; //更新_追加時間：20240726＿八子遥輝
+
     private PlayerClimbing _playerClimbing;
 
     [Header("Raycastにより登るの判定位置----デバッグ観測用-----")]
@@ -167,6 +170,11 @@ public class PlayerMovement : BChara
                 }
 
                 if (!CheckFoot()) { nm = Motion.Fall; }
+                //更新_追加時間：20240726＿八子遥輝
+                if (_crouchFlag && CheckFoot()) { nm = Motion.Crouch; }
+                animator.SetBool("WalkBool", false);
+                animator.SetBool("JumpBool", false);
+                animator.SetBool("CrouchBool", false);
                 break;
             case Motion.Walk:
                 if (_movementInput.x == 0 && _movementInput.y == 0) { nm = Motion.Stand; }
@@ -188,15 +196,22 @@ public class PlayerMovement : BChara
                 }
 
                 if (!CheckFoot()) { nm = Motion.Fall; }
+                //更新_追加時間：20240726＿八子遥輝
+                if (_crouchFlag && CheckFoot()) { nm = Motion.Crouch; }
+                animator.SetBool("WalkBool", true);
+                animator.SetBool("JumpBool", false);
                 break;
             case Motion.Jump:
                 if (_velocity.y < 0) { nm = Motion.Fall; }// 更新_追加時間：20240713＿八子遥輝->20240723_チンキントウ
                 if (CheckHead()) { _velocity.y = -0.01f; }// 更新_追加時間：20240723_チンキントウ
+                //更新_追加時間：20240726＿八子遥輝
+                animator.SetBool("JumpBool", true);
                 break;
             case Motion.Fall:
                 if (CheckFoot()) { nm = Motion.Landing; }
                 //if (CheckHanging() && _hangingFlag == true) { nm = Motion.Hanging; }
                 if (_checkHanging && _hangingFlag == true) { nm = Motion.Hanging_ByCollider; }
+                
                 break;
             case Motion.Landing:
                 if (CheckFoot()) { nm = Motion.Stand; }
@@ -222,6 +237,20 @@ public class PlayerMovement : BChara
                 break;
             case Motion.ClimbingUp:
                 if (!_isClimbingUp) { nm = Motion.Fall; }
+                break;
+            //更新_追加時間：20240726＿八子遥輝
+            case Motion.Crouch:
+                animator.SetBool("CrouchBool", true);
+                animator.SetBool("Crouching_WalkBool", false);
+                if (Input.GetKeyDown(KeyCode.Z)) { _crouchFlag = false; nm = Motion.Stand; }
+                if (_movementInput.x != 0 || _movementInput.y != 0) { nm = Motion.Crouching_Walk; }
+                if (!CheckFoot()) { nm = Motion.Fall; }
+                break;
+            case Motion.Crouching_Walk:
+                animator.SetBool("Crouching_WalkBool", true);
+                if (Input.GetKeyDown(KeyCode.Z)) { _crouchFlag = false; nm = Motion.Stand; }
+                if (_movementInput.x == 0 && _movementInput.y == 0) { nm = Motion.Stand; }
+                if (!CheckFoot()) { nm = Motion.Fall; }
                 break;
         }
 
@@ -275,6 +304,16 @@ public class PlayerMovement : BChara
                 break;
             case Motion.ClimbingUp:
                 HandleClimbingUp();
+                break;
+            //更新_追加時間：20240726＿八子遥輝
+            case Motion.Crouch:
+                _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                break;
+            case Motion.Crouching_Walk:
+                _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                HandleWalking();
+                SmoothRotation();
+                _perClimbVec3 = _climbVec3;
                 break;
         }
 
@@ -560,6 +599,14 @@ public class PlayerMovement : BChara
             {
                 _pushState = false;
             }
+        }
+    }
+    //更新_追加時間：20240726＿八子遥輝
+    public void Crouch(InputAction.CallbackContext _ctx)
+    {
+        if (_ctx.phase == InputActionPhase.Started)
+        {
+            _crouchFlag = true;
         }
     }
 }
