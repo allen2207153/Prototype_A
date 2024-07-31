@@ -607,6 +607,7 @@ public class PlayerMovement : BChara
         if (_ctx.phase == InputActionPhase.Started)
         {
             _crouchFlag = true;
+            Debug.Log("Crouch");
         }
     }
 }
