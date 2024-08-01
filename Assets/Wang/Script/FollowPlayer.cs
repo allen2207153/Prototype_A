@@ -17,9 +17,9 @@ public class FollowPlayer : MonoBehaviour
     private float playerSpeed; // プレイヤーの速度
     private float currentNPCSpeed; // 現在のNPCの速度
 
-    public MultiRotationConstraint playerMultiRotationCons;
-    public MultiRotationConstraint npcMultiRotationCons;
-    public MultiParentConstraint npcHandSync;
+    //public MultiRotationConstraint playerMultiRotationCons;
+    //public MultiRotationConstraint npcMultiRotationCons;
+    //public MultiParentConstraint npcHandSync;
     public KeyCode holdHandKey = KeyCode.H;
     [SerializeField]private bool isHoldingHands = false;
     public Vector3 initialOffset;
@@ -59,10 +59,10 @@ public class FollowPlayer : MonoBehaviour
 
         if (isHoldingHands)
         {
-            // 开始牵手
-            playerMultiRotationCons.weight = 1.0f;
-            npcMultiRotationCons.weight = 1.0f;
-            npcHandSync.weight = 1.0f;
+            //// 开始牵手
+            //playerMultiRotationCons.weight = 1.0f;
+            //npcMultiRotationCons.weight = 1.0f;
+            //npcHandSync.weight = 1.0f;
 
             // 检查玩家与NPC的距离
             if (distanceToPlayer < followDistance)
@@ -90,9 +90,9 @@ public class FollowPlayer : MonoBehaviour
         else
         {
             
-            playerMultiRotationCons.weight = 0.0f;
-            npcMultiRotationCons.weight = 0.0f;
-            npcHandSync.weight = 0.0f;
+            //playerMultiRotationCons.weight = 0.0f;
+            //npcMultiRotationCons.weight = 0.0f;
+            //npcHandSync.weight = 0.0f;
             IKactive.ikActive = false;
             // NPCがプレイヤーを追従している場合
             if (isFollowing)
