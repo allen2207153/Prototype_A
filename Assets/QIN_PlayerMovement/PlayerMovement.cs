@@ -409,8 +409,7 @@ public class PlayerMovement : BChara
            ((_walkSpeedMin += _walkAddSpeed) < _walkSpeedMax ? _walkSpeedMin : _walkSpeedMax) *
            _movementInput.magnitude *
            Time.deltaTime;
-            //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
-            _cCtrl.Move(playerDeltaMovement);
+            
 
             //20240723＿チョウハク
             if (_pushState)
@@ -429,6 +428,9 @@ public class PlayerMovement : BChara
                     _movableObject.transform.Translate(playerDeltaMovement);
                 }
             }
+
+            //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
+            _cCtrl.Move(playerDeltaMovement); //20240801_チョウハク　呼び出し所ここに移動して押す時左右移動を防ぎました
 
         }
     }
