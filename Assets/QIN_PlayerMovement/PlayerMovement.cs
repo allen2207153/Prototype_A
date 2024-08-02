@@ -17,7 +17,6 @@ public class PlayerMovement : BChara
 
     Animator animator;
 
-
     //重力の大きさを設定します
     [SerializeField] private float _gravity = -9.8f;
 
@@ -86,6 +85,7 @@ public class PlayerMovement : BChara
     [Header("----デバッグ観測用-----")]
     [SerializeField] private bool _jumpTrigger = false;
     [SerializeField] private bool _hangTrigger = false;
+    [SerializeField] private bool _crouchTrigger = false; //更新_追加時間：20240802＿八子遥輝
 
     private void OnEnable()
     {
@@ -551,6 +551,10 @@ public class PlayerMovement : BChara
     {
         _hangTrigger = hangTrigger;
     }
+    public void SetCrouchTrigger(bool crouchTrigger) //更新_追加時間：20240802＿八子遥輝
+    {
+        _crouchTrigger = crouchTrigger;
+    }
     public void Fire(InputAction.CallbackContext _ctx)
     {
         //InputActionPhase.Started;      <-これはGetKeyDown
@@ -608,7 +612,10 @@ public class PlayerMovement : BChara
     {
         if (_ctx.phase == InputActionPhase.Started)
         {
-            _crouchFlag = true;
+            if (_crouchTrigger == true) //更新_追加時間：20240802＿八子遥輝
+            {
+                _crouchFlag = true;
+            }
         }
     }
 }
