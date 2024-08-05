@@ -31,7 +31,7 @@ public class CameraChange : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _nowvCam = _vCamList[0]._vCam; ;
+        _nowvCam = _vCamList[0]._vCam;
     }
 
     // Update is called once per frame

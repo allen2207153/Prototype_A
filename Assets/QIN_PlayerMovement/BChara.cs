@@ -44,6 +44,9 @@ public class BChara : MonoBehaviour
         Hanging_ByJump,//ぶら下がる
         Hanging_ByCollider,      //コライダーによるぶら下がる
         ClimbingUp,   //登り
+        Crouch, //しゃがみ
+        Crouching_Walk //しゃがみ歩き
+
     }
     protected Motion _motion = Motion.Stand;//現在のモーション
     protected Motion _preMotion;//前回のモーションを記録する用
