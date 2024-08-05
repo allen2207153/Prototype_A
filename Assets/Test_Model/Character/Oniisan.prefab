@@ -110,7 +110,9 @@ GameObject:
   - component: {fileID: 9048537226149724727}
   - component: {fileID: 5333204848106944494}
   - component: {fileID: 6956345269322285552}
-  - component: {fileID: 2151068964131336803}
+  - component: {fileID: 7777461661426259018}
+  - component: {fileID: 4475424612957926522}
+  - component: {fileID: 1949474920571126126}
   m_Layer: 7
   m_Name: Oniisan
   m_TagString: Player
@@ -127,16 +129,17 @@ Transform:
   m_GameObject: {fileID: 728079890304295715}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10.93, y: -0.9820362, z: -9.926}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 3741072999430696393}
   - {fileID: 3931725261547416194}
   - {fileID: 4688607019292575524}
   - {fileID: 7694860516606602572}
   - {fileID: 2236884960306343445}
   - {fileID: 6057790967049509638}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6318924890195682275
 Animator:
@@ -171,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 51d051610d2846947b78e6b4b145998b,
+  m_Actions: {fileID: -944628639613478452, guid: 3553d2d98e0417447bf82088eafd3597,
     type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
@@ -187,8 +190,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2151068964131336803}
-        m_TargetAssemblyTypeName: Yako_PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 4475424612957926522}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: Walk
         m_Mode: 0
         m_Arguments:
@@ -203,8 +206,8 @@ MonoBehaviour:
     m_ActionName: Player/Walk[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2151068964131336803}
-        m_TargetAssemblyTypeName: Yako_PlayerMovement, Assembly-CSharp
+      - m_Target: {fileID: 4475424612957926522}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: Jump
         m_Mode: 0
         m_Arguments:
@@ -226,9 +229,37 @@ MonoBehaviour:
     m_ActionId: 929b467f-ee3e-4410-b370-9f610e745341
     m_ActionName: Player/Fire[/Keyboard/x]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4475424612957926522}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnPush
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 7cf3772f-69e2-4101-be15-7771c50b1b80
     m_ActionName: Player/Push[/Keyboard/g]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4475424612957926522}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: Crouch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9fe5d0d2-b351-4a69-8867-6e43533b99b5
+    m_ActionName: Player/Crouch[/Keyboard/z]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -255,7 +286,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 1.4
   m_Radius: 0.1
-  m_SlopeLimit: 45
+  m_SlopeLimit: 60
   m_StepOffset: 0.3
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0.001
@@ -349,7 +380,7 @@ MonoBehaviour:
   - m_Rig: {fileID: 3216794108132804259}
     m_Active: 1
   m_Effectors: []
---- !u!114 &2151068964131336803
+--- !u!114 &7777461661426259018
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -358,21 +389,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 728079890304295715}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b3f3ca27b7413c4da1cc334571946bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d6517edb860a12409a59e2cedb4feb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zones:
+  - zoneObject: {fileID: 0}
+    cameraIndex: 1
+  - zoneObject: {fileID: 0}
+    cameraIndex: 0
+  cameraChange: {fileID: 0}
+--- !u!114 &4475424612957926522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728079890304295715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f393a07f5c16954f8edbfe02cebc258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _checkHead: {fileID: 2236884960306343445}
   _layerMaskHead:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 0
   _checkFoot: {fileID: 94989429034269081}
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
   _gravity: -9.8
-  _walkSpeedMax: 4
+  _walkSpeedMax: 10
   _walkAddSpeed: 0.4
-  _jumpForce: 10
+  _jumpForce: 7.5
   _vCam: {fileID: 0}
   _rotationSpeed: 600
   _checkMoveCnt: 0
@@ -381,6 +430,28 @@ MonoBehaviour:
   _playerHangingOffset_Y: 0.8
   _playerClimbOffset: 0.1
   _playerClimbSpeed: 2
+  _jumpTrigger: 0
+  _hangTrigger: 0
+  _crouchTrigger: 0
+--- !u!114 &1949474920571126126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728079890304295715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fad08a9e37fe4d4fb962a1b9ae3cb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movableLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  _checkDistance: 1
+  _pushAngle: 45
+  _pushHitNormal: {x: 0, y: 0, z: 0}
+  _movableObjectHeight: 0.5
 --- !u!1 &1330790003422908037
 GameObject:
   m_ObjectHideFlags: 0
@@ -1421,7 +1492,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5123855233356328805}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2385,3 +2456,82 @@ Transform:
   m_Father: {fileID: 5244013658781637848}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3665851495549910793
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 94989429034269081}
+    m_Modifications:
+    - target: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5428698803132235212, guid: e29fca906a755844d9907d5d11455faf,
+        type: 3}
+      propertyPath: m_Name
+      value: CheckTriggerAction
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e29fca906a755844d9907d5d11455faf, type: 3}
+--- !u!4 &3741072999430696393 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 87062153928446656, guid: e29fca906a755844d9907d5d11455faf,
+    type: 3}
+  m_PrefabInstance: {fileID: 3665851495549910793}
+  m_PrefabAsset: {fileID: 0}
