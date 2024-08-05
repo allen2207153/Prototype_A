@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 5333204848106944494}
   - component: {fileID: 6956345269322285552}
   - component: {fileID: 2151068964131336803}
+  - component: {fileID: 7777461661426259018}
   m_Layer: 7
   m_Name: Oniisan
   m_TagString: Player
@@ -127,7 +128,7 @@ Transform:
   m_GameObject: {fileID: 728079890304295715}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -10.93, y: -0.9820362, z: -9.926}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3931725261547416194}
@@ -136,7 +137,7 @@ Transform:
   - {fileID: 2236884960306343445}
   - {fileID: 6057790967049509638}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6318924890195682275
 Animator:
@@ -171,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 51d051610d2846947b78e6b4b145998b,
+  m_Actions: {fileID: -944628639613478452, guid: 3553d2d98e0417447bf82088eafd3597,
     type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
@@ -229,6 +230,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 7cf3772f-69e2-4101-be15-7771c50b1b80
     m_ActionName: Player/Push[/Keyboard/g]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2151068964131336803}
+        m_TargetAssemblyTypeName: Yako_PlayerMovement, Assembly-CSharp
+        m_MethodName: Crouch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9fe5d0d2-b351-4a69-8867-6e43533b99b5
+    m_ActionName: Player/Crouch[/Keyboard/z]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -255,7 +272,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 1.4
   m_Radius: 0.1
-  m_SlopeLimit: 45
+  m_SlopeLimit: 60
   m_StepOffset: 0.3
   m_SkinWidth: 0.02
   m_MinMoveDistance: 0.001
@@ -370,9 +387,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _gravity: -9.8
-  _walkSpeedMax: 4
+  _walkSpeedMax: 3
   _walkAddSpeed: 0.4
-  _jumpForce: 10
+  _jumpForce: 8
   _vCam: {fileID: 0}
   _rotationSpeed: 600
   _checkMoveCnt: 0
@@ -381,6 +398,24 @@ MonoBehaviour:
   _playerHangingOffset_Y: 0.8
   _playerClimbOffset: 0.1
   _playerClimbSpeed: 2
+--- !u!114 &7777461661426259018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728079890304295715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d6517edb860a12409a59e2cedb4feb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zones:
+  - zoneObject: {fileID: 0}
+    cameraIndex: 1
+  - zoneObject: {fileID: 0}
+    cameraIndex: 0
+  cameraChange: {fileID: 0}
 --- !u!1 &1330790003422908037
 GameObject:
   m_ObjectHideFlags: 0
@@ -1421,7 +1456,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5123855233356328805}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
