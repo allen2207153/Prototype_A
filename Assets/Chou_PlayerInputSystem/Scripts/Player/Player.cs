@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 [RequireComponent(typeof(CharacterController))]
@@ -24,7 +25,7 @@ public class Player : MonoBehaviour
     [SerializeField] Transform _rightHand;
     //[SerializeField] float _grabDistance = 1.5f;
     //[SerializeField] float _slowMoveFactor = 0.5f; // 押している時や引っ張っている時速度のレート
-    //[SerializeField] float _pushForce = 2f; //　押す力
+    [SerializeField] float _pushForce = 8f; //　押す力
 
     //private bool _isInteracting = false;
     //private GameObject _currentBox;
@@ -38,10 +39,14 @@ public class Player : MonoBehaviour
 
     bool _isRunning = false;
 
+    bool _isPushPressed = false; // 押すキー押下状態
+    bool _isPushing = false;
+
     float _currentPitch = 0f; // Current Pitch
     Vector2 _currentMoveInput = Vector2.zero;
 
     Push _pushObject;
+    GameObject _movableBox;
 
     void Awake()
     {
@@ -88,10 +93,9 @@ public class Player : MonoBehaviour
             _moveSpeed = _walkSpeed;
         }
 
-        if (_pushObject.IsInteracting())
-        {
-            _moveSpeed *= _pushObject.GetSlowMoveFactor();
-        }
+        Push();
+
+ 
 
         // Check if the player is grounded
         _isGrounded = _controller.isGrounded;
@@ -109,14 +113,58 @@ public class Player : MonoBehaviour
 
     }
 
+    void Push()
+    {
+        if (_isPushPressed)
+        {
+            _movableBox = _pushObject.MovableBoxDetect(transform, _currentMoveInput);
+            if (_movableBox)
+            {
+                Debug.Log("Push");
+                _isPushing = true;
+                _moveSpeed *= _pushObject.GetSlowMoveFactor();
+                //_movableBox.transform.Translate(new Vector3(transform.position.x, 0, transform.position.z));
+                Rigidbody boxRigidbody = _movableBox.GetComponent<Rigidbody>();
+                Vector3 direction = transform.forward * GetCurrentMoveInput().y + transform.right * GetCurrentMoveInput().x;
+
+                if (GetCurrentMoveInput().y < 0)
+                {
+                    _pushForce = 10f;
+                }
+                else
+                {
+                    _pushForce = 8f;
+                }
+                Debug.Log("Applying force to the box");
+
+                boxRigidbody.velocity = direction * _pushForce;
+            }
+            else
+            {
+                if (_isPushing)
+                {
+                    Debug.Log("Push End");
+                    _isPushing = false;
+                } 
+            }
+        }
+        else if (!_isPushPressed)
+        {
+            Debug.Log("Push End");
+            _isPushing = false;
+        }
+    }
+
     void OnStartGrab()
     {
-        _pushObject.StartGrab();
+        _isPushPressed = true;
+        //_pushObject.StartGrab(transform, _currentMoveInput);
     }
 
     void OnStopGrab()
     {
-        _pushObject.StopGrab();
+        _isPushPressed = false;
+        //_pushObject.StopGrab();
     }
 
     public Vector2 GetCurrentMoveInput()
@@ -128,13 +176,13 @@ public class Player : MonoBehaviour
     {
         if (interacting)
         {
-            Debug.Log("Setting hands to grab position");
+            //Debug.Log("Setting hands to grab position");
             _leftHand.localRotation = Quaternion.Euler(90, 0, 0);
             _rightHand.localRotation = Quaternion.Euler(90, 0, 0);
         }
         else
         {
-            Debug.Log("Resetting hands to initial position");
+            //Debug.Log("Resetting hands to initial position");
             _leftHand.localRotation = Quaternion.identity; // Reset to initial rotation
             _rightHand.localRotation = Quaternion.identity; // Reset to initial rotation
         }

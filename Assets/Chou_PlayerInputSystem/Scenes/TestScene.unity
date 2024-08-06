@@ -775,6 +775,7 @@ MonoBehaviour:
   _cameraBoom: {fileID: 67202744}
   _leftHand: {fileID: 1061816243}
   _rightHand: {fileID: 609176860}
+  _pushForce: 2
 --- !u!136 &1384013199
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -906,9 +907,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28db3db99d7900e46b9d05dfc208a06d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _grabDistance: 1.5
-  _pushForce: 2
+  _pushForce: 8
   _slowMoveFactor: 0.5
+  _movableLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  _hitNormal: {x: 0, y: 0, z: 0}
+  _pushAngle: 45
+  _detectHeight: 0.5
+  _checkDistance: 1
 --- !u!1 &1449070802
 GameObject:
   m_ObjectHideFlags: 0
@@ -1027,7 +1034,7 @@ GameObject:
   - component: {fileID: 1745564783}
   - component: {fileID: 1745564782}
   - component: {fileID: 1745564786}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Box
   m_TagString: Box
   m_Icon: {fileID: 0}
@@ -1113,8 +1120,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1745564781}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 7.76}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 0, y: 1.5, z: 7.76}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}

@@ -7,14 +7,16 @@ public class Test_IKSystem : MonoBehaviour
 {
     protected Animator animator;
 
-    public bool ikActive = true;
+    public bool ikActive = false;
     public Transform rightHandObj = null;
     public Transform leftHandObj = null;
     public Transform lookObj = null;
+    public bool followPlayer;
 
     void Start()
     {
         animator = GetComponent<Animator>();
+        followPlayer = GetComponent<FollowPlayer>();
     }
 
     void OnAnimatorIK()
@@ -37,7 +39,6 @@ public class Test_IKSystem : MonoBehaviour
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
                     animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandObj.position);
-                    animator.SetIKRotation(AvatarIKGoal.RightHand, rightHandObj.rotation);
                 }
 
                 // 設置左手目標位置和權重
@@ -46,7 +47,6 @@ public class Test_IKSystem : MonoBehaviour
                     animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
                     animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
                     animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandObj.position);
-                    animator.SetIKRotation(AvatarIKGoal.LeftHand, leftHandObj.rotation);
                 }
             }
             // 如果 IK 被禁用，重置權重
