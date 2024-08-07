@@ -61,6 +61,8 @@ public class PlayerMovement : BChara
     //しゃがみのフラグ
     private bool _crouchFlag = false; //更新_追加時間：20240726＿八子遥輝
 
+    public bool _grabHandFlag = false;
+
     private PlayerClimbing _playerClimbing;
 
     [Header("Raycastにより登るの判定位置----デバッグ観測用-----")]
@@ -630,6 +632,18 @@ public class PlayerMovement : BChara
             {
                 _crouchFlag = true;
             }
+        }
+    }
+
+    public void GrabHand(InputAction.CallbackContext _ctx)
+    {
+        if (_ctx.phase == InputActionPhase.Started) //更新_追加時間：20240807＿ワンユールン
+        {
+            _grabHandFlag = true;
+        }
+        else if (_ctx.phase == InputActionPhase.Canceled)
+        {
+            _grabHandFlag = false;
         }
     }
 }

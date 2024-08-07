@@ -550,7 +550,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       propertyPath: m_RootOrder
-      value: -1
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
@@ -570,17 +570,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22.598755
+      value: 834.04
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 103.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.1817932
+      value: 303.66
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
@@ -852,10 +852,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5256595680715813007}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d6822b655a610e64e9482f6623a2522e,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1300301056309253691}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
@@ -873,6 +869,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 5534279775108154408}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d6822b655a610e64e9482f6623a2522e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3222383661220753621}
   m_SourcePrefab: {fileID: 100100000, guid: d6822b655a610e64e9482f6623a2522e, type: 3}
 --- !u!4 &235270333309359925 stripped
 Transform:
@@ -1030,38 +1030,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4746265922108456159}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5256595680715813007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5557290639162196366}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b3f3ca27b7413c4da1cc334571946bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _checkHead: {fileID: 8142629335849038366}
-  _layerMaskHead:
-    serializedVersion: 2
-    m_Bits: 256
-  _checkFoot: {fileID: 5067858862488263476}
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 64
-  _gravity: -9.8
-  _walkSpeedMax: 10
-  _walkAddSpeed: 0.4
-  _jumpForce: 20
-  _vCam: {fileID: 0}
-  _rotationSpeed: 600
-  _checkMoveCnt: 0
-  _climbVec3: {x: 0, y: 0, z: 0}
-  _invalidClimbHeight: 2
-  _playerHangingOffset_Y: 0.8
-  _playerClimbOffset: 0.1
-  _playerClimbSpeed: 2
 --- !u!114 &1300301056309253691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1076,8 +1044,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   animator: {fileID: 1203738854940492110}
-  followDistance: 0.9
-  stopDistance: 0.8
+  followDistance: 0.5
+  stopDistance: 0.4
   activationRadius: 1.06
   speedLerpRate: 14.13
   isFollowing: 0
@@ -1200,6 +1168,41 @@ MonoBehaviour:
   leftHandObj: {fileID: 0}
   lookObj: {fileID: 0}
   followPlayer: 0
+--- !u!114 &3222383661220753621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5557290639162196366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f393a07f5c16954f8edbfe02cebc258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _checkHead: {fileID: 8142629335849038366}
+  _layerMaskHead:
+    serializedVersion: 2
+    m_Bits: 256
+  _checkFoot: {fileID: 5067858862488263476}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 64
+  _gravity: -9.8
+  _walkSpeedMax: 10
+  _walkAddSpeed: 0.4
+  _jumpForce: 20
+  _vCam: {fileID: 0}
+  _rotationSpeed: 600
+  _checkMoveCnt: 0
+  _climbVec3: {x: 0, y: 0, z: 0}
+  _invalidClimbHeight: 2
+  _playerHangingOffset_Y: 0.8
+  _playerClimbOffset: 0.1
+  _playerClimbSpeed: 2
+  _jumpTrigger: 0
+  _hangTrigger: 0
+  _crouchTrigger: 0
 --- !u!4 &6133998948247453712 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -7710646077359637297, guid: d6822b655a610e64e9482f6623a2522e,
