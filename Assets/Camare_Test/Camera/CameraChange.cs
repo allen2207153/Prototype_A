@@ -19,7 +19,7 @@ public class CameraChange : MonoBehaviour
     [SerializeField]
     VCamDate[] _vCamList;
     [Header("PlayerMovementスクリプト")]
-    [SerializeField] private Yako_PlayerMovement _playerMovement;
+    [SerializeField] private PlayerMovement _playerMovement;
 
     [Header("現在のカメラ")]
     public CinemachineVirtualCamera _nowvCam;
