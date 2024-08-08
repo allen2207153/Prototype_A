@@ -1,4 +1,4 @@
-﻿using UnityEditor.VersionControl;
+﻿
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Assertions;
