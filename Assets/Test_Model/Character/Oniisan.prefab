@@ -113,6 +113,7 @@ GameObject:
   - component: {fileID: 7777461661426259018}
   - component: {fileID: 4475424612957926522}
   - component: {fileID: 1949474920571126126}
+  - component: {fileID: 43687896704610729}
   m_Layer: 7
   m_Name: Oniisan
   m_TagString: Player
@@ -139,7 +140,7 @@ Transform:
   - {fileID: 2236884960306343445}
   - {fileID: 6057790967049509638}
   m_Father: {fileID: 0}
-  m_RootOrder: 28
+  m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6318924890195682275
 Animator:
@@ -413,13 +414,13 @@ MonoBehaviour:
   _checkHead: {fileID: 2236884960306343445}
   _layerMaskHead:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   _checkFoot: {fileID: 94989429034269081}
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
   _gravity: -9.8
-  _walkSpeedMax: 10
+  _walkSpeedMax: 3.5
   _walkAddSpeed: 0.4
   _jumpForce: 7.5
   _vCam: {fileID: 0}
@@ -449,9 +450,27 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   _checkDistance: 1
-  _pushAngle: 45
+  _pushAngle: 10
   _pushHitNormal: {x: 0, y: 0, z: 0}
   _movableObjectHeight: 0.5
+--- !u!114 &43687896704610729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728079890304295715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d6517edb860a12409a59e2cedb4feb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zones:
+  - zoneObject: {fileID: 0}
+    cameraIndex: 1
+  - zoneObject: {fileID: 0}
+    cameraIndex: 0
+  cameraChange: {fileID: 0}
 --- !u!1 &1330790003422908037
 GameObject:
   m_ObjectHideFlags: 0

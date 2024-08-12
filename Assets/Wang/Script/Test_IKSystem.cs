@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.XR.Oculus.Input;
 using UnityEngine;
 
 public class Test_IKSystem : MonoBehaviour
@@ -12,13 +13,19 @@ public class Test_IKSystem : MonoBehaviour
     public Transform leftHandObj = null;
     public Transform lookObj = null;
     public bool followPlayer;
+    public bool _grabHand;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         followPlayer = GetComponent<FollowPlayer>();
+        _grabHand = GetComponent<PlayerMovement>()._grabHandFlag;
     }
 
+    void Update()
+    {
+        
+    }
     void OnAnimatorIK()
     {
         if (animator)
@@ -26,6 +33,7 @@ public class Test_IKSystem : MonoBehaviour
             // 如果 IK 被激活
             if (ikActive)
             {
+                _grabHand = true;
                 // 設置目標位置和權重
                 if (lookObj != null)
                 {
@@ -52,6 +60,7 @@ public class Test_IKSystem : MonoBehaviour
             // 如果 IK 被禁用，重置權重
             else
             {
+                _grabHand = false;
                 animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
                 animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
                 animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
