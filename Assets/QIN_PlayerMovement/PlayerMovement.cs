@@ -132,7 +132,7 @@ public class PlayerMovement : BChara
 
         Think();
         Move();
-
+        animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);//追加時間：20240812＿ワンユールン
 
 #if DEBUG
         //追加時間：20240713＿八子遥輝
@@ -425,7 +425,9 @@ public class PlayerMovement : BChara
            ((_walkSpeedMin += _walkAddSpeed) < _walkSpeedMax ? _walkSpeedMin : _walkSpeedMax) *
            _movementInput.magnitude *
            Time.deltaTime;
+
             
+
 
             //20240723＿チョウハク
             if (_pushState)
@@ -510,7 +512,7 @@ public class PlayerMovement : BChara
         //追加時間：20240709＿ワンユールン
         var rotationSpeed = _rotationSpeed * Time.deltaTime;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed);
-        animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);
+       
     }
     /// <summary>
     /// キャラが指定する位置に移動
