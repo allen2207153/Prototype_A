@@ -17,7 +17,6 @@ public class Hanging_Moving : MonoBehaviour
 
      void Update()
     {
-        ikOn = GetComponent<Test_IKSystem>().ikActive;
         Debug.Log(ikOn);
         if(ikOn)
         {

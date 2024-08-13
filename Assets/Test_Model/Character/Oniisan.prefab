@@ -308,12 +308,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d3450451648118458bdec58d6c39df5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ikActive: 1
+  ikActive: 0
   rightHandObj: {fileID: 6057790967049509638}
   leftHandObj: {fileID: 0}
   lookObj: {fileID: 0}
-  followPlayer: 0
   _grabHand: 0
+  isHoldingHand: 0
+  transitionSpeed: 0.05
 --- !u!114 &5333204848106944494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,6 +425,7 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
+  canHoldHand: 0
   _gravity: -9.8
   _walkSpeedMax: 3.5
   _walkAddSpeed: 0.1
@@ -1495,7 +1497,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5123855233356328805}
   m_LocalRotation: {x: -0.8400367, y: -0.50981456, z: 0.041659046, w: 0.1808094}
-  m_LocalPosition: {x: 0, y: 0.8, z: -0.368}
+  m_LocalPosition: {x: 0.13, y: 0.721, z: -0.306}
   m_LocalScale: {x: 0.15361, y: 0.15361, z: 0.15361}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1571,7 +1573,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5181776644429163610
 GameObject:

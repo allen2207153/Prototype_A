@@ -14,8 +14,9 @@ public class PlayerMovement : BChara
 
 
     //追加時間：20240709＿ワンユールン
-
+    [SerializeField] private bool canHoldHand;
     Animator animator;
+    
 
     //重力の大きさを設定します
     [SerializeField] private float _gravity = -9.8f;
@@ -118,6 +119,9 @@ public class PlayerMovement : BChara
 
         //追加時間：20240723＿チョウハク
         _playerSensor = GetComponent<PlayerSensor>();
+
+        //追加時間：20240814＿ワンユールン
+        canHoldHand = GameObject.Find("imoto").GetComponent<FollowPlayer>().canHold;
     }
     private void FixedUpdate()
     {
@@ -129,7 +133,7 @@ public class PlayerMovement : BChara
     {
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
-
+        canHoldHand = GameObject.Find("imoto").GetComponent<FollowPlayer>().canHold;
         Think();
         Move();
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);//追加時間：20240812＿ワンユールン
@@ -654,9 +658,10 @@ public class PlayerMovement : BChara
 
     public void GrabHand(InputAction.CallbackContext _ctx)//更新_追加時間：20240807＿ワンユールン
     {
-        if (_ctx.phase == InputActionPhase.Started) 
+        if (_ctx.phase == InputActionPhase.Started &&canHoldHand==true) 
         {
             _grabHandFlag = true;
+            Debug.Log("Grab hand success");
         }
         else if (_ctx.phase == InputActionPhase.Canceled)
         {
