@@ -550,7 +550,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 34
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
@@ -570,17 +570,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 834.04
+      value: 873.25
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 103.2
+      value: 103.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 303.66
+      value: 314.36
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
@@ -590,17 +590,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6822b655a610e64e9482f6623a2522e,
         type: 3}
@@ -1051,8 +1051,10 @@ MonoBehaviour:
   isFollowing: 0
   holdHandKey: 104
   isHoldingHands: 0
+  canHold: 0
   initialOffset: {x: 1, y: 0, z: -1}
-  playerHand: 0
+  playerIK: 0
+  Iksystem: 0
 --- !u!143 &1003689209297607512
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1163,11 +1165,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d3450451648118458bdec58d6c39df5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ikActive: 1
+  ikActive: 0
   rightHandObj: {fileID: 0}
   leftHandObj: {fileID: 0}
   lookObj: {fileID: 0}
-  followPlayer: 0
+  _grabHand: 0
+  isHoldingHand: 0
+  transitionSpeed: 0.05
 --- !u!114 &3222383661220753621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1188,6 +1192,7 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
+  canHoldHand: 0
   _gravity: -9.8
   _walkSpeedMax: 10
   _walkAddSpeed: 0.4
@@ -1195,6 +1200,7 @@ MonoBehaviour:
   _vCam: {fileID: 0}
   _rotationSpeed: 600
   _checkMoveCnt: 0
+  _grabHandFlag: 0
   _climbVec3: {x: 0, y: 0, z: 0}
   _invalidClimbHeight: 2
   _playerHangingOffset_Y: 0.8

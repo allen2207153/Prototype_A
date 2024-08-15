@@ -14,8 +14,9 @@ public class PlayerMovement : BChara
 
 
     //追加時間：20240709＿ワンユールン
-
+    [SerializeField] private bool canHoldHand;
     Animator animator;
+    
 
     //重力の大きさを設定します
     [SerializeField] private float _gravity = -9.8f;
@@ -118,6 +119,9 @@ public class PlayerMovement : BChara
 
         //追加時間：20240723＿チョウハク
         _playerSensor = GetComponent<PlayerSensor>();
+
+        //追加時間：20240814＿ワンユールン
+        canHoldHand = GameObject.Find("imoto").GetComponent<FollowPlayer>().canHold;
     }
     private void FixedUpdate()
     {
@@ -129,7 +133,7 @@ public class PlayerMovement : BChara
     {
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
-
+        canHoldHand = GameObject.Find("imoto").GetComponent<FollowPlayer>().canHold;
         Think();
         Move();
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);//追加時間：20240812＿ワンユールン
@@ -173,12 +177,11 @@ public class PlayerMovement : BChara
                 }
 
                 if (!CheckFoot()) { nm = Motion.Fall; }
-                //更新_追加時間：20240726＿八子遥輝
-                if (_crouchFlag==true && CheckFoot()) { nm = Motion.Crouch; }//更新時間：20240807＿ワンユールン
-                animator.SetBool("WalkBool", false);
+                //更新_追加時間：20240726＿八子遥輝 ->更新_追加時間：20240813＿八子遥輝
+                if (_crouchFlag==true && CheckFoot()) { nm = Motion.Crouching_Enter; }//更新時間：20240807＿ワンユールン
                 animator.SetBool("JumpBool", false);
                 animator.SetBool("CrouchBool", false);
-                animator.SetBool("Crouching_WalkBool", false);//更新_追加時間：20240807＿ワンユールン
+                animator.SetFloat("Time", 0.0f);
                 break;
             case Motion.Walk:
                 if (_movementInput.x == 0 && _movementInput.y == 0) { nm = Motion.Stand; }
@@ -207,8 +210,7 @@ public class PlayerMovement : BChara
                     nm = Motion.Crouching_Walk; 
                 }
                 if (!CheckFoot()) { nm = Motion.Fall; }
-                //更新_追加時間：20240807＿ワンユールン
-                animator.SetBool("WalkBool", true);
+                //更新_追加時間：20240807＿ワンユールン ->更新_追加時間：20240813＿八子遥輝
                 animator.SetBool("JumpBool", false);
                 break;
             case Motion.Jump:
@@ -248,25 +250,35 @@ public class PlayerMovement : BChara
             case Motion.ClimbingUp:
                 if (!_isClimbingUp) { nm = Motion.Fall; }
                 break;
-            //更新時間：20240807＿ワンユールン
-            case Motion.Crouch:
+            //更新時間：20240807＿ワンユールン ->更新_追加時間：20240813＿八子遥輝
+            case Motion.Crouching_Enter:
                 animator.SetBool("CrouchBool", true);
-                animator.SetBool("Crouching_WalkBool", false);
+                animator.SetFloat("Time", _moveCnt);
+                if (_crouchFlag == true && CheckFoot() && _moveCnt >= 150) { nm = Motion.Crouching_Idle; }
+                if (!CheckFoot()) { nm = Motion.Fall; }
+
+                break;
+            case Motion.Crouching_Idle:
+                animator.SetTrigger("Crouching_Idle_Trigger");
+                animator.SetFloat("Time", 0.0f);
                 if (_movementInput.x != 0 || _movementInput.y != 0) { nm = Motion.Crouching_Walk; }
                 if (!CheckFoot()) { nm = Motion.Fall; }
-                
+
                 break;
-            case Motion.Crouching_Walk://更新_追加時間：20240807＿ワンユールン
-                animator.SetBool("Crouching_WalkBool", true);
-                if (_movementInput.x == 0 && _movementInput.y == 0) { nm = Motion.Crouch; }
-                if (_crouchTrigger==false) 
+            case Motion.Crouching_Walk:
+                if (_movementInput.x == 0 && _movementInput.y == 0) { nm = Motion.Crouching_Idle; }
+                if (_crouchTrigger == false) //更新_追加時間：20240807＿ワンユールン
                 {
-                    _crouchFlag = false;
-                    
-                    nm = Motion.Stand; 
+                    nm = Motion.Crouching_Exit;
                 }
                 if (!CheckFoot()) { nm = Motion.Fall; }
-                
+
+                break;
+            case Motion.Crouching_Exit:
+                animator.SetTrigger("Crouching_Exit_Trigger");
+                animator.SetFloat("Time", _moveCnt);
+                if (_moveCnt >= 150) { nm = Motion.Stand; }
+                if (!CheckFoot()) { nm = Motion.Fall; }
 
                 break;
         }
@@ -322,8 +334,11 @@ public class PlayerMovement : BChara
             case Motion.ClimbingUp:
                 HandleClimbingUp();
                 break;
-            //更新_追加時間：20240726＿八子遥輝
-            case Motion.Crouch:
+            //更新_追加時間：20240726＿八子遥輝 ->更新_追加時間：20240813＿八子遥輝
+            case Motion.Crouching_Enter:
+                _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                break;
+            case Motion.Crouching_Idle:
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 break;
             case Motion.Crouching_Walk:
@@ -331,6 +346,10 @@ public class PlayerMovement : BChara
                 HandleWalking();
                 SmoothRotation();
                 _perClimbVec3 = _climbVec3;
+                break;
+            case Motion.Crouching_Exit:
+                _crouchFlag = false;
+                _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 break;
         }
 
@@ -639,9 +658,10 @@ public class PlayerMovement : BChara
 
     public void GrabHand(InputAction.CallbackContext _ctx)//更新_追加時間：20240807＿ワンユールン
     {
-        if (_ctx.phase == InputActionPhase.Started) 
+        if (_ctx.phase == InputActionPhase.Started &&canHoldHand==true) 
         {
             _grabHandFlag = true;
+            Debug.Log("Grab hand success");
         }
         else if (_ctx.phase == InputActionPhase.Canceled)
         {
