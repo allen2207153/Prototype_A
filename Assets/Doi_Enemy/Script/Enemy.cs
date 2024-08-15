@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.ProBuilder;
 using static UnityEngine.GraphicsBuffer;
 
 public class Enemy : MonoBehaviour
@@ -11,15 +12,23 @@ public class Enemy : MonoBehaviour
         Idle,
         Chase,
         Attack,
-        Freeze
+        Freeze,
+        Patrol
     };
 
     //パラメータ関数の定義
     public EnemyState _state; //キャラの状態
     private Transform _targetTransform; //ターゲットの情報
     private NavMeshAgent _navMeshAgent; //NavMeshAgentコンポーネント
+    public float _timeBetweenAttacks;//攻撃の間隔
+    bool _alreadyAttacked;//攻撃終了したかの確認
+    bool walkPointSet;//patrol目的地が決定したかの確認
+    public float walkPointRange;//patrol目的地の範囲
     [SerializeField]
-    private Vector3 destination; //目的地の位置情報を格納するためのパラメータ
+    private Vector3 _destination; //目的地の位置情報を格納するためのパラメータ
+    public LayerMask _whatIsGround;//navmeshが適応されている地面
+
+
 
     void Start()
     {
@@ -51,6 +60,31 @@ public class Enemy : MonoBehaviour
             //　算出した方向の角度を敵の角度に設定
             transform.rotation = Quaternion.Slerp(transform.rotation, setRotation, _navMeshAgent.angularSpeed * 0.1f * Time.deltaTime);
         }
+        else if(_state==EnemyState.Attack)
+        {
+            if (!_alreadyAttacked)
+            {
+                ///攻撃の処理をここに
+
+                _alreadyAttacked = true;
+                Invoke(nameof(ResetAttack), _timeBetweenAttacks);
+            }
+            _state = EnemyState.Idle;
+        }
+        else if(_state==EnemyState.Patrol)
+        {
+            if (!walkPointSet) SearchWalkPoint();
+
+            if (walkPointSet)
+                _navMeshAgent.SetDestination(_destination);
+
+            Vector3 distanceToWalkPoint = transform.position - _destination;
+
+            //目的地到着
+            if (distanceToWalkPoint.magnitude < 1f)
+                walkPointSet = false;
+
+        }
     }
 
     //状態移行時に呼ばれる処理
@@ -71,12 +105,32 @@ public class Enemy : MonoBehaviour
         else if (tempState == EnemyState.Attack)
         {
             _navMeshAgent.isStopped = true; //キャラの移動を止める
+
         }
         else if (tempState == EnemyState.Freeze)
         {
             Invoke("ResetState", 2.0f);
         }
+        else if(tempState==EnemyState.Patrol)
+        {
+            _navMeshAgent.isStopped = false; //キャラを動けるようにする
+        }
     }
+    private void SearchWalkPoint()
+    {
+        //Calculate random point in range
+        float randomZ = Random.Range(-walkPointRange, walkPointRange);
+        float randomX = Random.Range(-walkPointRange, walkPointRange);
+
+        _destination = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+
+        if (Physics.Raycast(_destination, -transform.up, 2f, _whatIsGround))//navmeshで歩ける場所か確認
+        {
+            walkPointSet = true;
+        }
+    }
+
 
     //　敵キャラクターの状態取得メソッド
     public EnemyState GetState()
@@ -87,17 +141,21 @@ public class Enemy : MonoBehaviour
     //　目的地を設定する
     public void SetDestination(Vector3 position)
     {
-        destination = position;
+        _destination = position;
     }
 
     //　目的地を取得する
     public Vector3 GetDestination()
     {
-        return destination;
+        return _destination;
     }
 
     private void ResetState()
     {
         SetState(EnemyState.Idle); ;
+    }
+    private void ResetAttack()
+    {
+        _alreadyAttacked = false;
     }
 }
