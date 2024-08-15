@@ -7,6 +7,11 @@ public class MeleeAttack : MonoBehaviour
     Animator animator;
 
     [SerializeField]
+    private GameObject _attackBox;
+
+    BoxCollider _attackBoxCollider;
+
+    [SerializeField]
     private float _coldTime = 2f;
 
     [SerializeField]
@@ -16,6 +21,16 @@ public class MeleeAttack : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+
+        if (_attackBox != null)
+        {
+            _attackBoxCollider = _attackBox.GetComponent<BoxCollider>();
+        }
+        
+        if (_attackBoxCollider != null)
+        {
+            _attackBoxCollider.isTrigger = false;
+        }
     }
 
     // Update is called once per frame
@@ -35,6 +50,18 @@ public class MeleeAttack : MonoBehaviour
         {
             _attackTime -= Time.deltaTime;
         }
+    }
+
+    //Animation Event: Hit Start
+    public void HitStart()
+    {
+        _attackBoxCollider.isTrigger = true;
+    }
+
+    //Animation Event: Hit End
+    public void HitEnd()
+    {
+        _attackBoxCollider.isTrigger = false;
     }
 
 }
