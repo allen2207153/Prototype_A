@@ -19,7 +19,7 @@ public class EnemySencer : MonoBehaviour
 
     private void OnTriggerStay(Collider target)
     {
-        if (target.tag == "Enemy")
+        if (target.tag == "Player")
         {
             var playerDirection = target.transform.position - transform.position;
 
