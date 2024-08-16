@@ -121,7 +121,7 @@ public class PlayerMovement : BChara
         _playerSensor = GetComponent<PlayerSensor>();
 
         //追加時間：20240814＿ワンユールン
-        canHoldHand = GameObject.Find("imoto").GetComponent<FollowPlayer>().canHold;
+        canHoldHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().canHold;
     }
     private void FixedUpdate()
     {
@@ -133,7 +133,7 @@ public class PlayerMovement : BChara
     {
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
-        canHoldHand = GameObject.Find("imoto").GetComponent<FollowPlayer>().canHold;
+        canHoldHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().canHold;
         Think();
         Move();
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime);//追加時間：20240812＿ワンユールン
