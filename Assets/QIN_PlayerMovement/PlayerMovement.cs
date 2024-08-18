@@ -13,7 +13,7 @@ public class PlayerMovement : BChara
     PlayerSensor _playerSensor;
 
 
-    //追加時間：20240709＿ワンユールン
+    //追加時間：20240807＿ワンユールン
     [SerializeField] private bool canHoldHand;
     Animator animator;
     

@@ -5,6 +5,7 @@ using UnityEngine.Animations.Rigging;
 public class FollowPlayer : MonoBehaviour
 {
     public Transform player;
+    public Transform rigPoint;
     public Animator animator;
     public float followDistance = 2.0f; // プレイヤーを追従し始める距離
     public float stopDistance = 1.5f; // プレイヤーの追従を停止する距離
@@ -156,6 +157,6 @@ public class FollowPlayer : MonoBehaviour
     {
         // NPCの周囲にアクティベーション範囲を描画
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, activationRadius);
+        Gizmos.DrawWireSphere(rigPoint.position, activationRadius);
     }
 }
