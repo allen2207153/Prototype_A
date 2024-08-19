@@ -5,16 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class ButtonController : MonoBehaviour
 {
+    [SerializeField] string _newGameButtonLoadingScene;
+    [SerializeField] string _settingButtonLoadingScene;
     public void LoadingToGameScene()
     {
-        //TODO:ゲームシーンを記入してください
-        //SceneManager.LoadScene("ゲームシーンを記入");
         Debug.Log("NewGame");
+        if (_newGameButtonLoadingScene.Length != 0)
+        {
+            SceneManager.LoadScene(_newGameButtonLoadingScene);
+        }
     }
     public void LoadingSettingScene()
     {
-        //TODO:セッティングシーンを記入してください
         Debug.Log("Setting");
+        if (_settingButtonLoadingScene.Length != 0)
+        {
+            SceneManager.LoadScene(_settingButtonLoadingScene);
+        }
     }
     public void ExitTheGame()
     {
