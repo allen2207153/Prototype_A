@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 558a8e2b6826cf840aae193990ba9f2e, type: 3}
   m_Name: ShadowsMidtonesHighlights
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   shadows:
     m_OverrideState: 1
     m_Value: {x: 1, y: 0.83876354, z: 0.68737876, w: 0.14354058}
@@ -716,10 +716,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f335fb1ffd8684294ad653bf1c7564, type: 3}
   m_Name: ColorAdjustments
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   postExposure:
     m_OverrideState: 1
-    m_Value: 0.36
+    m_Value: -0.14
   contrast:
     m_OverrideState: 1
     m_Value: 9
@@ -730,7 +730,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 0
   saturation:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
 --- !u!114 &-3408837598661955661
 MonoBehaviour:
@@ -1010,8 +1010,8 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.54180604
-          value: 0.46762592
+          time: 0.5702393
+          value: 0.5565218
           inSlope: 1
           outSlope: 1
           tangentMode: 0
@@ -1019,10 +1019,10 @@ MonoBehaviour:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
-          time: 0.8160535
-          value: 0.7410072
-          inSlope: 1.2287358
-          outSlope: 1.2287358
+          time: 0.7408949
+          value: 0.87826085
+          inSlope: -0.040175363
+          outSlope: -0.040175363
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
