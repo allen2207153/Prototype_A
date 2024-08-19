@@ -92,6 +92,15 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.postprocessing": {
+      "version": "3.2.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.physics": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.probuilder": {
       "version": "5.0.7",
       "depth": 0,
@@ -232,6 +241,15 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "moe.meryuhi.effects.fog": {
+      "version": "https://github.com/meryuhi/URPFog.git?path=Packages/Fog",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "14.0.0"
+      },
+      "hash": "28924fcc8586ce021928d25bc217a05019c99596"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
