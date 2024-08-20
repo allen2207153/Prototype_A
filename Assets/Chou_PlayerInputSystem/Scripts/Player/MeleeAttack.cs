@@ -27,10 +27,6 @@ public class MeleeAttack : MonoBehaviour
             _attackBoxCollider = _attackBox.GetComponent<BoxCollider>();
         }
         
-        if (_attackBoxCollider != null)
-        {
-            _attackBoxCollider.isTrigger = false;
-        }
     }
 
     // Update is called once per frame
@@ -55,13 +51,13 @@ public class MeleeAttack : MonoBehaviour
     //Animation Event: Hit Start
     public void HitStart()
     {
-        _attackBoxCollider.isTrigger = true;
+        _attackBoxCollider.enabled = true;
     }
 
     //Animation Event: Hit End
     public void HitEnd()
     {
-        _attackBoxCollider.isTrigger = false;
+        _attackBoxCollider.enabled = false;
     }
 
 }
