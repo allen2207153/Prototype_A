@@ -1942,6 +1942,56 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8724509209200831357, guid: 4d1f65759cee2004fabf70fca515ede3,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724509209200831357, guid: 4d1f65759cee2004fabf70fca515ede3,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_ActionId
+      value: 45b69513-ccfc-40ad-948b-d4c0c54608bd
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724509209200831357, guid: 4d1f65759cee2004fabf70fca515ede3,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_ActionName
+      value: Player/Attack[/XInputControllerWindows/leftTrigger,/Keyboard/j]
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724509209200831357, guid: 4d1f65759cee2004fabf70fca515ede3,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724509209200831357, guid: 4d1f65759cee2004fabf70fca515ede3,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724509209200831357, guid: 4d1f65759cee2004fabf70fca515ede3,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1136655689}
+    - target: {fileID: 8724509209200831357, guid: 4d1f65759cee2004fabf70fca515ede3,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724509209200831357, guid: 4d1f65759cee2004fabf70fca515ede3,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724509209200831357, guid: 4d1f65759cee2004fabf70fca515ede3,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerMovement, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724509209200831357, guid: 4d1f65759cee2004fabf70fca515ede3,
+        type: 3}
+      propertyPath: m_ActionEvents.Array.data[7].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2565,6 +2615,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1062975310}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1136655689 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2467215686573129614, guid: 4d1f65759cee2004fabf70fca515ede3,
+    type: 3}
+  m_PrefabInstance: {fileID: 813704760}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f393a07f5c16954f8edbfe02cebc258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1153808850
 GameObject:
   m_ObjectHideFlags: 0

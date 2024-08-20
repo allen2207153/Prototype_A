@@ -6,6 +6,8 @@ public class MeleeAttack : MonoBehaviour
 {
     Animator animator;
 
+    public bool _isAttacking;
+
     [SerializeField]
     private GameObject _attackBox;
 
@@ -22,6 +24,8 @@ public class MeleeAttack : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
+        _isAttacking = GetComponent<PlayerMovement>()._attackFlag;
+
         if (_attackBox != null)
         {
             _attackBoxCollider = _attackBox.GetComponent<BoxCollider>();
@@ -32,9 +36,10 @@ public class MeleeAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        _isAttacking = GetComponent<PlayerMovement>()._attackFlag;
         if (_attackTime <= 0)
         {
-            if (Input.GetKeyDown(KeyCode.J))
+            if (_isAttacking)
             {
                 // attack
                 animator.SetTrigger("Attack");

@@ -11,6 +11,8 @@ public class PlayerMovement : BChara
     Transform _interactPoint;
     MovableObject _movableObject;
     PlayerSensor _playerSensor;
+    //追加時間：20240820＿チョウハク
+    public bool _attackFlag = false;
 
 
     //追加時間：20240807＿ワンユールン
@@ -666,6 +668,24 @@ public class PlayerMovement : BChara
         else if (_ctx.phase == InputActionPhase.Canceled)
         {
             _grabHandFlag = false;
+        }
+    }
+
+    //追加時間：20240820＿チョウハク
+    public void Attack(InputAction.CallbackContext _ctx)
+    {
+        //InputActionPhase.Started;      <-これはGetKeyDown
+        //InputActionPhase.Performed;    <-これはGetKey
+        //InputActionPhase.Canceled;     <-これはGetKeyUp
+        if (_ctx.phase == InputActionPhase.Started)
+        {
+            Debug.Log("Attack");
+            _attackFlag = true;
+        }
+        if (_ctx.phase == InputActionPhase.Canceled)
+        {
+            Debug.Log("Stop Attack");
+            _attackFlag = false;
         }
     }
 }
