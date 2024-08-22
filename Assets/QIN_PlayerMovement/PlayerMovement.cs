@@ -13,6 +13,7 @@ public class PlayerMovement : BChara
     PlayerSensor _playerSensor;
     //追加時間：20240820＿チョウハク
     public bool _attackFlag = false;
+    private bool _isAttacking = false;
 
 
     //追加時間：20240807＿ワンユールン
@@ -133,6 +134,9 @@ public class PlayerMovement : BChara
 
     void Update()
     {
+        //20240822_チョウハク
+        _isAttacking = GetComponent<MeleeAttack>()._isAttacking;
+
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
         canHoldHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().canHold;
@@ -155,6 +159,16 @@ public class PlayerMovement : BChara
     private void Think()
     {
         Motion nm = _motion;
+
+        //20240822_チョウハク
+        if (_isAttacking)
+        {
+            nm = Motion.Attack;
+        }
+        else
+        {
+            nm = Motion.Walk;
+        }
 
         switch (_motion)
         {

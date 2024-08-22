@@ -6,7 +6,11 @@ public class MeleeAttack : MonoBehaviour
 {
     Animator animator;
 
+    public bool _attackButtonDown;
+
     public bool _isAttacking;
+
+    private BChara.Motion _motion;
 
     [SerializeField]
     private GameObject _attackBox;
@@ -24,7 +28,9 @@ public class MeleeAttack : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        _isAttacking = GetComponent<PlayerMovement>()._attackFlag;
+        _attackButtonDown = GetComponent<PlayerMovement>()._attackFlag;
+
+        _motion = GetComponent<PlayerMovement>().GetMotion();
 
         if (_attackBox != null)
         {
@@ -36,13 +42,16 @@ public class MeleeAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _isAttacking = GetComponent<PlayerMovement>()._attackFlag;
+        _attackButtonDown = GetComponent<PlayerMovement>()._attackFlag;
+        _motion = GetComponent<PlayerMovement>().GetMotion();
+
         if (_attackTime <= 0)
         {
-            if (_isAttacking)
+            if (_attackButtonDown && (_motion == BChara.Motion.Stand || _motion == BChara.Motion.Walk))
             {
                 // attack
                 animator.SetTrigger("Attack");
+                _isAttacking = true;
 
                 _attackTime = _coldTime;
             }
@@ -63,6 +72,12 @@ public class MeleeAttack : MonoBehaviour
     public void HitEnd()
     {
         _attackBoxCollider.enabled = false;
+    }
+
+    //Animation Event: Attack End
+    public void AttackEnd()
+    {
+        _isAttacking = false;
     }
 
 }
