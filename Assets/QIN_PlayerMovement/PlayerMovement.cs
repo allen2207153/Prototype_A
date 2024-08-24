@@ -140,6 +140,7 @@ public class PlayerMovement : BChara
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
         canHoldHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().canHold;
+
         Think();
         Move();
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime); //追加時間：20240812＿ワンユールン
@@ -181,17 +182,13 @@ public class PlayerMovement : BChara
                     }
                 }
 
+                if (!CheckFoot()) { nm = Motion.Fall; }
+
                 //追加時間：20240822_チョウハク
                 if (_isAttacking)
                 {
                     nm = Motion.Attack;
                 }
-                else
-                {
-                    nm = Motion.Walk;
-                }
-
-                if (!CheckFoot()) { nm = Motion.Fall; }
 
                 //更新_追加時間：20240813＿八子遥輝
                 if (_crouchFlag && CheckFoot()) { nm = Motion.Crouching_Enter; } //更新時間：20240807＿ワンユールン
@@ -219,6 +216,12 @@ public class PlayerMovement : BChara
                 }
 
                 if (!CheckFoot()) { nm = Motion.Fall; }
+
+                //追加時間：20240822_チョウハク
+                if (_isAttacking)
+                {
+                    nm = Motion.Attack;
+                }
 
                 break;
             case Motion.Jump:
@@ -297,6 +300,13 @@ public class PlayerMovement : BChara
                 if (!CheckFoot()) { nm = Motion.Fall; }
 
                 break;
+            //20240824_チョウハク
+            case Motion.Attack:
+                if (!_isAttacking)
+                {
+                    nm = Motion.Stand;
+                }
+                break;
         }
 
         UpdataMotion(nm);
@@ -367,6 +377,10 @@ public class PlayerMovement : BChara
             case Motion.Crouching_Exit:
                 _crouchFlag = false;
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                break;
+
+            //20240824_チョウハク
+            case Motion.Attack:
                 break;
         }
 
