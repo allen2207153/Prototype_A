@@ -9,7 +9,7 @@ public class DisslovePlayerTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _playerBody = transform.Find("girl_body").gameObject;
+        _playerBody = GameObject.Find("girl_body");
         _playerBody.GetComponent<Renderer>().material.SetFloat("_alphaClipThreshold", _dissolve);
     }
 

@@ -27,14 +27,14 @@ public class Test_IKSystem : MonoBehaviour
         animator = GetComponent<Animator>();
      
         _grabHand = GetComponent<PlayerMovement>()._grabHandFlag;
-        isHoldingHand = GameObject.Find("imoto").GetComponent<FollowPlayer>().isHoldingHands;
+        isHoldingHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().isHoldingHands;
 
     }
 
     void Update()
     {
         _grabHand = GetComponent<PlayerMovement>()._grabHandFlag;
-        isHoldingHand = GameObject.Find("imoto").GetComponent<FollowPlayer>().isHoldingHands;
+        isHoldingHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().isHoldingHands;
 
     }
 
