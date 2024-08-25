@@ -2845,6 +2845,7 @@ GameObject:
   - component: {fileID: 4527009050084102691}
   - component: {fileID: 8077771702451743638}
   - component: {fileID: 6915753379456966425}
+  - component: {fileID: 3627819142807176199}
   m_Layer: 0
   m_Name: Oniisan_Ver3.0
   m_TagString: Untagged
@@ -2870,7 +2871,7 @@ Transform:
   - {fileID: 2857617589501921872}
   - {fileID: 4120856984305486094}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5304076392003843586
 Animator:
@@ -2995,6 +2996,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 4c9ac5c5-928a-4fba-92aa-b8578e2791de
     m_ActionName: Player/GrabHand[/DualSenseGamepadHID/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 45b69513-ccfc-40ad-948b-d4c0c54608bd
+    m_ActionName: Player/Attack[/XInputControllerWindows/leftTrigger,/Keyboard/j]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -3059,9 +3064,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zones:
   - zoneObject: {fileID: 0}
+    cameraIndex: 2
+  - zoneObject: {fileID: 0}
     cameraIndex: 1
   - zoneObject: {fileID: 0}
     cameraIndex: 0
+  - zoneObject: {fileID: 0}
+    cameraIndex: 2
+  - zoneObject: {fileID: 0}
+    cameraIndex: 3
+  - zoneObject: {fileID: 0}
+    cameraIndex: 4
+  - zoneObject: {fileID: 0}
+    cameraIndex: 5
+  - zoneObject: {fileID: 0}
+    cameraIndex: 4
   cameraChange: {fileID: 0}
 --- !u!114 &2467215686573129614
 MonoBehaviour:
@@ -3083,6 +3100,7 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
+  _attackFlag: 0
   canHoldHand: 0
   _gravity: -9.8
   _walkSpeedMax: 3.5
@@ -3131,6 +3149,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0edec9a26f707f41a187bd7cc443dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackButtonDown: 0
+  _isAttacking: 0
   _attackBox: {fileID: 7686824902186597}
   _coldTime: 2
   _attackTime: 0
@@ -3148,6 +3168,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _knockBackForce: 300
   _enemy: {fileID: 0}
+--- !u!114 &3627819142807176199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6518162220037351956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33c448926cb1ebf498f8e88e8fe3326f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6654898021662249396
 GameObject:
   m_ObjectHideFlags: 0
