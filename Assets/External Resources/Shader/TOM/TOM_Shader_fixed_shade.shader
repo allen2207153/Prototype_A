@@ -45,7 +45,7 @@
             "RenderType" = "Opaque" 
             "RenderPipeline" = "UniversalPipline"
             }
-        LOD 100
+        LOD 300
         
         //アウトライン用Pass
 
@@ -62,7 +62,7 @@
             
             struct appdata
             {
-                half4 vertex : SV_POSITION;
+                half4 vertex : POSITION;
                 half3 normal : NORMAL;
                 float2 uv : TEXCOORD0;
             };
