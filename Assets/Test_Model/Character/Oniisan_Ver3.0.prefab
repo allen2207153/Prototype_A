@@ -2400,6 +2400,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.3381949, y: 0, z: -0.023767918}
     m_Extent: {x: 0.19069725, y: 0.2137417, z: 0.21597828}
   m_DirtyAABB: 0
+--- !u!1 &5104650251540262849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 671701032411083181}
+  m_Layer: 0
+  m_Name: ViewPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &671701032411083181
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5104650251540262849}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.87, z: 0.36}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3091483565801326444}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5310472930536793396
 GameObject:
   m_ObjectHideFlags: 0
@@ -2870,8 +2901,9 @@ Transform:
   - {fileID: 6003880657958734993}
   - {fileID: 2857617589501921872}
   - {fileID: 4120856984305486094}
+  - {fileID: 671701032411083181}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5304076392003843586
 Animator:
@@ -3046,7 +3078,7 @@ MonoBehaviour:
   ikActive: 0
   rightHandObj: {fileID: 6003880657958734993}
   leftHandObj: {fileID: 0}
-  lookObj: {fileID: 0}
+  lookObj: {fileID: 671701032411083181}
   _grabHand: 0
   isHoldingHand: 0
   transitionSpeed: 0.05
