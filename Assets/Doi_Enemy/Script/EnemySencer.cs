@@ -19,8 +19,10 @@ public class EnemySencer : MonoBehaviour
 
     private void OnTriggerStay(Collider target)
     {
+
         if (target.tag == "Player")
         {
+            Debug.Log("SencerPlayer検知");
             var playerDirection = target.transform.position - transform.position;
 
             var angle = Vector3.Angle(transform.forward, playerDirection);
@@ -34,19 +36,21 @@ public class EnemySencer : MonoBehaviour
                     if (Vector3.Distance(target.transform.position, transform.position) <= _searchArea.radius * 0.5f
                         && Vector3.Distance(target.transform.position, transform.position) >= _searchArea.radius * 0.05f)
                     {
+                        Debug.Log("Attackセンサー実行");
                         _enemyMove.SetState(Enemy.EnemyState.Attack);
                     }
                     else if (Vector3.Distance(target.transform.position, transform.position) <= _searchArea.radius
                         && Vector3.Distance(target.transform.position, transform.position) >= _searchArea.radius * 0.5f
-                        && _enemyMove._state == Enemy.EnemyState.Idle)
+                        && _enemyMove._state == Enemy.EnemyState.Patrol)
                     {
+                        Debug.Log("Chaseセンサー実行");
                         _enemyMove.SetState(Enemy.EnemyState.Chase, target.transform); // センサーに入ったプレイヤーをターゲットに設定して、追跡状態に移行する。
                     }
                 }
             }
             else if (angle > _searchAngle)
             {
-                _enemyMove.SetState(Enemy.EnemyState.Idle);
+                _enemyMove.SetState(Enemy.EnemyState.Patrol);
             }
         }
     }

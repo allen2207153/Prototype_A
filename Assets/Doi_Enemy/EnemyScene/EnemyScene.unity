@@ -412,12 +412,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _state: 0
-  _timeBetweenAttacks: 0
-  walkPointRange: 0
-  _destination: {x: 0, y: 0, z: 0}
-  _whatIsGround:
-    serializedVersion: 2
-    m_Bits: 64
+  destination: {x: 0, y: 0, z: 0}
+  walkPoint: {x: 0, y: 0, z: 0}
+  walkPointRange: 100
 --- !u!1 &485456450
 GameObject:
   m_ObjectHideFlags: 0
