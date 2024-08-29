@@ -230,7 +230,7 @@ public class PlayerMovement : BChara
             case Motion.Jump: //更新_追加時間：20240824＿八子遥輝
                 if (_velocity.y < 0) { nm = Motion.Fall; } 
                 if (CheckHead()) { _velocity.y = -0.01f; }
-
+                animator.SetBool("Walk_Bool", false);//更新_追加時間：20240829＿ワンユールン
                 animator.SetBool("Jump_Bool", true);
 
                 break;
