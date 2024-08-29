@@ -136,7 +136,7 @@ public class PlayerMovement : BChara
     {
         //追加時間：20240822_チョウハク
         _isAttacking = GameObject.Find("Oniisan").GetComponent<MeleeAttack>()._isAttacking;
-
+        //Debug.Log(_velocity);
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
         canHoldHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().canHold;
@@ -346,7 +346,7 @@ public class PlayerMovement : BChara
                 HandleWalking();
                 break;
             case Motion.Fall:
-                HandleWalking();
+                HandleGravity();
                 break;
             case Motion.Landing:
                 _jumpFlag = false; //ジャンプを一回だけに制限する（Landing後ジャンプ可能にする）
