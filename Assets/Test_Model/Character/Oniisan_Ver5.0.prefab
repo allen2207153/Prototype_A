@@ -560,14 +560,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1762382941746014226}
-  m_LocalRotation: {x: 0.38885543, y: 0.5905857, z: -0.5905857, w: 0.38885543}
-  m_LocalPosition: {x: 0.036987305, y: 0.7350006, z: 0}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: -0.019, y: 0.588, z: -0.044}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3140944645717050874}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: -90}
 --- !u!108 &6995052500219651384
 Light:
   m_ObjectHideFlags: 0
@@ -577,13 +577,13 @@ Light:
   m_GameObject: {fileID: 1762382941746014226}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 0
+  m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.15
-  m_Range: 2.8194351
-  m_SpotAngle: 117.329
-  m_InnerSpotAngle: 80.490845
+  m_Intensity: 0.16
+  m_Range: 10.35
+  m_SpotAngle: 110.699554
+  m_InnerSpotAngle: 61.189247
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -619,10 +619,10 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 5.94
+  m_BounceIntensity: 6.86
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -846,7 +846,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2492353442496624480}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: -0.0008070129}
+  m_LocalPosition: {x: -0.404, y: 0, z: -0.0008070129}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3012,7 +3012,7 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: 135a8db32a3fb1e46b28dd991efb61e9, type: 3}
   m_Controller: {fileID: 9100000, guid: d99b0c709c5962843aa0ec0dabd58c28, type: 2}
   m_CullingMode: 1
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -3049,7 +3049,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 896260707872494736}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: Walk
         m_Mode: 0
@@ -3065,7 +3065,7 @@ MonoBehaviour:
     m_ActionName: Player/Walk[/DualSenseGamepadHID/leftStick,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 896260707872494736}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: Jump
         m_Mode: 0
@@ -3088,12 +3088,24 @@ MonoBehaviour:
     m_ActionId: 929b467f-ee3e-4410-b370-9f610e745341
     m_ActionName: Player/Fire[/Keyboard/x]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 896260707872494736}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnPush
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 7cf3772f-69e2-4101-be15-7771c50b1b80
     m_ActionName: Player/Push[/Keyboard/g,/DualSenseGamepadHID/buttonSouth]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 896260707872494736}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: Crouch
         m_Mode: 0
@@ -3109,7 +3121,7 @@ MonoBehaviour:
     m_ActionName: Player/Crouch[/Keyboard/z,/DualSenseGamepadHID/buttonSouth]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 896260707872494736}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: GrabHand
         m_Mode: 0
@@ -3125,7 +3137,7 @@ MonoBehaviour:
     m_ActionName: Player/GrabHand[/DualSenseGamepadHID/buttonSouth]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 896260707872494736}
         m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
         m_MethodName: Attack
         m_Mode: 0
