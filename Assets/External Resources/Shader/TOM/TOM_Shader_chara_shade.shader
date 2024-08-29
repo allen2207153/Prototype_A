@@ -1,4 +1,4 @@
-﻿Shader "Custom/TOM_fixed_shade"
+﻿Shader "Custom/TOM_chara_shade"
 {
     Properties
     {
@@ -35,9 +35,7 @@
         _Smoothness ("スムーズネス", Range(0, 1)) = 0.5
         _SpecularRate ("スペキュラの影響度", Range(0, 1)) = 0.3
 
-        //工程７アウトライン対応用
-        _OutlineWidth ("アウトラインの太さ", Range(0, 1)) = 0.1
-        _OutlineColor ("アウトラインカラー", Color) = (0, 0, 0, 1)
+
     }
     SubShader
     {
@@ -45,64 +43,7 @@
             "RenderType" = "Opaque" 
             "RenderPipeline" = "UniversalPipline"
             }
-        LOD 300
-        
-        //アウトライン用Pass
-
-        Pass
-        {
-            // 前面をカリング
-            Cull Front
-
-            HLSLPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-            
-            struct appdata
-            {
-                half4 vertex : POSITION;
-                half3 normal : NORMAL;
-                float2 uv : TEXCOORD0;
-            };
-
-            struct v2f
-            {
-                half4 vertex : SV_POSITION;
-                float2 uv : TEXCOORD0;
-            };
-
-            TEXTURE2D(_MainTex);
-            SAMPLER(sampler_MainTex);
-
-            CBUFFER_START(UnityPerMaterial)
-            float4 _MainTex_ST;
-
-            half _OutlineWidth;
-            half4 _OutlineColor;
-            CBUFFER_END
-
-            v2f vert (appdata v)
-            {
-                v2f o = (v2f)0;
-
-                //アウトラインの分だけ法線方向に拡大する
-                o.vertex = TransformObjectToHClip(v.vertex + v.normal * (_OutlineWidth / 100));
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-
-                return o;
-            }
-
-            float4 frag (v2f i) : SV_Target
-            {
-                // sample the texture
-                float4 col = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
-
-                return col * _OutlineColor;
-            }
-            ENDHLSL
-        }
+        LOD 100
 
 
         //工程１～６まとめPass
@@ -204,7 +145,7 @@
                 //ノーマルマップ対応
                 o.normal = TransformObjectToWorldNormal(v.normal);
                 o.uvNormal = TRANSFORM_TEX(v.uv, _BumpMap);
-                o.tangent = v.tangent;
+                o.tangent = v.tangent.xyz;
                 o.tangent.xyz = TransformObjectToWorldDir(v.tangent.xyz);
                 o.binormal = normalize(cross(v.normal, v.tangent.xyz) * v.tangent.w * unity_WorldTransformParams.w);
 
@@ -267,7 +208,6 @@
                 specularLight = lerp(0, specularLight, _SpecularRate);
                                 
                 col.rgb *= diffuseLight + specularLight + _AmbientColor ;
-                
 
                 return col;
             }
