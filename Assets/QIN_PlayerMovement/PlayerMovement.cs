@@ -2,6 +2,7 @@
 using UnityEngine.InputSystem;
 using Cinemachine;
 using System;
+using UnityEngine.EventSystems;
 
 public class PlayerMovement : BChara
 {
@@ -16,9 +17,10 @@ public class PlayerMovement : BChara
     private bool _isAttacking = false;
 
 
-    //追加時間：20240807＿ワンユールン
+    //追加時間：20240829＿ワンユールン
     [SerializeField] private bool canHoldHand;
     Animator animator;
+    private Vector3 moveDirection;
 
 
     //重力の大きさを設定します
@@ -337,7 +339,7 @@ public class PlayerMovement : BChara
             case Motion.Walk:
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 HandleWalking();
-                SmoothRotation();
+                //SmoothRotation();
                 _perClimbVec3 = _climbVec3;
                 break;
             case Motion.Jump:
@@ -399,7 +401,7 @@ public class PlayerMovement : BChara
                 _walkSpeedMax = crouchWalkSpeedMax;
                 _walkAddSpeed = crouchWalkAddSpeed;
 
-                SmoothRotation();
+                //SmoothRotation();
                 _perClimbVec3 = _climbVec3;
                 break;
             case Motion.Crouching_Exit:
@@ -437,7 +439,19 @@ public class PlayerMovement : BChara
     /// <param name="_ctx"></param>
     public void Walk(InputAction.CallbackContext _ctx)
     {
-        //入力のフェーズがPerformedの場合、移動入力を読み取ります
+        //追加＿修正時間：20240825＿ワンユールン
+        Vector2 input = _ctx.ReadValue<Vector2>();
+        Vector3 moveInput = new Vector3(input.x, 0, input.y);
+
+        //カメラの回転によってキャラクタの向きを調整します
+        moveDirection = _vCam.transform.forward * moveInput.z + _vCam.transform.right * moveInput.x;
+        moveDirection.y = 0f;
+        if (moveDirection.magnitude > 0)
+        {
+            transform.rotation = Quaternion.LookRotation(moveDirection);
+        }
+
+
         if (_ctx.phase == InputActionPhase.Performed)
         {
             _movementInput = _ctx.ReadValue<Vector2>();
@@ -480,15 +494,10 @@ public class PlayerMovement : BChara
         //方向ベクトルの大きさが0.1以上の場合に移動を実行します
         if (direction.magnitude >= 0.1f)
         {
-            //Cinemachine仮想カメラのTransformを取得します
-            Transform _camTransform = _vCam.transform;
-            //カメラの前方向を取得します
-            Vector3 _forward = Vector3.Scale(_camTransform.forward, new Vector3(1, 0, 1)).normalized;
-            //カメラの右方向を取得します
-            Vector3 _right = Vector3.Scale(_camTransform.right, new Vector3(1, 0, 1)).normalized;
 
             //前方向と右方向を基に移動方向を計算します
-            Vector3 _moveDirection = _forward * direction.z + _right * direction.x;
+            //修正時間：20240829＿ワンユールン
+            Vector3 _moveDirection = moveDirection;
 
             //追加時間：20240709＿ワンユールン— ->修正_20240711_チンキントウ ->修正20240723_チョウハク
             if (!_pushState)

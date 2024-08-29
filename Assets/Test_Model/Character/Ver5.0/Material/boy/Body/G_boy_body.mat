@@ -24,19 +24,18 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: G_boy_body
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: 4800000, guid: 1ba5d169024b94c4d941c8bd5a42d4a0, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
+  m_ValidKeywords: []
+  m_InvalidKeywords:
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
-  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
-  stringTagMap:
-    RenderType: Opaque
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
   disabledShaderPasses:
   - TransparentDepthPrepass
   - TransparentDepthPostpass
@@ -169,11 +168,22 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.2
     - _GlossyReflections: 1
+    - _LimLightPower: 3
+    - _LimLightWeight: 0.5
+    - _LimShadeColorWeight1: 0.2
+    - _LimShadeColorWeight2: 0.5
+    - _LimShadeMaskMinPower: 0.8
+    - _LimShadeMaskPowerWeight: 2.23
+    - _LimShadeMinPower1: 0.8
+    - _LimShadeMinPower2: 0.3
+    - _LimShadePowerWeight1: 10
+    - _LimShadePowerWeight2: 1.5
     - _METALNESS: 0
     - _Metallic: 0
     - _Mode: 3
     - _OcclusionStrength: 1
     - _OpaqueCullMode: 2
+    - _OutlineWidth: 0.0005
     - _Parallax: 0.02
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -187,9 +197,10 @@ Material:
     - _SPECULAR_IOR: 1.5
     - _SPECULAR_ROUGHNESS: 0.2
     - _SampleGI: 0
-    - _Smoothness: 0
+    - _Smoothness: 0.167
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _SpecularRate: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _StencilRef: 0
@@ -202,6 +213,7 @@ Material:
     - _StencilWriteMaskDistortionVec: 4
     - _StencilWriteMaskGBuffer: 15
     - _StencilWriteMaskMV: 41
+    - _Strength: 0.2
     - _SupportDecals: 0
     - _Surface: 0
     - _SurfaceType: 0
@@ -214,18 +226,23 @@ Material:
     - _TransparentZWrite: 0
     - _UVSec: 0
     - _UseShadowThreshold: 0
+    - _UseVertexExpansion: 0
     - _WorkflowMode: 1
     - _ZTestDepthEqualForOpaque: 3
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
+    - _AmbientColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _BASE_COLOR: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _LimShadeColor1: {r: 0, g: 0, b: 0, a: 1}
+    - _LimShadeColor2: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SPECULAR_COLOR: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
