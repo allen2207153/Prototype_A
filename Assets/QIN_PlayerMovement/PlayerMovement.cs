@@ -21,6 +21,9 @@ public class PlayerMovement : BChara
     [SerializeField] private bool canHoldHand;
     Animator animator;
     private Vector3 moveDirection;
+    private Transform platformTransform;
+    private Vector3 previousPlatformPosition;
+    private bool isOnPlatform;
 
 
     //重力の大きさを設定します
@@ -142,6 +145,25 @@ public class PlayerMovement : BChara
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
         canHoldHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().canHold;
+
+        if (isOnPlatform && platformTransform != null)//更新_追加時間：20240904＿ワンユールン
+        {
+            // プラットフォームの移動量を計算
+            Vector3 platformMovement = platformTransform.position - previousPlatformPosition;
+
+            // プラットフォームの移動量をキャラクターに適用
+            _cCtrl.Move(platformMovement);
+
+            // プラットフォームの前回位置を更新
+            previousPlatformPosition = platformTransform.position;
+
+            // キャラクターがまだプラットフォーム上にいるかどうかを確認
+            if (!_cCtrl.isGrounded)
+            {
+                isOnPlatform = false;
+            }
+        }
+
 
         Think();
         Move();
@@ -552,28 +574,29 @@ public class PlayerMovement : BChara
     /// </summary>
     private void HandleGravity()
     {
+        
         switch (_motion)
         {
-            case Motion.Landing:
-                if (_velocity.y < 0)
-                {
-                    _velocity.y = -2f; //プレイヤーを地面に保つ
-                }
-                break;
-            case Motion.Walk:
-                if (_velocity.y < 0)
-                {
-                    _velocity.y = -2f; //プレイヤーを地面に保つ
-                }
-                break;
-
-            default:
-                //重力を適用します
-                _velocity.y += _gravity * Time.deltaTime;
-                break;
+            case Motion.JumpToHangingTakeOff:
+            case Motion.JumpToHanging:
+            case Motion.Hanging_ByJump:
+            case Motion.Hanging_ByCollider:
+            case Motion.ClimbingUp:
+                return; // 重力を適用します
         }
 
-        //キャラクターを重力に基づいて移動させます
+        
+        if (_cCtrl.isGrounded && (_motion == Motion.Landing || _motion == Motion.Walk))
+        {
+            _velocity.y = -2f; 
+        }
+        else
+        {
+            
+            _velocity.y += _gravity * Time.deltaTime;
+        }
+
+        
         _cCtrl.Move(_velocity * Time.deltaTime);
     }
 
@@ -754,4 +777,30 @@ public class PlayerMovement : BChara
             _attackFlag = false;
         }
     }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)//更新_追加時間：20240904＿ワンユールン
+    {
+        // キャラクターが「Platform」タグを持つオブジェクト上にいるかどうかを確認
+        if (hit.gameObject.CompareTag("Platform"))
+        {
+            // プラットフォームのTransformを記録
+            if (!isOnPlatform)
+            {
+                platformTransform = hit.transform;
+                previousPlatformPosition = platformTransform.position;
+                isOnPlatform = true;
+            }
+        }
+    }
+    void OnTriggerExit(Collider other)//更新_追加時間：20240904＿ワンユールン
+    {
+        // キャラクターがプラットフォームから離れたときに状態をリセット
+        if (other.CompareTag("Platform"))
+        {
+            isOnPlatform = false;
+            platformTransform = null;
+        }
+    }
 }
+
+
