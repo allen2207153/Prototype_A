@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1917465243149216906
+--- !u!1 &3040351858845875708
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,38 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8372517871572024376}
-  - component: {fileID: 5869036542845922641}
-  - component: {fileID: 4253758046718803752}
+  - component: {fileID: 8726263293794532107}
+  - component: {fileID: 8982892874285963046}
+  - component: {fileID: 7440697211335613060}
   m_Layer: 0
-  m_Name: vfxgraph_StylizedSmoke_Impact_v3
+  m_Name: Enemy_pop_effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8372517871572024376
+--- !u!4 &8726263293794532107
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1917465243149216906}
-  m_LocalRotation: {x: 0, y: 0, z: -0.25617126, w: 0.9666314}
-  m_LocalPosition: {x: -3.411, y: 0.857, z: 2.844}
+  m_GameObject: {fileID: 3040351858845875708}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -20.71095, y: 0, z: -98.715744}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -29.686}
---- !u!2083052967 &5869036542845922641
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!2083052967 &8982892874285963046
 VisualEffect:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1917465243149216906}
+  m_GameObject: {fileID: 3040351858845875708}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: e9d04b8c9b059e74da35dcd56f24cb9b, type: 3}
   m_InitialEventName: OnPlay
@@ -52,34 +52,28 @@ VisualEffect:
     m_Float:
       m_Array:
       - m_Value: 0.3
-        m_Name: Radius
-        m_Overridden: 1
-      - m_Value: 0.25
-        m_Name: SmokeSize
-        m_Overridden: 1
-      - m_Value: 2
-        m_Name: VoronoiScale
-        m_Overridden: 1
-      - m_Value: 1
         m_Name: SmokeLifetime
         m_Overridden: 1
-      - m_Value: 20
-        m_Name: ImpactForce
-        m_Overridden: 1
-      - m_Value: 35
+      - m_Value: 200
         m_Name: SmokeRate
         m_Overridden: 1
-      - m_Value: 3
-        m_Name: VoronoiSpeed
+      - m_Value: 0.2
+        m_Name: Radius
+        m_Overridden: 1
+      - m_Value: 143.9
+        m_Name: ImpactForce
+        m_Overridden: 0
+      - m_Value: 0.3
+        m_Name: SmokeSize
+        m_Overridden: 0
+      - m_Value: 0.01
+        m_Name: FresnelPower
         m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 0, y: -0.03, z: 0}
-        m_Name: ImpactCenter
-        m_Overridden: 1
-      - m_Value: {x: 0.5, y: 0.1, z: 0.3}
+      - m_Value: {x: 0, y: 0, z: 0}
         m_Name: SmokeVelocity
         m_Overridden: 1
     m_Vector4f:
@@ -97,42 +91,16 @@ VisualEffect:
           m_Curve:
           - serializedVersion: 3
             time: 0
-            value: 1
-            inSlope: -0.019654136
-            outSlope: -0.019654136
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          - serializedVersion: 3
-            time: 1.0042114
-            value: 0.47677612
-            inSlope: -2.1044981
-            outSlope: -2.1044981
-            tangentMode: 0
-            weightedMode: 0
-            inWeight: 0
-            outWeight: 0
-          m_PreInfinity: 2
-          m_PostInfinity: 2
-          m_RotationOrder: 4
-        m_Name: SizeOverLife
-        m_Overridden: 1
-      - m_Value:
-          serializedVersion: 2
-          m_Curve:
-          - serializedVersion: 3
-            time: 0
             value: 0.990566
-            inSlope: -6.6376553
-            outSlope: -6.6376553
+            inSlope: -13.869234
+            outSlope: -13.869234
             tangentMode: 0
             weightedMode: 0
             inWeight: 0
-            outWeight: 0.063695125
+            outWeight: 0
           - serializedVersion: 3
-            time: 0.19723117
-            value: 0.24755457
+            time: 0.14345157
+            value: 0.19787195
             inSlope: -0.1017801
             outSlope: -0.1017801
             tangentMode: 0
@@ -142,8 +110,8 @@ VisualEffect:
           - serializedVersion: 3
             time: 1
             value: 1
-            inSlope: 0.9373128
-            outSlope: 0.9373128
+            inSlope: 0.9364655
+            outSlope: 0.9364655
             tangentMode: 34
             weightedMode: 0
             inWeight: 0.33333334
@@ -153,27 +121,85 @@ VisualEffect:
           m_RotationOrder: 4
         m_Name: SmokeErosion
         m_Overridden: 1
+      - m_Value:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0.37026978
+            inSlope: 0.8286101
+            outSlope: 0.8286101
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 0.26897383
+            outSlope: 0.26897383
+            tangentMode: 0
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+        m_Name: SizeOverLife
+        m_Overridden: 1
     m_Gradient:
-      m_Array: []
+      m_Array:
+      - m_Value:
+          serializedVersion: 2
+          key0: {r: 0, g: 0, b: 0, a: 1}
+          key1: {r: 0, g: 0, b: 0, a: 0.9577465}
+          key2: {r: 0, g: 0, b: 0, a: 0.08627451}
+          key3: {r: 0, g: 0, b: 0, a: 0}
+          key4: {r: 0, g: 0, b: 0, a: 0}
+          key5: {r: 0, g: 0, b: 0, a: 0}
+          key6: {r: 0, g: 0, b: 0, a: 0}
+          key7: {r: 0, g: 0, b: 0, a: 0}
+          ctime0: 6554
+          ctime1: 12722
+          ctime2: 23708
+          ctime3: 34695
+          ctime4: 65535
+          ctime5: 0
+          ctime6: 0
+          ctime7: 0
+          atime0: 0
+          atime1: 45104
+          atime2: 65535
+          atime3: 65535
+          atime4: 0
+          atime5: 0
+          atime6: 0
+          atime7: 0
+          m_Mode: 0
+          m_ColorSpace: 1
+          m_NumColorKeys: 4
+          m_NumAlphaKeys: 3
+        m_Name: SmokeGradient
+        m_Overridden: 1
     m_NamedObject:
       m_Array:
-      - m_Value: {fileID: 1475042043386675167, guid: 348ef426c1708e84fa5e65ec38d879e5,
+      - m_Value: {fileID: 1475042043386675167, guid: 3721f031cb296414cadb531bc5b7660e,
           type: 3}
         m_Name: SmokeMesh
         m_Overridden: 1
     m_Bool:
       m_Array:
-      - m_Value: 0
+      - m_Value: 1
         m_Name: Loop
         m_Overridden: 1
---- !u!73398921 &4253758046718803752
+--- !u!73398921 &7440697211335613060
 VFXRenderer:
   serializedVersion: 1
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1917465243149216906}
+  m_GameObject: {fileID: 3040351858845875708}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
