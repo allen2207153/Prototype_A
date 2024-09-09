@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class EnvironmentLightChange : MonoBehaviour
 {
-    [SerializeField] LightRotate _directionLight;
+    [SerializeField] LightRotate _lightRot;
+    [SerializeField] Light _directionLight;
     float sunRot;
+
+    [Header("日光の色")]
+    [SerializeField] public Color _sunColor1;
+    [SerializeField] public Color _sunColor2;
 
     [Header("昼ライティング")]
     [SerializeField] public Color _daySky;
@@ -30,12 +35,19 @@ public class EnvironmentLightChange : MonoBehaviour
 
         //黄昏のグラテーションを設定
         _sunsetGradient = CreateGradient(_sunsetSky, _sunsetEquator, _sunsetGround);
+   
+        //Direction Lightのコンポーネントを取得
+        if(_directionLight == null)
+        {
+            Debug.LogWarning("Direction Lightが設定されてない");
+        }
+    
     }
 
     // Update is called once per frame
     void Update()
     {
-        sunRot = _directionLight.lightAng;
+        sunRot = _lightRot.lightAng;
 
         //回転角度が指定範囲内の場合に補間を行う
         if (sunRot < startSunset)
@@ -43,19 +55,39 @@ public class EnvironmentLightChange : MonoBehaviour
             float t = Mathf.InverseLerp(startSunset, endSunset, sunRot);
             Gradient tempGradient = LerpGradients(_dayGradient, _sunsetGradient, t);
 
+            //環境光の設定(変化の場合)
             RenderSettings.ambientSkyColor = tempGradient.Evaluate(0f); //sky color
             RenderSettings.ambientEquatorColor = tempGradient.Evaluate(0.5f); //equator color
             RenderSettings.ambientGroundColor = tempGradient.Evaluate(1f); //ground color
+        
+            //Direction Lightの色(変化の場合)
+            if(_directionLight != null)
+            {
+                _directionLight.color = Color.Lerp(_sunColor1, _sunColor2, t);
+            }
         }
         else
         {
+            //環境光の設定(変化前)
             RenderSettings.ambientSkyColor =  _dayGradient.Evaluate(0f);
             RenderSettings.ambientEquatorColor = _dayGradient.Evaluate(0.5f); //equator color
             RenderSettings.ambientGroundColor = _dayGradient.Evaluate(1f); //ground color
 
+            //Direction Lightの色(変化前)
+            if(_directionLight != null)
+            {
+                _directionLight.color = _sunColor1;
+            }
         }
     }
 
+    /// <summary>
+    /// 環境光のグラテーション生成
+    /// </summary>
+    /// <param name="sky"></param>
+    /// <param name="equator"></param>
+    /// <param name="ground"></param>
+    /// <returns></returns>
     Gradient CreateGradient(Color sky, Color equator, Color ground)
     {
         Gradient gradient = new Gradient();
@@ -76,6 +108,13 @@ public class EnvironmentLightChange : MonoBehaviour
         return gradient;
     }
 
+    /// <summary>
+    /// 環境光の補間計算
+    /// </summary>
+    /// <param name="grad1"></param>
+    /// <param name="grad2"></param>
+    /// <param name="t"></param>
+    /// <returns></returns>
     Gradient LerpGradients(Gradient grad1, Gradient grad2, float t)
     {
         Gradient newGradient = new Gradient();

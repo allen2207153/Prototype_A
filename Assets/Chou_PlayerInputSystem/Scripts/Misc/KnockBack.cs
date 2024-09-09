@@ -4,20 +4,12 @@ using UnityEngine;
 
 public class KnockBack : MonoBehaviour
 {
-    [SerializeField] private float _knockBackForce = 300f;
+    public float _knockBackForce = 300f;
     [SerializeField] private GameObject _enemy;
 
-    private void OnTriggerEnter(Collider other)
+    public void EnemyKnockBack(GameObject enemy)
     {
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            _enemy = other.gameObject;
-            EnemyKnockBack();
-        }
-    }
-
-    void EnemyKnockBack()
-    {
+        _enemy = enemy;
         //_enemy.transform.position += transform.forward * Time.deltaTime * _knockBackForce;
         _enemy.GetComponent<Rigidbody>().AddForce(transform.forward * _knockBackForce);
     }

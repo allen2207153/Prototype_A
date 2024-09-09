@@ -12,63 +12,75 @@ public class Test_IKSystem : MonoBehaviour
     public Transform rightHandObj = null;
     public Transform leftHandObj = null;
     public Transform lookObj = null;
-    public bool followPlayer;
-    public bool _grabHand;
+
+    [SerializeField]private bool _grabHand;
+    [SerializeField] private bool isHoldingHand;
+
+    private float ikWeightRightHand = 0f;
+    private float ikWeightLeftHand = 0f;
+    private float lookAtWeight = 0f;
+
+    public float transitionSpeed = 0.05f;  // IK重みの遷移速度
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        followPlayer = GetComponent<FollowPlayer>();
+     
         _grabHand = GetComponent<PlayerMovement>()._grabHandFlag;
+        isHoldingHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().isHoldingHands;
+
     }
 
     void Update()
     {
-        
+        _grabHand = GetComponent<PlayerMovement>()._grabHandFlag;
+        isHoldingHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().isHoldingHands;
+
     }
+
     void OnAnimatorIK()
     {
         if (animator)
         {
-            // 如果 IK 被激活
-            if (ikActive)
+            if (_grabHand||isHoldingHand)
             {
-                _grabHand = true;
-                // 設置目標位置和權重
-                if (lookObj != null)
-                {
-                    animator.SetLookAtWeight(1);
-                    animator.SetLookAtPosition(lookObj.position);
-                }
-
-                // 設置右手目標位置和權重
-                if (rightHandObj != null)
-                {
-                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
-                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-                    animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandObj.position);
-                }
-
-                // 設置左手目標位置和權重
-                if (leftHandObj != null)
-                {
-                    animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
-                    animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
-                    animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandObj.position);
-                }
+                ikActive=true;  
+                // 重みを時間と共に1に近づける
+                ikWeightRightHand = Mathf.Lerp(ikWeightRightHand, 1f, transitionSpeed);
+                ikWeightLeftHand = Mathf.Lerp(ikWeightLeftHand, 1f, transitionSpeed);
+                lookAtWeight = Mathf.Lerp(lookAtWeight, 1f, transitionSpeed);
             }
-            // 如果 IK 被禁用，重置權重
             else
             {
-                _grabHand = false;
-                animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
-                animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
-                animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
-                animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0);
-                animator.SetLookAtWeight(0);
+                ikActive = false;
+                // 重みを時間と共に0に減少させる
+                ikWeightRightHand = Mathf.Lerp(ikWeightRightHand, 0f, transitionSpeed);
+                ikWeightLeftHand = Mathf.Lerp(ikWeightLeftHand, 0f, transitionSpeed);
+                lookAtWeight = Mathf.Lerp(lookAtWeight, 0f, transitionSpeed);
+            }
+
+            // 設置目標位置と重み
+            if (lookObj != null)
+            {
+                animator.SetLookAtWeight(lookAtWeight);
+                animator.SetLookAtPosition(lookObj.position);
+            }
+
+            // 設置右手目標位置と重み
+            if (rightHandObj != null)
+            {
+                animator.SetIKPositionWeight(AvatarIKGoal.RightHand, ikWeightRightHand);
+                animator.SetIKRotationWeight(AvatarIKGoal.RightHand, ikWeightRightHand);
+                animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandObj.position);
+            }
+
+            // 設置左手目標位置と重み
+            if (leftHandObj != null)
+            {
+                animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, ikWeightLeftHand);
+                animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, ikWeightLeftHand);
+                animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandObj.position);
             }
         }
     }
-
-
 }
