@@ -35,7 +35,10 @@
         _Smoothness ("スムーズネス", Range(0, 1)) = 0.5
         _SpecularRate ("スペキュラの影響度", Range(0, 1)) = 0.3
 
-
+        //追加光源の情報
+        _AdditionalLightPos("追加光源の位置情報", vector) = (0,0,0,0)
+        _LightType("追加光源と種類", float) = 0.0 //1: ポイントライト 2: スポットライト
+        _AdditionalLightWeight ("追加光源の影響度", Range(0, 1)) = 0.0
     }
     SubShader
     {
@@ -133,6 +136,11 @@
             float _Smoothness;
             float _SpecularRate;
 
+            //追加光源の情報
+            float4 _AdditionalLightPos[16];
+            float _LightType[16];
+            float _AdditionalLightWeight;
+
             CBUFFER_END
 
             v2f vert(appdata v)
@@ -158,6 +166,15 @@
                 return o;
             }
 
+            //メインライティング計算
+            float4 core(v2f input, Light light)
+            {
+                float strength = dot(light.direction, input.normal);
+                float4 lightColor = float4(light.color, 1);
+                return tex2D(sampler_MainTex,input.uv) * strength * lightColor;
+            }
+
+
             float4 frag (v2f i) : SV_Target
             {
                 //sample the texture
@@ -176,6 +193,42 @@
                 
                 //ライティング情報をゲットする
                 Light light = GetMainLight();
+
+                //ライティング情報
+                //MainLight加算
+                col += core(i, light);
+
+                //AdditoinalLight加算
+                uint addLightCount = GetAdditionalLightsCount();
+                for(uint lightIndex = 0u; lightIndex < addLightCount; lightIndex++)
+                {
+                 Light light = GetAdditionalLight(lightIndex, i.vertex.xyz);
+                 float3 lightPos = _AdditionalLightPos[lightIndex].xyz;
+                 float lightType = _LightType[lightIndex];
+
+                 
+                 if(lightType == 1.0f)
+                 {//ポイントライトの計算
+                    float3 point_lightDir = normalize(lightPos - i.vertex.xyz);
+                    float point_distance = length(lightPos - i.vertex.xyz);
+                    float point_attenuation = 1.0 / (point_distance * point_distance); //距離に基づく減衰
+                    float3 point_lightColor = light.color * max(0, dot(i.normal, point_lightDir)) * point_attenuation;
+                    
+                    col.rgb += point_lightColor;
+                 }
+                 else if(lightType == 2.0f)
+                 {//スポットライトの計算
+                    float3 spot_lightDir = normalize(lightPos - i.vertex.xyz);
+                    float spot_spotEffect = saturate(dot(light.direction, -spot_lightDir)); //スポットライトの角度計算
+                    float spot_distance = length(lightPos - i.vertex.xyz);
+                    float spot_attenuation = 1.0 / (spot_distance * spot_distance); 
+                    float3 spot_lightColor = light.color  * max(0, dot(i.normal,spot_lightDir))  * spot_spotEffect * (_AdditionalLightWeight/100);
+                 
+                    col.rgb += spot_lightColor;
+                 }
+                 
+                 
+                }
 
                 //工程１陰1の計算をする
                 float limPower = 1 - max(0, dot(i.normal, i.viewDir));
@@ -210,6 +263,70 @@
                 col.rgb *= diffuseLight + specularLight + _AmbientColor ;
 
                 return col;
+            }
+            ENDHLSL
+        }
+
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags {"LightMode" = "ShadowCaster"}
+
+            ZWrite On
+            ZTest LEqual
+            Cull off
+
+            HLSLPROGRAM
+            #pragma target 2.0
+            
+            #pragma vertex MyShadowPassVertex
+            #pragma fragment MyShadowPassFragment
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+
+            CBUFFER_START(UnityPerMaterial)
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+            CBUFFER_END
+
+            struct appdata
+            {
+                float4 positionOS : POSITION;
+                float3 normalOS : NORMAL;
+                float2 texcoord : TEXCOORD0;
+            };
+
+            struct v2f
+            {
+                float4 positionCS : SV_POSITION;
+            };
+
+            float4 GetShadowPositionHClip(appdata input)
+            {
+                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
+                Light light = GetMainLight();
+                float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, light.direction));
+    #if UNITY_REVERSED_Z
+                positionCS.z = min(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
+    #else
+                positionCS.z = max(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
+    #endif
+                return positionCS;
+            }
+
+            v2f MyShadowPassVertex(appdata input)
+            {
+                v2f output = (v2f)0;
+                
+                output.positionCS = GetShadowPositionHClip(input);
+                return output;
+            }
+
+            half4 MyShadowPassFragment(v2f input) : SV_TARGET
+            {
+                return 1;
             }
             ENDHLSL
         }
