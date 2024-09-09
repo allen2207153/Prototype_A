@@ -12,7 +12,7 @@ public class ButtonController : MonoBehaviour
         Debug.Log("NewGame");
         if (_newGameButtonLoadingScene.Length != 0)
         {
-            SceneManager.LoadScene(_newGameButtonLoadingScene);
+            SceneSwitcher.Instance.Loading(1f, _newGameButtonLoadingScene);
         }
     }
     public void LoadingSettingScene()
@@ -20,7 +20,7 @@ public class ButtonController : MonoBehaviour
         Debug.Log("Setting");
         if (_settingButtonLoadingScene.Length != 0)
         {
-            SceneManager.LoadScene(_settingButtonLoadingScene);
+            SceneSwitcher.Instance.Loading(1f,_settingButtonLoadingScene);
         }
     }
     public void ExitTheGame()
