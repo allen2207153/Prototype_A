@@ -18,10 +18,12 @@ public class MeleeAttack : MonoBehaviour
     BoxCollider _attackBoxCollider;
 
     [SerializeField]
-    private float _coldTime = 2f;
+    private float _coldTime = 1f;
 
     [SerializeField]
     private float _attackTime = 0;
+
+    [SerializeField] private bool _isHoldingHand;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +38,9 @@ public class MeleeAttack : MonoBehaviour
         {
             _attackBoxCollider = _attackBox.GetComponent<BoxCollider>();
         }
-        
+
+        _isHoldingHand = GameObject.Find("Oniisan").GetComponent<PlayerMovement>()._grabHandFlag;
+
     }
 
     // Update is called once per frame
@@ -49,8 +53,20 @@ public class MeleeAttack : MonoBehaviour
         {
             if (_attackButtonDown && (_motion == BChara.Motion.Stand || _motion == BChara.Motion.Walk))
             {
+                _isHoldingHand = GameObject.Find("Oniisan").GetComponent<PlayerMovement>()._grabHandFlag;
                 // attack
-                animator.SetTrigger("Attack");
+                if ( _isHoldingHand )
+                {
+                    animator.SetTrigger("Attack");
+                    GameObject.Find("Oniisan").GetComponent<KnockBack>()._knockBackForce = 200f;
+                    _coldTime = 0.67f;
+                }
+                else
+                {
+                    animator.SetTrigger("HeavyAttack");
+                    GameObject.Find("Oniisan").GetComponent<KnockBack>()._knockBackForce = 300f;
+                    _coldTime = 1f;
+                }
                 _isAttacking = true;
 
                 _attackTime = _coldTime;
