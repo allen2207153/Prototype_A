@@ -389,7 +389,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 678052866931940090}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0.006, y: 0.829, z: -0.053}
+  m_LocalPosition: {x: -0.006, y: 0.829, z: 0.456}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1314,7 +1314,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2560646989100343653}
   m_LocalRotation: {x: -0.8400367, y: -0.50981456, z: 0.041659046, w: 0.1808094}
-  m_LocalPosition: {x: 0.13000488, y: 0.7210007, z: -0.30599976}
+  m_LocalPosition: {x: 0.148, y: 0.646, z: -0.164}
   m_LocalScale: {x: 0.15360999, y: 0.15360999, z: 0.15361002}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2013,6 +2013,37 @@ Transform:
   m_Children:
   - {fileID: 8648359879574641283}
   m_Father: {fileID: 3691429769228542933}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4816807148457855207
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 219167607394743367}
+  m_Layer: 0
+  m_Name: PlayerOffset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &219167607394743367
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4816807148457855207}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.292, y: 0.612, z: -0.013}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1596906556315297883}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4844183083481275663
@@ -2905,8 +2936,9 @@ Transform:
   - {fileID: 8983896118052427234}
   - {fileID: 1074595630806565242}
   - {fileID: 5927413898039208079}
+  - {fileID: 219167607394743367}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7320709739185630136
 Animator:
@@ -3109,6 +3141,8 @@ MonoBehaviour:
   _grabHand: 0
   isHoldingHand: 0
   transitionSpeed: 0.05
+  handPositionOffset: {x: 0, y: 0, z: 0}
+  handRotationOffset: {x: -31.4, y: -61.59, z: -6.4}
 --- !u!114 &4650382144814156219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3213,6 +3247,7 @@ MonoBehaviour:
   _attackBox: {fileID: 2534758752684265884}
   _coldTime: 2
   _attackTime: 0
+  _isHoldingHand: 0
 --- !u!114 &7995450639315119403
 MonoBehaviour:
   m_ObjectHideFlags: 0

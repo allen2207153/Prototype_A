@@ -13,7 +13,7 @@ public class Test_IKSystem : MonoBehaviour
     public Transform leftHandObj = null;
     public Transform lookObj = null;
 
-    [SerializeField]private bool _grabHand;
+    [SerializeField] private bool _grabHand;
     [SerializeField] private bool isHoldingHand;
 
     private float ikWeightRightHand = 0f;
@@ -21,30 +21,30 @@ public class Test_IKSystem : MonoBehaviour
     private float lookAtWeight = 0f;
 
     public float transitionSpeed = 0.05f;  // IK重みの遷移速度
+    public Vector3 handPositionOffset = new Vector3(0, 0, 0);  // 手の位置のオフセット
+    public Vector3 handRotationOffset = new Vector3(0, 0, 0);  // 手の回転のオフセット
 
     void Start()
     {
         animator = GetComponent<Animator>();
-     
+
         _grabHand = GetComponent<PlayerMovement>()._grabHandFlag;
         isHoldingHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().isHoldingHands;
-
     }
 
     void Update()
     {
         _grabHand = GetComponent<PlayerMovement>()._grabHandFlag;
         isHoldingHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().isHoldingHands;
-
     }
 
     void OnAnimatorIK()
     {
         if (animator)
         {
-            if (_grabHand||isHoldingHand)
+            if (_grabHand || isHoldingHand)
             {
-                ikActive=true;  
+                ikActive = true;
                 // 重みを時間と共に1に近づける
                 ikWeightRightHand = Mathf.Lerp(ikWeightRightHand, 1f, transitionSpeed);
                 ikWeightLeftHand = Mathf.Lerp(ikWeightLeftHand, 1f, transitionSpeed);
@@ -69,17 +69,25 @@ public class Test_IKSystem : MonoBehaviour
             // 設置右手目標位置と重み
             if (rightHandObj != null)
             {
+                Vector3 targetPosition = rightHandObj.position + handPositionOffset;
+                Quaternion targetRotation = rightHandObj.rotation * Quaternion.Euler(handRotationOffset);
+
                 animator.SetIKPositionWeight(AvatarIKGoal.RightHand, ikWeightRightHand);
                 animator.SetIKRotationWeight(AvatarIKGoal.RightHand, ikWeightRightHand);
-                animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandObj.position);
+                animator.SetIKPosition(AvatarIKGoal.RightHand, targetPosition);
+                animator.SetIKRotation(AvatarIKGoal.RightHand, targetRotation);
             }
 
             // 設置左手目標位置と重み
             if (leftHandObj != null)
             {
+                Vector3 targetPosition = leftHandObj.position + handPositionOffset;
+                Quaternion targetRotation = leftHandObj.rotation * Quaternion.Euler(handRotationOffset);
+
                 animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, ikWeightLeftHand);
                 animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, ikWeightLeftHand);
-                animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandObj.position);
+                animator.SetIKPosition(AvatarIKGoal.LeftHand, targetPosition);
+                animator.SetIKRotation(AvatarIKGoal.LeftHand, targetRotation);
             }
         }
     }

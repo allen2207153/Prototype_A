@@ -168,6 +168,11 @@ public class PlayerMovement : BChara
         Think();
         Move();
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime); //追加時間：20240812＿ワンユールン
+        if (animator.GetFloat("Speed") <0.05)
+        {
+            animator.SetFloat("Speed",0);
+        }
+        
 
 #if DEBUG
         //追加時間：20240713＿八子遥輝
