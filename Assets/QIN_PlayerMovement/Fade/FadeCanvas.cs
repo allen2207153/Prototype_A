@@ -20,8 +20,9 @@ public class FadeCanvas : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-
+    
     [SerializeField] private Image _fadeImage;
+    [SerializeField] private float _duration;
 
     [Header("イベントリスナー")]
     [SerializeField] private FadeEvent _fadeEvent;
@@ -38,5 +39,18 @@ public class FadeCanvas : MonoBehaviour
     {
         _fadeImage.DOBlendableColor(target, duration);
     }
-
+    /// <summary>
+    /// 単純なFadeIn
+    /// </summary>
+    public void FadeIn()
+    {
+        _fadeImage.DOBlendableColor(Color.black, _duration);
+    }
+    /// <summary>
+    /// 単純なFadeOut
+    /// </summary>
+    public void FadeOut()
+    {
+        _fadeImage.DOBlendableColor(Color.clear, _duration);
+    }
 }
