@@ -5,26 +5,35 @@ using UnityEngine;
 public class WallTrigger : MonoBehaviour
 {
     public GameObject[] leftWalls; // 左側の壁の配列
+    public GameObject[] rightWalls; // 右側の壁の配列
     public Vector3 moveDistance; // 壁の移動距離
     public float moveDuration = 1.0f; // 壁が移動する時間
     public float delayBetweenMoves = 0.5f; // 壁が移動する間の時間差
 
-    private Vector3[] initialPositions; // 各壁の初期位置を記録する配列
+    private Vector3[] initialLeftPositions; // 左側の各壁の初期位置
+    private Vector3[] initialRightPositions; // 右側の各壁の初期位置
 
     void Start()
     {
         // 各壁の初期位置を記録
-        initialPositions = new Vector3[leftWalls.Length];
+        initialLeftPositions = new Vector3[leftWalls.Length];
+        initialRightPositions = new Vector3[rightWalls.Length];
+
         for (int i = 0; i < leftWalls.Length; i++)
         {
-            initialPositions[i] = leftWalls[i].transform.position;
+            initialLeftPositions[i] = leftWalls[i].transform.position;
+        }
+
+        for (int i = 0; i < rightWalls.Length; i++)
+        {
+            initialRightPositions[i] = rightWalls[i].transform.position;
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
         // プレイヤーがトリガーに触れた場合
-        if (other.GetComponent<CharacterController>() != null)
+        if (other.GetComponent<CharacterController>() != null&& other.CompareTag("imouto"))
         {
             StartCoroutine(MoveWalls());
         }
@@ -32,42 +41,50 @@ public class WallTrigger : MonoBehaviour
 
     System.Collections.IEnumerator MoveWalls()
     {
-        // 各壁を順番に移動させる
+        // 各壁を同時に移動させる
         for (int i = 0; i < leftWalls.Length; i++)
         {
-            yield return StartCoroutine(MoveWall(leftWalls[i], initialPositions[i] + moveDistance));
+            // 左右の壁を同時に動かす
+            yield return StartCoroutine(MoveWall(leftWalls[i], initialLeftPositions[i] + moveDistance, rightWalls[i], initialRightPositions[i] - moveDistance));
 
             // 次の壁を移動させる前に時間差を待つ
             yield return new WaitForSeconds(delayBetweenMoves);
         }
     }
 
-    System.Collections.IEnumerator MoveWall(GameObject wall, Vector3 targetPosition)
+    System.Collections.IEnumerator MoveWall(GameObject leftWall, Vector3 leftTargetPosition, GameObject rightWall, Vector3 rightTargetPosition)
     {
-        Vector3 startPosition = wall.transform.position;
+        Vector3 leftStartPosition = leftWall.transform.position;
+        Vector3 rightStartPosition = rightWall.transform.position;
         float elapsedTime = 0;
 
         while (elapsedTime < moveDuration)
         {
-            wall.transform.position = Vector3.Lerp(startPosition, targetPosition, elapsedTime / moveDuration);
+            leftWall.transform.position = Vector3.Lerp(leftStartPosition, leftTargetPosition, elapsedTime / moveDuration);
+            rightWall.transform.position = Vector3.Lerp(rightStartPosition, rightTargetPosition, elapsedTime / moveDuration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        wall.transform.position = targetPosition;
+        leftWall.transform.position = leftTargetPosition;
+        rightWall.transform.position = rightTargetPosition;
     }
 
     void OnDrawGizmosSelected()
     {
         // 壁の移動後の位置を表示
         Gizmos.color = Color.green;
-        if (leftWalls != null)
+        if (leftWalls != null && rightWalls != null)
         {
             for (int i = 0; i < leftWalls.Length; i++)
             {
                 if (leftWalls[i] != null)
                 {
                     Gizmos.DrawLine(leftWalls[i].transform.position, leftWalls[i].transform.position + moveDistance);
+                }
+                if (rightWalls[i] != null)
+                {
+                    Gizmos.DrawLine(rightWalls[i].transform.position, rightWalls[i].transform.position - moveDistance);
                 }
             }
         }
