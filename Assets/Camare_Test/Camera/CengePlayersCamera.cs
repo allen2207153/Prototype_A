@@ -28,7 +28,7 @@ public class CengePlayersCamera : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    /*private void OnTriggerExit(Collider other)
     {
         // 各ゾーンをチェック
         foreach (Zone zone in zones)
@@ -39,5 +39,5 @@ public class CengePlayersCamera : MonoBehaviour
                 break;
             }
         }
-    }
+    }*/
 }
