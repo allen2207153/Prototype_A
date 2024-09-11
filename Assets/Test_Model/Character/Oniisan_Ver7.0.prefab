@@ -389,7 +389,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 678052866931940090}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0.006, y: 0.829, z: -0.053}
+  m_LocalPosition: {x: -0.006, y: 0.829, z: 0.456}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2906,7 +2906,7 @@ Transform:
   - {fileID: 1074595630806565242}
   - {fileID: 5927413898039208079}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7320709739185630136
 Animator:
@@ -3123,21 +3123,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zones:
   - zoneObject: {fileID: 0}
-    cameraIndex: 2
-  - zoneObject: {fileID: 0}
     cameraIndex: 1
   - zoneObject: {fileID: 0}
-    cameraIndex: 0
-  - zoneObject: {fileID: 0}
     cameraIndex: 2
-  - zoneObject: {fileID: 0}
-    cameraIndex: 3
-  - zoneObject: {fileID: 0}
-    cameraIndex: 4
-  - zoneObject: {fileID: 0}
-    cameraIndex: 5
-  - zoneObject: {fileID: 0}
-    cameraIndex: 4
   cameraChange: {fileID: 0}
 --- !u!114 &2006130190897692406
 MonoBehaviour:
@@ -3213,6 +3201,7 @@ MonoBehaviour:
   _attackBox: {fileID: 2534758752684265884}
   _coldTime: 2
   _attackTime: 0
+  _isHoldingHand: 0
 --- !u!114 &7995450639315119403
 MonoBehaviour:
   m_ObjectHideFlags: 0
