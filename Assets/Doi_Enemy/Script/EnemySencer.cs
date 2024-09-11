@@ -29,12 +29,12 @@ public class EnemySencer : MonoBehaviour
 
             if (angle <= _searchAngle)
             {
-                //obstacleLayer = LayerMask.GetMask("Block", "Wall");
 
                 if (!Physics.Linecast(transform.position + Vector3.up, target.transform.position + Vector3.up, _obstacleLayer))　//プレイヤーとの間に障害物がないとき
                 {
                     if (Vector3.Distance(target.transform.position, transform.position) <= _searchArea.radius * 0.5f
-                        && Vector3.Distance(target.transform.position, transform.position) >= _searchArea.radius * 0.05f)
+                        && Vector3.Distance(target.transform.position, transform.position) >= _searchArea.radius * 0.05f
+                        && _enemyMove._state == Enemy.EnemyState.Chase)
                     {
                         Debug.Log("Attackセンサー実行");
                         _enemyMove.SetState(Enemy.EnemyState.Attack);
@@ -47,10 +47,6 @@ public class EnemySencer : MonoBehaviour
                         _enemyMove.SetState(Enemy.EnemyState.Chase, target.transform); // センサーに入ったプレイヤーをターゲットに設定して、追跡状態に移行する。
                     }
                 }
-            }
-            else if (angle > _searchAngle)
-            {
-                _enemyMove.SetState(Enemy.EnemyState.Patrol);
             }
         }
     }
