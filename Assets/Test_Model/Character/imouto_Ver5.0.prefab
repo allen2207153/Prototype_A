@@ -2018,14 +2018,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  playerOffset: {fileID: 0}
   rigPoint: {fileID: 0}
   animator: {fileID: 2898611851776592254}
   followDistance: 0.3
-  stopDistance: 0.2
+  stopDistance: 0.25
   activationRadius: 0.82
-  speedLerpRate: 30
-  runSpeedMultiplier: 1.5
+  speedLerpRate: 18
+  runSpeedMultiplier: 2.3
   holdHandKey: 104
   isHoldingHands: 0
   canHold: 0
@@ -2077,8 +2076,8 @@ MonoBehaviour:
   _grabHand: 0
   isHoldingHand: 0
   transitionSpeed: 0.05
-  handPositionOffset: {x: -0.04, y: -0.06, z: 0.03}
-  handRotationOffset: {x: 16.3, y: -73.6, z: 133.4}
+  handPositionOffset: {x: -0.02, y: -0.06, z: 0.03}
+  handRotationOffset: {x: 16.3, y: -173.5, z: -1}
 --- !u!114 &3200287506942824023
 MonoBehaviour:
   m_ObjectHideFlags: 0

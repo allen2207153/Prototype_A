@@ -5,7 +5,6 @@ using UnityEngine.Animations.Rigging;
 public class FollowPlayer : MonoBehaviour
 {
     public Transform player;
-    public Transform playerOffset;
     public Transform rigPoint;
     public Animator animator;
     public float followDistance = 2.0f; // NPC 跟隨的距離
@@ -37,7 +36,7 @@ public class FollowPlayer : MonoBehaviour
         }
 
         characterController = GetComponent<CharacterController>();
-        lastPlayerPosition = playerOffset.position + initialOffset; // 初始位置
+        lastPlayerPosition = player.position + initialOffset; // 初始位置
         playerAnimator = player.GetComponent<Animator>();  // プレイヤーのアニメーターを取得
 
         currentNPCSpeed = 0f; // 初始速度設為 0
@@ -47,12 +46,12 @@ public class FollowPlayer : MonoBehaviour
 
     void Update()
     {
-        float distanceToPlayer = Vector3.Distance(playerOffset.position, transform.position);
+        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
         playerIK = GameObject.Find("Oniisan").GetComponent<PlayerMovement>()._grabHandFlag;
         currentNPCSpeed =   playerSpeed = playerAnimator.GetFloat("Speed");// プレイヤーのアニメーションパラメータ Speed を取得
         // 計算玩家的速度
-        playerSpeed = (playerOffset.position - lastPlayerPosition).magnitude / Time.deltaTime;
-        lastPlayerPosition = playerOffset.position; // 更新玩家位置
+        playerSpeed = (player.position - lastPlayerPosition).magnitude / Time.deltaTime;
+        lastPlayerPosition = player.position; // 更新玩家位置
         Debug.Log("current" + currentNPCSpeed);
         // 檢查 NPC 是否可以牽手
         if (distanceToPlayer <= activationRadius)
@@ -67,7 +66,7 @@ public class FollowPlayer : MonoBehaviour
                     // 牽手時，NPC 停止移動，並保持朝向玩家
                     
                     FollowAndMoveNPC();
-                    transform.LookAt(new Vector3(playerOffset.position.x, transform.position.y, playerOffset.position.z));
+                    transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
                     animator.SetFloat("Speed", currentNPCSpeed);
                 }
              
@@ -85,9 +84,9 @@ public class FollowPlayer : MonoBehaviour
     // NPC 跟隨玩家邏輯
     private void FollowAndMoveNPC()
     {
-        Vector3 followPosition = playerOffset.position - player.forward * followDistance;
+        Vector3 followPosition = player.position - player.forward * followDistance;
         Vector3 moveDirection = (followPosition - transform.position).normalized;
-        float distanceToPlayer = Vector3.Distance(playerOffset.position, transform.position);
+        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
         // 距離に応じて移動するか停止するかを判断
         if (distanceToPlayer > followDistance)
@@ -110,7 +109,7 @@ public class FollowPlayer : MonoBehaviour
         {
             currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, 0.0f, Time.deltaTime * speedLerpRate);
             animator.SetFloat("Speed", 0.0f);
-            lastPlayerPosition = playerOffset.position + initialOffset;
+            lastPlayerPosition = player.position + initialOffset;
         }
 
         // NPCのアニメーションを更新
