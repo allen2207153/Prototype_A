@@ -1958,7 +1958,7 @@ GameObject:
   - component: {fileID: 3200287506942824023}
   m_Layer: 0
   m_Name: imouto_Ver5.0
-  m_TagString: Untagged
+  m_TagString: imouto
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1982,7 +1982,7 @@ Transform:
   - {fileID: 4638907154191382555}
   - {fileID: 2963728977278384722}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2898611851776592254
 Animator:
@@ -2020,11 +2020,11 @@ MonoBehaviour:
   player: {fileID: 0}
   rigPoint: {fileID: 0}
   animator: {fileID: 2898611851776592254}
-  followDistance: 0.3
+  followDistance: 0.36
   stopDistance: 0.25
   activationRadius: 0.82
   speedLerpRate: 18
-  runSpeedMultiplier: 2.3
+  runSpeedMultiplier: 2.5
   holdHandKey: 104
   isHoldingHands: 0
   canHold: 0
@@ -2076,8 +2076,8 @@ MonoBehaviour:
   _grabHand: 0
   isHoldingHand: 0
   transitionSpeed: 0.05
-  handPositionOffset: {x: -0.02, y: -0.06, z: 0.03}
-  handRotationOffset: {x: 16.3, y: -173.5, z: -1}
+  handPositionOffset: {x: -0.02, y: -0.06, z: -0.03}
+  handRotationOffset: {x: 16.3, y: -202, z: -1}
 --- !u!114 &3200287506942824023
 MonoBehaviour:
   m_ObjectHideFlags: 0
