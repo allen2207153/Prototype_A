@@ -39,8 +39,8 @@ ModelImporter:
       name: Attack
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 0
-      lastFrame: 120
+      firstFrame: 39
+      lastFrame: 97
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -70,6 +70,14 @@ ModelImporter:
         messageOptions: 0
       - time: 0.6060194
         functionName: HitEnd
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: d0edec9a26f707f41a187bd7cc443dc7,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 1
+        functionName: AttackEnd
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: d0edec9a26f707f41a187bd7cc443dc7,
           type: 3}

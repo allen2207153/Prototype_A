@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class KnockBack : MonoBehaviour
 {
-    [SerializeField] private float _knockBackForce = 300f;
+    public float _knockBackForce = 300f;
     [SerializeField] private GameObject _enemy;
 
     public void EnemyKnockBack(GameObject enemy)

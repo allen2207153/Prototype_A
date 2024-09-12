@@ -7,30 +7,27 @@ public class FollowPlayer : MonoBehaviour
     public Transform player;
     public Transform rigPoint;
     public Animator animator;
-    public float followDistance = 2.0f; // プレイヤーを追従し始める距離
-    public float stopDistance = 1.5f; // プレイヤーの追従を停止する距離
+    public float followDistance = 2.0f; // NPC 跟隨的距離
+    public float stopDistance = 1.5f;   // NPC 停止跟隨的距離
     [Range(0.0f, 3.0f)]
-    public float activationRadius; // プレイヤーがキーを押してNPCを動かせる距離
-    public float speedLerpRate = 5.0f; // 速度を平滑にするためのレート
+    public float activationRadius;      // 牽手的觸發範圍
+    public float speedLerpRate = 5.0f;  // 速度插值的平滑度
+    public float runSpeedMultiplier = 1.5f;  // 跑步速度倍數
+    private Animator playerAnimator;  // プレイヤーのアニメーターを取得
+
 
     private CharacterController characterController;
-    [SerializeField]private bool isFollowing = false; // NPCがプレイヤーを追従しているかどうかを示すフラグ
-    private Vector3 lastPlayerPosition; // プレイヤーの前回位置
-    private float playerSpeed; // プレイヤーの速度
-    private float currentNPCSpeed; // 現在のNPCの速度
+    private Vector3 lastPlayerPosition;   // 玩家上一次的位置
+    private float playerSpeed;            // 玩家當前的速度
+    private float currentNPCSpeed;        // NPC 當前的速度
 
-    //public MultiRotationConstraint playerMultiRotationCons;
-    //public MultiRotationConstraint npcMultiRotationCons;
-    //public MultiParentConstraint npcHandSync;
-    public KeyCode holdHandKey = KeyCode.H;
-    public bool isHoldingHands = false;
-    public bool canHold = false;
-    public Vector3 initialOffset;
+    public KeyCode holdHandKey = KeyCode.H;  // 牽手按鍵
+    public bool isHoldingHands = false;     // 是否牽手
+    public bool canHold = false;            // 是否可以牽手
+    public Vector3 initialOffset;           // 起始偏移量
+    [SerializeField] private bool playerIK;  // 是否啟用 IK 系統
+    [SerializeField] private bool Iksystem;  // 用於存儲 IK 狀態
 
-    [SerializeField] private bool playerIK;
-
-
-    [SerializeField]private bool Iksystem;
     void Start()
     {
         if (animator == null)
@@ -39,124 +36,96 @@ public class FollowPlayer : MonoBehaviour
         }
 
         characterController = GetComponent<CharacterController>();
-        lastPlayerPosition = player.position + initialOffset; // 初期プレイヤー位置を設定
-        currentNPCSpeed = 0f; // 初期のNPCの速度を0に設定
+        lastPlayerPosition = player.position + initialOffset; // 初始位置
+        playerAnimator = player.GetComponent<Animator>();  // プレイヤーのアニメーターを取得
 
-        //Iksystem = GameObject.Find("Oniisan").GetComponent<Test_IKSystem>().ikActive;
+        currentNPCSpeed = 0f; // 初始速度設為 0
+
         playerIK = GameObject.Find("Oniisan").GetComponent<PlayerMovement>()._grabHandFlag;
     }
 
     void Update()
     {
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
-        //Iksystem = GameObject.Find("Oniisan").GetComponent<Test_IKSystem>().ikActive;
         playerIK = GameObject.Find("Oniisan").GetComponent<PlayerMovement>()._grabHandFlag;
-
-        // プレイヤーの速度を計算
+        currentNPCSpeed =   playerSpeed = playerAnimator.GetFloat("Speed");// プレイヤーのアニメーションパラメータ Speed を取得
+        // 計算玩家的速度
         playerSpeed = (player.position - lastPlayerPosition).magnitude / Time.deltaTime;
-        lastPlayerPosition = player.position; // 前回位置を更新
-
-        // プレイヤーが一定範囲内にいるかどうかをチェック
-        if (distanceToPlayer <= activationRadius )
+        lastPlayerPosition = player.position; // 更新玩家位置
+        Debug.Log("current" + currentNPCSpeed);
+        // 檢查 NPC 是否可以牽手
+        if (distanceToPlayer <= activationRadius)
         {
             canHold = true;
-            if(playerIK)
+            if (playerIK != false)
             {
                 isHoldingHands = true;
-                isFollowing = true; // フラグをトグル
 
                 if (isHoldingHands)
                 {
-                    //// 开始牵手
-                    //playerMultiRotationCons.weight = 1.0f;
-                    //npcMultiRotationCons.weight = 1.0f;
-                    //npcHandSync.weight = 1.0f;
-
-                    // 检查玩家与NPC的距离
-                    if (distanceToPlayer < followDistance)
-                    {
-                        // 停止NPC的移动，仅调整朝向
-                        currentNPCSpeed = 0.0f;
-                        transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
-                    }
-                    else
-                    {
-                        // 跟随玩家
-                        Vector3 direction = (player.position - transform.position).normalized;
-                        direction.y = 0; // 水平面上で移動を保つ
-
-                        currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, playerSpeed, Time.deltaTime * speedLerpRate);
-
-                        characterController.Move(direction * currentNPCSpeed * Time.deltaTime);
-
-                        transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
-                    }
-
-                    // 设置动画参数
+                    // 牽手時，NPC 停止移動，並保持朝向玩家
+                    
+                    FollowAndMoveNPC();
+                    transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
                     animator.SetFloat("Speed", currentNPCSpeed);
                 }
-                else
-                {
-
-                    //playerMultiRotationCons.weight = 0.0f;
-                    //npcMultiRotationCons.weight = 0.0f;
-                    //npcHandSync.weight = 0.0f;
-                    // NPCがプレイヤーを追従している場合
-                    if (isFollowing)
-                    {
-                        float distance = Vector3.Distance(player.position, transform.position);
-
-                        if (distance > followDistance)
-                        {
-                            Vector3 direction = (player.position - transform.position).normalized;
-                            direction.y = 0; // 水平面上で移動を保つ
-
-                            currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, playerSpeed, Time.deltaTime * speedLerpRate);
-
-                            characterController.Move(direction * currentNPCSpeed * Time.deltaTime);
-
-                            transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
-
-                            animator.SetFloat("Speed", currentNPCSpeed);
-                        }
-                        else if (distance < stopDistance)
-                        {
-                            currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, 0.0f, Time.deltaTime * speedLerpRate);
-                            animator.SetFloat("Speed", 0.0f);
-                        }
-                    }
-                    else
-                    {
-                        currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, 0.0f, Time.deltaTime * speedLerpRate);
-                        animator.SetFloat("Speed", 0.0f);
-                    }
-                }
+             
             }
-            Debug.Log("WWWWWWWWWWWWW");
-            
 
-           
         }
         else
         {
+            // 退出牽手狀態
             isHoldingHands = false;
-            isFollowing = false; // フラグをトグル
             canHold = false;
         }
-
-        
-        
     }
 
-    void GrabHand()
+    // NPC 跟隨玩家邏輯
+    private void FollowAndMoveNPC()
     {
+        Vector3 followPosition = player.position - player.forward * followDistance;
+        Vector3 moveDirection = (followPosition - transform.position).normalized;
+        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
+        // 距離に応じて移動するか停止するかを判断
+        if (distanceToPlayer > followDistance)
+        {
+            if (playerSpeed > 2f ||playerIK==true)  // プレイヤーの Speed パラメータに基づいてランニングかウォーキングを判断
+            {
+                currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, playerSpeed * runSpeedMultiplier, Time.deltaTime * speedLerpRate);
+            }
+            else
+            {
+                currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, playerSpeed, Time.deltaTime * speedLerpRate);
+            }
+
+            characterController.Move(moveDirection * currentNPCSpeed * Time.deltaTime);
+
+            // NPCの方向をrigPointに向かって調整
+            transform.LookAt(new Vector3(rigPoint.position.x, transform.position.y, rigPoint.position.z));
+        }
+        else if (distanceToPlayer < stopDistance)
+        {
+            currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, 0.0f, Time.deltaTime * speedLerpRate);
+            animator.SetFloat("Speed", 0.0f);
+            lastPlayerPosition = player.position + initialOffset;
+        }
+
+        // NPCのアニメーションを更新
+        animator.SetFloat("Speed", currentNPCSpeed);
     }
 
     void OnDrawGizmosSelected()
     {
-        // NPCの周囲にアクティベーション範囲を描画
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(rigPoint.position, activationRadius);
+        // 畫出牽手範圍
+        if(playerIK !=false)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(rigPoint.position, activationRadius);
+        }
+        //else
+        //    isHoldingHands = false;
+        //canHold = false;
     }
 }
