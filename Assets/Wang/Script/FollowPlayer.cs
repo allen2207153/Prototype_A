@@ -52,7 +52,6 @@ public class FollowPlayer : MonoBehaviour
         // 計算玩家的速度
         playerSpeed = (player.position - lastPlayerPosition).magnitude / Time.deltaTime;
         lastPlayerPosition = player.position; // 更新玩家位置
-        Debug.Log("current" + currentNPCSpeed);
         // 檢查 NPC 是否可以牽手
         if (distanceToPlayer <= activationRadius)
         {

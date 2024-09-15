@@ -389,7 +389,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 678052866931940090}
   m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: -0.006, y: 0.829, z: 0.456}
+  m_LocalPosition: {x: -0.006, y: 13.94, z: 0.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -405,13 +405,13 @@ Light:
   m_GameObject: {fileID: 678052866931940090}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 2
+  m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.13
-  m_Range: 10.35
-  m_SpotAngle: 110.699554
-  m_InnerSpotAngle: 61.189247
+  m_Intensity: 41.02
+  m_Range: 19.267357
+  m_SpotAngle: 67.35091
+  m_InnerSpotAngle: 37.336773
   m_CookieSize: 10
   m_Shadows:
     m_Type: 0
@@ -1386,7 +1386,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -2909,10 +2909,11 @@ GameObject:
   - component: {fileID: 1362886681055497088}
   - component: {fileID: 1134893801149612009}
   - component: {fileID: 7995450639315119403}
+  - component: {fileID: 2975207289052908638}
   - component: {fileID: 6331175966567929882}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Oniisan_Ver7.0
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2938,7 +2939,7 @@ Transform:
   - {fileID: 5927413898039208079}
   - {fileID: 219167607394743367}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7320709739185630136
 Animator:
@@ -3202,7 +3203,7 @@ MonoBehaviour:
   _checkFoot: {fileID: 1596906556315297883}
   _layerMask:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 64
   _attackFlag: 0
   canHoldHand: 0
   _gravity: -9.8
@@ -3272,6 +3273,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _knockBackForce: 300
   _enemy: {fileID: 0}
+--- !u!114 &2975207289052908638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6345848279419909093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fad08a9e37fe4d4fb962a1b9ae3cb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _movableLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  _checkDistance: 0.1
+  _pushAngle: 45
+  _pushHitNormal: {x: 0, y: 0, z: 0}
+  _movableObjectHeight: 0.5
 --- !u!114 &6331175966567929882
 MonoBehaviour:
   m_ObjectHideFlags: 0
