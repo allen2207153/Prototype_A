@@ -48,8 +48,15 @@ public class PlayerMovement : BChara
     //回転の角度を保存する変数
     private Quaternion targetRotation;
 
+    //回転を制限するフラグ
+    private bool _canRotate = true;
+
+    //ぶら下がり中に回転したかどうかを記録
+    private bool _hasRotatedWhileHanging = false;
+
     //ぶら下がり
     private bool _checkHanging = false;
+
     //ぶら下がるを一回だけに制限する用
     private bool _hangingFlag = true;
 
@@ -219,11 +226,12 @@ public class PlayerMovement : BChara
                     nm = Motion.Attack;
                 }
 
-                //更新_追加時間：20240826＿八子遥輝
                 if (_crouchFlag && CheckFoot()) { nm = Motion.Crouching_Enter; } //更新時間：20240807＿ワンユールン
                 animator.SetBool("Walk_Bool", false);
                 animator.SetBool("Crouch_Bool", false);
-                animator.SetFloat("Time", 0.0f); //しゃがみ中にカウントした時間をリセット 
+                animator.SetBool("ClimbingUp_Bool", false); //更新_追加時間：20240915＿八子遥輝
+
+                animator.SetFloat("Time", 0.0f); //しゃがみ中や登り中にカウントした時間をリセット 
 
                 break;
             case Motion.Walk: //更新_追加時間：20240826＿八子遥輝
@@ -259,57 +267,79 @@ public class PlayerMovement : BChara
             case Motion.Jump: //更新_追加時間：20240824＿八子遥輝
                 if (_velocity.y < 0) { nm = Motion.Fall; } 
                 if (CheckHead()) { _velocity.y = -0.01f; }
-                animator.SetBool("Walk_Bool", false);//更新_追加時間：20240829＿ワンユールン
+                animator.SetBool("Walk_Bool", false); //更新_追加時間：20240829＿ワンユールン
                 animator.SetBool("Jump_Bool", true);
 
                 break;
-            case Motion.Fall: //更新_追加時間：20240827＿八子遥輝
+            case Motion.Fall: //更新_追加時間：20240915＿八子遥輝
                 if (CheckFoot()) { nm = Motion.Landing; }                                                   
                 if (_checkHanging && _hangingFlag == true) { nm = Motion.Hanging_ByCollider; }
 
                 animator.SetBool("Fall_Bool", true);
+                animator.SetBool("Landing_Bool", false);
+                animator.SetBool("JumpToHanging_Bool", false);
+                animator.SetBool("Hanging_ByJump_Bool", false);
 
                 break;
-            case Motion.Landing: //更新_追加時間：20240827＿八子遥輝
+            case Motion.Landing: //更新_追加時間：20240915＿八子遥輝
                 if (CheckFoot()) { nm = Motion.Stand; }
 
+                animator.SetBool("Landing_Bool", true);
+                animator.SetBool("Fall_Bool", false);
                 animator.SetBool("Jump_Bool", false);
                 animator.SetBool("JumpToHanging_Bool", false);
-                animator.SetBool("Fall_Bool", false);
 
                 break;
-            case Motion.TakeOff:
+            case Motion.TakeOff: //更新_追加時間：20240915＿八子遥輝
                 if (_moveCnt >= 0) { nm = Motion.Jump; }
 
+                animator.SetBool("Landing_Bool", false); 
+
                 break;
-            case Motion.JumpToHangingTakeOff:
+            case Motion.JumpToHangingTakeOff: //更新_追加時間：20240915＿八子遥輝
                 if (_moveCnt >= 0) { nm = Motion.JumpToHanging; }
+
+                animator.SetBool("Landing_Bool", false);
 
                 break;
             case Motion.JumpToHanging: //更新_追加時間：20240827＿八子遥輝
-                if ((_climbVec3 - _cCtrl.transform.position).magnitude < 0.12f) { nm = Motion.Hanging_ByJump; }
+                if ((_climbVec3 - _cCtrl.transform.position).magnitude < 0.12f) 
+                { 
+                    nm = Motion.Hanging_ByJump; 
+                    _canRotate = true; // JumpToHangingが終わったら回転を有効化 
+                    _velocity.y = 0; // 垂直方向の速度をリセット
+                }
 
                 animator.SetBool("JumpToHanging_Bool", true);
 
                 break;
-            case Motion.Hanging_ByJump: //更新_追加時間：20240827＿八子遥輝
+            case Motion.Hanging_ByJump: //更新_追加時間：20240915＿八子遥輝
                 if (_jumpFlag) { nm = Motion.ClimbingUp; }
-                if (_moveCnt >= 10 && _movementInput.y > 0.2f) { nm = Motion.ClimbingUp; }
-                if (_moveCnt >= 10 && _movementInput.y < -0.2f) { nm = Motion.Fall; }
-
-                animator.SetTrigger("Hanging_ByJump_Trigger");
+                if (_movementInput.y > 0.2f && _moveCnt >= 20) { nm = Motion.ClimbingUp; } // 硬直を追加しバグを起こりにくくする
+                if (_movementInput.y < -0.2f && _hasRotatedWhileHanging) 
+                { 
+                    nm = Motion.Fall;
+                    _canRotate = true; // Hanging_ByJumpが終わったら回転を有効化
+                }
+                animator.SetBool("Hanging_ByJump_Bool", true);
 
                 break;
             case Motion.Hanging_ByCollider:
                 //if (CheckHanging() == false) { nm = Motion.Fall; }
                 if (_checkHanging == false) { nm = Motion.Fall; }
-                if (_moveCnt >= 10 && _movementInput.y < -0.2f) { nm = Motion.Fall; }
+                if (_moveCnt >= 10 && _movementInput.y < -0.2f) {  nm = Motion.Fall; }
 
                 break;
-            case Motion.ClimbingUp: //更新_追加時間：20240827＿八子遥輝
-                if (!_isClimbingUp) { nm = Motion.Fall; }
+            case Motion.ClimbingUp: //更新_追加時間：20240915＿八子遥輝
+                //if (!_isClimbingUp) { nm = Motion.Fall; } // 変なタイミングで落下判定があるためコメントアウト
+                if (!_isClimbingUp && _moveCnt >= 60) 
+                { 
+                    nm = Motion.Landing; 
+                    _canRotate = true; // ClimbingUpが終わったら回転を有効化
+                }
 
-                animator.SetTrigger("ClimbingUp_Trigger");
+                animator.SetBool("ClimbingUp_Bool",     true);
+                animator.SetBool("Hanging_ByJump_Bool", false);
 
                 break;
 
@@ -371,7 +401,6 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Jump:
                 if (_moveCnt == 0) { HandleJumping(); }
-
                 HandleWalking();
                 break;
             case Motion.Fall:
@@ -389,17 +418,32 @@ public class PlayerMovement : BChara
                 _isClimbingUp = true; //「登る」を可能にする
                 _climbVec3.y -= _playerHangingOffset_Y; //キャラのぶら下がるの位置を計算
                 break;
-            case Motion.JumpToHanging:
+            case Motion.JumpToHanging: //追加時間：20240915＿八子遥輝
                 //if (_moveCnt == 0) { _climbVec3.y -= 0.4f; }
+                _canRotate = false; // 回転を無効化
+                _hasRotatedWhileHanging = false; // リセット
+                _movementInput = Vector2.zero; // JumpToHanging中は移動入力を無視
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
-            case Motion.Hanging_ByJump:
+            case Motion.Hanging_ByJump: //追加時間：20240915＿八子遥輝
+                if (_movementInput.y < -0.2f && !_hasRotatedWhileHanging)
+                {
+                    _canRotate = true; // 後ろに入力されたら回転を一時的に有効化
+                    transform.rotation = Quaternion.LookRotation(-transform.forward); // 即座に180度回転
+                    _hasRotatedWhileHanging = true; // 回転したことを記録
+                }
+                else
+                {
+                    _canRotate = false; // それ以外は回転を無効化
+                }
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
             case Motion.Hanging_ByCollider:
                 _hangingFlag = false;
                 break;
-            case Motion.ClimbingUp:
+            case Motion.ClimbingUp: //追加時間：20240915＿八子遥輝
+                _canRotate = false; // 回転を無効化
+                _movementInput = Vector2.zero; // ClimbingUp中は移動入力を無視
                 HandleClimbingUp();
                 break;
             case Motion.Crouching_Enter:
@@ -473,11 +517,10 @@ public class PlayerMovement : BChara
         //カメラの回転によってキャラクタの向きを調整します
         moveDirection = _vCam.transform.forward * moveInput.z + _vCam.transform.right * moveInput.x;
         moveDirection.y = 0f;
-        if (moveDirection.magnitude > 0)
+        if (moveDirection.magnitude > 0 && _canRotate)
         {
             transform.rotation = Quaternion.LookRotation(moveDirection);
         }
-
 
         if (_ctx.phase == InputActionPhase.Performed)
         {
@@ -527,7 +570,7 @@ public class PlayerMovement : BChara
             Vector3 _moveDirection = moveDirection;
 
             //追加時間：20240709＿ワンユールン— ->修正_20240711_チンキントウ ->修正20240723_チョウハク
-            if (!_pushState)
+            if (!_pushState && _canRotate)
             {
                 targetRotation = Quaternion.LookRotation(direction, Vector3.up);
             }

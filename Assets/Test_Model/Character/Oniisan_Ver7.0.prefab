@@ -83,7 +83,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5582683346c4b4a40b4ef66b7f93b2e3, type: 2}
+  - {fileID: 2100000, guid: 94d186e636f5c154b8d4976b5b5e7e54, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3256,6 +3256,9 @@ MonoBehaviour:
   _attackButtonDown: 0
   _isAttacking: 0
   _attackBox: {fileID: 2534758752684265884}
+  _damage: 5
+  _lightAttackDamage: 5
+  _heavyAttackDamage: 8
   _coldTime: 2
   _attackTime: 0
   _isHoldingHand: 0
