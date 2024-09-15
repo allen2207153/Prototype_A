@@ -124,8 +124,8 @@ public class FollowPlayer : MonoBehaviour
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(rigPoint.position, activationRadius);
         }
-        //else
-        //    isHoldingHands = false;
-        //canHold = false;
+        else
+            isHoldingHands = false;
+        canHold = false;
     }
 }
