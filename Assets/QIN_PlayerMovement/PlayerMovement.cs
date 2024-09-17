@@ -849,6 +849,11 @@ public class PlayerMovement : BChara
             platformTransform = null;
         }
     }
+
+    public void SetMaxSpeed(float newSpeed)
+    {
+        _walkSpeedMax = newSpeed;
+    }
 }
 
 

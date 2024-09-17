@@ -2911,7 +2911,7 @@ GameObject:
   - component: {fileID: 7995450639315119403}
   - component: {fileID: 2975207289052908638}
   - component: {fileID: 6331175966567929882}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Oniisan_Ver7.0
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2939,7 +2939,7 @@ Transform:
   - {fileID: 5927413898039208079}
   - {fileID: 219167607394743367}
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7320709739185630136
 Animator:
@@ -3120,7 +3120,7 @@ CharacterController:
   m_Radius: 0.1
   m_SlopeLimit: 60
   m_StepOffset: 0.3
-  m_SkinWidth: 0.02
+  m_SkinWidth: 0.03
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.72, z: 0}
 --- !u!114 &2112396131818332211
@@ -3136,7 +3136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ikActive: 0
-  rightHandObj: {fileID: 8198259240699117040}
+  rightHandObj: {fileID: 0}
   leftHandObj: {fileID: 0}
   lookObj: {fileID: 1074595630806565242}
   _grabHand: 0
@@ -3166,23 +3166,29 @@ MonoBehaviour:
   - zoneObject: {fileID: 0}
     cameraIndex: 3
   - zoneObject: {fileID: 0}
-    cameraIndex: 0
-  - zoneObject: {fileID: 0}
-    cameraIndex: 0
+    cameraIndex: 3
   - zoneObject: {fileID: 0}
     cameraIndex: 4
   - zoneObject: {fileID: 0}
-    cameraIndex: 3
+    cameraIndex: 4
   - zoneObject: {fileID: 0}
     cameraIndex: 5
   - zoneObject: {fileID: 0}
-    cameraIndex: 4
+    cameraIndex: 5
   - zoneObject: {fileID: 0}
     cameraIndex: 6
   - zoneObject: {fileID: 0}
-    cameraIndex: 5
+    cameraIndex: 6
   - zoneObject: {fileID: 0}
     cameraIndex: 7
+  - zoneObject: {fileID: 0}
+    cameraIndex: 7
+  - zoneObject: {fileID: 0}
+    cameraIndex: 8
+  - zoneObject: {fileID: 0}
+    cameraIndex: 8
+  - zoneObject: {fileID: 0}
+    cameraIndex: 9
   cameraChange: {fileID: 0}
 --- !u!114 &2006130190897692406
 MonoBehaviour:
@@ -3206,10 +3212,10 @@ MonoBehaviour:
     m_Bits: 64
   _attackFlag: 0
   canHoldHand: 0
-  _gravity: -9.8
+  _gravity: -3
   _walkSpeedMax: 3.5
   _walkAddSpeed: 0.1
-  _jumpForce: 7.5
+  _jumpForce: 4
   _vCam: {fileID: 0}
   _rotationSpeed: 600
   _checkMoveCnt: 0

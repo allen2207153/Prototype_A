@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4544923826404144925}
   - component: {fileID: 7782062838077239431}
-  - component: {fileID: 2132851173903791776}
   m_Layer: 0
   m_Name: SceneTrigger
   m_TagString: Untagged
@@ -31,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 27
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -53.967, z: 0}
 --- !u!65 &7782062838077239431
 BoxCollider:
@@ -54,17 +53,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 5.7280884, y: 5.8481903, z: 1.5673218}
   m_Center: {x: -2.364044, y: -0.21512604, z: 0.28366083}
---- !u!114 &2132851173903791776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2382214569640721095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 889344049d561c14ba5d03a04d34cd84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SceneName: Stage
-  durationTime: 1

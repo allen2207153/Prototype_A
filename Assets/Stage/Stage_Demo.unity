@@ -375,12 +375,12 @@ PrefabInstance:
     - target: {fileID: 2187060271258477275, guid: 2345d25f7a8b6ac49a0ba44f9ec3d9d3,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.44311678
+      value: -0.4431168
       objectReference: {fileID: 0}
     - target: {fileID: 2187060271258477275, guid: 2345d25f7a8b6ac49a0ba44f9ec3d9d3,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.007576876
+      value: 0.007576877
       objectReference: {fileID: 0}
     - target: {fileID: 2187060271258477275, guid: 2345d25f7a8b6ac49a0ba44f9ec3d9d3,
         type: 3}
@@ -1728,12 +1728,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 15.713446, y: 18.66967, z: 1.5397162}
   m_Center: {x: 15.118065, y: 6.427204, z: -0.45868862}
---- !u!4 &320806720 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8198259240699117040, guid: d0f639a80091fc54189f02f7df665cdc,
-    type: 3}
-  m_PrefabInstance: {fileID: 1233224602}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &325408459
 GameObject:
   m_ObjectHideFlags: 0
@@ -6656,7 +6650,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh37620
+  m_Name: pb_Mesh1524792
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -8624,6 +8618,11 @@ PrefabInstance:
       propertyPath: _vCam
       value: 
       objectReference: {fileID: 2054055398}
+    - target: {fileID: 2112396131818332211, guid: d0f639a80091fc54189f02f7df665cdc,
+        type: 3}
+      propertyPath: rightHandObj
+      value: 
+      objectReference: {fileID: 2013953857}
     - target: {fileID: 4650382144814156219, guid: d0f639a80091fc54189f02f7df665cdc,
         type: 3}
       propertyPath: cameraChange
@@ -10076,6 +10075,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 45698699}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1491027528 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7893834457495380579, guid: d0f639a80091fc54189f02f7df665cdc,
+    type: 3}
+  m_PrefabInstance: {fileID: 1233224602}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1491957498
 GameObject:
   m_ObjectHideFlags: 0
@@ -10643,16 +10648,11 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 127470024}
-    - target: {fileID: 244795484667866817, guid: b75d264ab549f1444bf535638222d977,
-        type: 3}
-      propertyPath: rigPoint
-      value: 
-      objectReference: {fileID: 320806720}
     - target: {fileID: 5031065205172455480, guid: b75d264ab549f1444bf535638222d977,
         type: 3}
       propertyPath: rightHandObj
       value: 
-      objectReference: {fileID: 320806720}
+      objectReference: {fileID: 1491027528}
     - target: {fileID: 5393778702274819405, guid: b75d264ab549f1444bf535638222d977,
         type: 3}
       propertyPath: m_Name
@@ -13047,6 +13047,12 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!4 &2013953857 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1999910387514783196, guid: b75d264ab549f1444bf535638222d977,
+    type: 3}
+  m_PrefabInstance: {fileID: 1551712229}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2021104558
 PrefabInstance:
   m_ObjectHideFlags: 0
