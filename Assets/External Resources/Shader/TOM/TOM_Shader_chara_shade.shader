@@ -49,6 +49,70 @@
         LOD 100
 
 
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags {"LightMode" = "ShadowCaster"}
+
+            ZWrite On
+            ZTest LEqual
+            Cull off
+
+            HLSLPROGRAM
+            #pragma target 2.0
+            
+            #pragma vertex MyShadowPassVertex
+            #pragma fragment MyShadowPassFragment
+
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+
+            CBUFFER_START(UnityPerMaterial)
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+            CBUFFER_END
+
+            struct appdata
+            {
+                float4 positionOS : POSITION;
+                float3 normalOS : NORMAL;
+                float2 texcoord : TEXCOORD0;
+            };
+
+            struct v2f
+            {
+                float4 positionCS : SV_POSITION;
+            };
+
+            float4 GetShadowPositionHClip(appdata input)
+            {
+                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
+                float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
+                Light light = GetMainLight();
+                float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, light.direction));
+    #if UNITY_REVERSED_Z
+                positionCS.z = min(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
+    #else
+                positionCS.z = max(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
+    #endif
+                return positionCS;
+            }
+
+            v2f MyShadowPassVertex(appdata input)
+            {
+                v2f output = (v2f)0;
+                
+                output.positionCS = GetShadowPositionHClip(input);
+                return output;
+            }
+
+            half4 MyShadowPassFragment(v2f input) : SV_TARGET
+            {
+                return 1;
+            }
+            ENDHLSL
+        }
+
         //工程１～６まとめPass
         Pass
         {
@@ -267,68 +331,6 @@
             ENDHLSL
         }
 
-        Pass
-        {
-            Name "ShadowCaster"
-            Tags {"LightMode" = "ShadowCaster"}
-
-            ZWrite On
-            ZTest LEqual
-            Cull off
-
-            HLSLPROGRAM
-            #pragma target 2.0
-            
-            #pragma vertex MyShadowPassVertex
-            #pragma fragment MyShadowPassFragment
-
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
-
-            CBUFFER_START(UnityPerMaterial)
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-            CBUFFER_END
-
-            struct appdata
-            {
-                float4 positionOS : POSITION;
-                float3 normalOS : NORMAL;
-                float2 texcoord : TEXCOORD0;
-            };
-
-            struct v2f
-            {
-                float4 positionCS : SV_POSITION;
-            };
-
-            float4 GetShadowPositionHClip(appdata input)
-            {
-                float3 positionWS = TransformObjectToWorld(input.positionOS.xyz);
-                float3 normalWS = TransformObjectToWorldNormal(input.normalOS);
-                Light light = GetMainLight();
-                float4 positionCS = TransformWorldToHClip(ApplyShadowBias(positionWS, normalWS, light.direction));
-    #if UNITY_REVERSED_Z
-                positionCS.z = min(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
-    #else
-                positionCS.z = max(positionCS.z, positionCS.w * UNITY_NEAR_CLIP_VALUE);
-    #endif
-                return positionCS;
-            }
-
-            v2f MyShadowPassVertex(appdata input)
-            {
-                v2f output = (v2f)0;
-                
-                output.positionCS = GetShadowPositionHClip(input);
-                return output;
-            }
-
-            half4 MyShadowPassFragment(v2f input) : SV_TARGET
-            {
-                return 1;
-            }
-            ENDHLSL
-        }
+        
     }
 }
