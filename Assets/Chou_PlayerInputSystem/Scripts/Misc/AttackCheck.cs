@@ -7,14 +7,12 @@ public class AttackCheck : MonoBehaviour
 {
     private KnockBack _knockBack;
 
-    private EnemyHPSystem _enemyHPSystem;
 
     private float _damage;
 
     void Start()
     {
         _knockBack = FindObjectOfType<KnockBack>();
-        _enemyHPSystem = FindObjectOfType<EnemyHPSystem>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -22,9 +20,11 @@ public class AttackCheck : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             _knockBack.EnemyKnockBack(other.gameObject);
-
+            EnemyHPSystem enemyHP = other.GetComponent<EnemyHPSystem>();
             _damage = GameObject.Find("Oniisan").GetComponent<MeleeAttack>()._damage;
-            _enemyHPSystem.ReceiveDamage(_damage);
+            Debug.Log("AttackSuccesssss");
+            enemyHP.ReceiveDamage(_damage);
+            Debug.Log(_damage);
         }
     }
 }

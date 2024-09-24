@@ -30,7 +30,13 @@ public class PlayerMovement : BChara
     [NonSerialized] public bool IsPlayerPaused = false;
 
     //重力の大きさを設定します
-    [SerializeField] private float _gravity = -9.8f;
+    [SerializeField] private float _gravity = -9.8f; // 最大重力加速度
+    [SerializeField] private float groundGravity = -1f; // 最大落下速度（例：-9.8f）
+    [SerializeField] private float _fallAcceleration = 0.5f; // 重力加速度を制御するための倍率
+    //ジャンプ変数
+    float initialJumpVelocity;
+    [SerializeField]float maxJumpHeight = 1.0f;
+    [SerializeField]float maxJumpTime = 0.5f;
 
     //移動速度を設定します
     [SerializeField] private float _walkSpeedMax = 10f;
@@ -126,6 +132,7 @@ public class PlayerMovement : BChara
         //追加時間：20240709＿ワンユールン
         TryGetComponent(out animator);
         targetRotation = transform.rotation;
+        setJumpVariables();
     }
 
     void Start()
@@ -134,6 +141,11 @@ public class PlayerMovement : BChara
         _cCtrl = GetComponent<CharacterController>();
         _playerClimbing = new PlayerClimbing();
         _climbVec3 = Vector3.zero;
+
+        //Collider enemyCollider = GameObject.FindWithTag("Enemy").GetComponent<CapsuleCollider>(); // 敵のCollider
+
+        // CharacterControllerと敵のColliderの衝突を無視
+        //Physics.IgnoreCollision(_cCtrl, enemyCollider);
 
         //追加時間：20240723＿チョウハク
         _playerSensor = GetComponent<PlayerSensor>();
@@ -155,7 +167,6 @@ public class PlayerMovement : BChara
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
         canHoldHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().canHold;
-
         if (isOnPlatform && platformTransform != null)//更新_追加時間：20240904＿ワンユールン
         {
             // プラットフォームの移動量を計算
@@ -177,6 +188,7 @@ public class PlayerMovement : BChara
 
         Think();
         Move();
+        HandleGravity();
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime); //追加時間：20240812＿ワンユールン
         if (animator.GetFloat("Speed") < 0.05)
         {
@@ -214,7 +226,7 @@ public class PlayerMovement : BChara
                     {
                         nm = Motion.JumpToHangingTakeOff;
                     }
-
+                    
                     else
                     {
                         nm = Motion.TakeOff;
@@ -271,7 +283,7 @@ public class PlayerMovement : BChara
                 if (_velocity.y < 0) { nm = Motion.Fall; }
                 if (CheckHead()) { _velocity.y = -0.01f; }
                 animator.SetBool("Walk_Bool", false); //更新_追加時間：20240829＿ワンユールン
-                animator.SetBool("Jump_Bool", true);
+                animator.SetBool("JumpToHanging_Bool", true);
 
                 break;
             case Motion.Fall: //更新_追加時間：20240915＿八子遥輝
@@ -407,7 +419,7 @@ public class PlayerMovement : BChara
                 HandleWalking();
                 break;
             case Motion.Fall:
-                HandleGravity();
+                HandleWalking();
                 break;
             case Motion.Landing:
                 _jumpFlag = false; //ジャンプを一回だけに制限する（Landing後ジャンプ可能にする）
@@ -623,7 +635,7 @@ public class PlayerMovement : BChara
     /// </summary>
     private void HandleJumping()
     {
-        _velocity.y = _jumpForce; //ジャンプ実行
+        _velocity.y = initialJumpVelocity * 0.5f; //ジャンプ実行
 
         //_velocity.y = Mathf.Sqrt(_jumpForce * -2f * _gravity);
     }
@@ -633,28 +645,46 @@ public class PlayerMovement : BChara
     /// </summary>
     private void HandleGravity()
     {
+        bool isFalling = _velocity.y <= 0.0f || _jumpFlag ;
 
-        switch (_motion)
+        //switch (_motion)
+        //{
+        //    case Motion.JumpToHangingTakeOff:
+        //    case Motion.JumpToHanging:
+        //    case Motion.Hanging_ByJump:
+        //    case Motion.Hanging_ByCollider:
+        //    case Motion.ClimbingUp:
+        //        return; // 重力を適用します
+        //}
+
+
+        // 地面に接地している場合、重力の影響をリセット（あるいは抑える）
+        if ( (_motion == Motion.Landing ||  _motion == Motion.Stand))
         {
-            case Motion.JumpToHangingTakeOff:
-            case Motion.JumpToHanging:
-            case Motion.Hanging_ByJump:
-            case Motion.Hanging_ByCollider:
-            case Motion.ClimbingUp:
-                return; // 重力を適用します
+            _velocity.y = groundGravity; // 着地時の速度を少し下にすることで地面に接地する
         }
-
-
-        if (_cCtrl.isGrounded && (_motion == Motion.Landing || _motion == Motion.Walk))
+        else if (isFalling)
         {
-            _velocity.y = -2f;
+            float previousYVelocity = _velocity.y;
+            float newYVelocity = _velocity.y + (_gravity * _fallAcceleration * Time.deltaTime);
+            float nextYVelocity = Math.Max((previousYVelocity + newYVelocity) * 0.5f, -5f);
+
+            _velocity.y = nextYVelocity;
         }
         else
         {
+            float previousYVelocity = _velocity.y;
+            float newYVelocity = _velocity.y + (_gravity * Time.deltaTime);
+            float nextYVelocity = (previousYVelocity + newYVelocity) * 0.5f;
+            // 空中にいる場合、重力加速度を適用する
+            _velocity.y = nextYVelocity;
 
-            _velocity.y += _gravity * Time.deltaTime;
+            //// 最大落下速度に達したら、それ以上加速しない
+            //if (_velocity.y < _maxFallSpeed)
+            //{
+            //    _velocity.y = _maxFallSpeed;
+            //}
         }
-
 
         _cCtrl.Move(_velocity * Time.deltaTime);
     }
@@ -864,6 +894,14 @@ public class PlayerMovement : BChara
     public void SetMaxSpeed(float newSpeed)
     {
         _walkSpeedMax = newSpeed;
+    }
+
+    void setJumpVariables()
+    {
+        float timeToApex = maxJumpTime / 2 ;
+        _gravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
+
+        initialJumpVelocity = (2 * maxJumpHeight)/timeToApex;
     }
 }
 

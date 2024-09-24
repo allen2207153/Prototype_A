@@ -69,7 +69,7 @@ public class FollowPlayer : MonoBehaviour
             {
                 isHoldingHands = true;
 
-                if (isHoldingHands)
+                if (isHoldingHands&&playerIK==true)
                 {
                     // 牽手時，NPC 停止移動，並保持朝向玩家
 
@@ -161,8 +161,8 @@ public class FollowPlayer : MonoBehaviour
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(rigPoint.position, activationRadius);
         }
-        else
-            isHoldingHands = false;
-        canHold = false;
+        //else
+        //    isHoldingHands = false;
+        //canHold = false;
     }
 }

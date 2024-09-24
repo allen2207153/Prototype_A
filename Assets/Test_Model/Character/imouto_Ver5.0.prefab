@@ -1566,7 +1566,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4627533588423767127}
   m_LocalRotation: {x: 0.38885543, y: 0.5905857, z: -0.5905857, w: 0.38885543}
-  m_LocalPosition: {x: 0.412, y: 0.832, z: 0.191}
+  m_LocalPosition: {x: 0, y: 3.575, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1586,7 +1586,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 0.15
-  m_Range: 2.8194351
+  m_Range: 4.7127776
   m_SpotAngle: 117.329
   m_InnerSpotAngle: 80.490845
   m_CookieSize: 10
@@ -2120,7 +2120,7 @@ Transform:
   - {fileID: 2963728977278384722}
   - {fileID: 257554529753348199}
   m_Father: {fileID: 0}
-  m_RootOrder: 22
+  m_RootOrder: 44
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2898611851776592254
 Animator:
@@ -2160,8 +2160,8 @@ MonoBehaviour:
   animator: {fileID: 2898611851776592254}
   followDistance: 0.3
   stopDistance: 0.2
-  activationRadius: 1
-  speedLerpRate: 18
+  activationRadius: 0.78
+  speedLerpRate: 28
   runSpeedMultiplier: 2.5
   holdHandKey: 104
   isHoldingHands: 0
@@ -2214,8 +2214,8 @@ MonoBehaviour:
   _grabHand: 0
   isHoldingHand: 0
   transitionSpeed: 0.05
-  handPositionOffset: {x: -0.02, y: -0.06, z: -0.03}
-  handRotationOffset: {x: 16.3, y: -202, z: -1}
+  handPositionOffset: {x: 0, y: 0, z: -0.06}
+  handRotationOffset: {x: 195.8, y: -741, z: 11.7}
 --- !u!114 &3200287506942824023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2239,6 +2239,10 @@ MonoBehaviour:
   _attackFlag: 0
   canHoldHand: 0
   _gravity: -9.8
+  groundGravity: -1
+  _fallAcceleration: 0.5
+  maxJumpHeight: 1
+  maxJumpTime: 0.5
   _walkSpeedMax: 5
   _walkAddSpeed: 0.4
   _jumpForce: 20

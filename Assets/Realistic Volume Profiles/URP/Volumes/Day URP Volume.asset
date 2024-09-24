@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   skipIterations:
     m_OverrideState: 1
     m_Value: 1
@@ -232,6 +232,62 @@ MonoBehaviour:
   dirtIntensity:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-7461017672511315945
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbb66dc641fe8ef4c843eb98a8fa4058, type: 3}
+  m_Name: FullScreenFog
+  m_EditorClassIdentifier: 
+  active: 1
+  mode:
+    m_OverrideState: 1
+    m_Value: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.622
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0.44299573, g: 0.478356, b: 0.5188679, a: 1}
+  densityMode:
+    m_OverrideState: 1
+    m_Value: 2
+  startLine:
+    m_OverrideState: 1
+    m_Value: 32.01
+  endLine:
+    m_OverrideState: 0
+    m_Value: 10
+  startHeight:
+    m_OverrideState: 0
+    m_Value: 5
+  endHeight:
+    m_OverrideState: 0
+    m_Value: 0
+  density:
+    m_OverrideState: 1
+    m_Value: 0.293
+  noiseMode:
+    m_OverrideState: 0
+    m_Value: 0
+  noiseTexture:
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
+    dimension: 1
+  noiseIntensity:
+    m_OverrideState: 0
+    m_Value: 0.5
+  noiseScale:
+    m_OverrideState: 0
+    m_Value: 1
+  noiseScrollSpeed:
+    m_OverrideState: 0
+    m_Value: {x: 1, y: 1}
 --- !u!114 &-7040558264941034197
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -719,7 +775,7 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 2.11
+    m_Value: 1.77
   contrast:
     m_OverrideState: 1
     m_Value: 11
@@ -931,6 +987,7 @@ MonoBehaviour:
   - {fileID: -2229788164321871156}
   - {fileID: -9216424105785221273}
   - {fileID: 1601098790854106321}
+  - {fileID: -7461017672511315945}
 --- !u!114 &432601958633967235
 MonoBehaviour:
   m_ObjectHideFlags: 3

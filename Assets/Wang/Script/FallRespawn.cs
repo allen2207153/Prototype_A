@@ -19,14 +19,12 @@ public class FallRespawn : MonoBehaviour
         if (controller != null)
         {
             // 判断是否是玩家（可以通过Tag或其他方式区分）
-            if (other.CompareTag("Player"))
+            if (other.CompareTag("Player")||other.CompareTag("imouto"))
             {
                 Respawn(controller, playerRespawnPoint);  // 玩家重生点
-            }
-            else if (other.CompareTag("imouto"))
-            {
                 Respawn(controller, npcRespawnPoint);  // NPC重生点
             }
+            
         }
     }
 

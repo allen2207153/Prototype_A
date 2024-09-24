@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterActivate : MonoBehaviour
@@ -9,6 +8,8 @@ public class CharacterActivate : MonoBehaviour
 
     private CharacterController characterController; // キャラクターコントローラー
     private Animator animator; // アニメーター
+
+    public float fadeDuration = 2.0f; // フェードイン/フェードアウトの持続時間
 
     void Start()
     {
@@ -35,22 +36,35 @@ public class CharacterActivate : MonoBehaviour
         // トリガーに触れたオブジェクトがプレイヤーの場合
         if (other.CompareTag("Player"))
         {
-            // 指定された空のオブジェクトの位置と回転にリセット
-            if (targetObject != null && resetTransform != null)
-            {
-                targetObject.transform.position = resetTransform.position;
-                targetObject.transform.rotation = resetTransform.rotation;
-            }
-
-            // CharacterControllerとAnimatorを有効にする
-            if (characterController != null)
-            {
-                characterController.enabled = true;
-            }
-            if (animator != null)
-            {
-                animator.enabled = true;
-            }
+            StartCoroutine(FadeAndActivateCharacter());
         }
+    }
+
+    private IEnumerator FadeAndActivateCharacter()
+    {
+        // フェードイン
+        FadeCanvas.Instance.FadeIn();
+        yield return new WaitForSeconds(fadeDuration);
+
+        // 指定された空のオブジェクトの位置と回転にリセット
+        if (targetObject != null && resetTransform != null)
+        {
+            targetObject.transform.position = resetTransform.position;
+            targetObject.transform.rotation = resetTransform.rotation;
+        }
+
+        // CharacterControllerとAnimatorを有効にする
+        if (characterController != null)
+        {
+            characterController.enabled = true;
+        }
+        if (animator != null)
+        {
+            animator.enabled = true;
+        }
+
+        // フェードアウト
+        FadeCanvas.Instance.FadeOut();
+        yield return new WaitForSeconds(fadeDuration);
     }
 }

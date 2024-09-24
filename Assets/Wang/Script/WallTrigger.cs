@@ -38,7 +38,7 @@ public class WallTrigger : MonoBehaviour
         }
     }
 
-    System.Collections.IEnumerator MoveWalls()
+    IEnumerator MoveWalls()
     {
         // 各壁を同時に移動させる
         List<Coroutine> wallCoroutines = new List<Coroutine>();
@@ -57,7 +57,7 @@ public class WallTrigger : MonoBehaviour
         }
     }
 
-    System.Collections.IEnumerator MoveWall(GameObject leftWall, Vector3 leftTargetPosition, GameObject rightWall, Vector3 rightTargetPosition)
+   IEnumerator MoveWall(GameObject leftWall, Vector3 leftTargetPosition, GameObject rightWall, Vector3 rightTargetPosition)
     {
         Vector3 leftStartPosition = leftWall.transform.position;
         Vector3 rightStartPosition = rightWall.transform.position;
@@ -65,8 +65,9 @@ public class WallTrigger : MonoBehaviour
 
         while (elapsedTime < moveDuration)
         {
-            leftWall.transform.position = Vector3.Lerp(leftStartPosition, leftTargetPosition, elapsedTime / moveDuration);
-            rightWall.transform.position = Vector3.Lerp(rightStartPosition, rightTargetPosition, elapsedTime / moveDuration);
+            float t = Mathf.SmoothStep(0, 1, elapsedTime / moveDuration); // 緩やかな加減速
+            leftWall.transform.position = Vector3.Lerp(leftStartPosition, leftTargetPosition, t);
+            rightWall.transform.position = Vector3.Lerp(rightStartPosition, rightTargetPosition, t);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
