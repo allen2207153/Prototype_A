@@ -33,7 +33,7 @@ public class EnemySpawnController : MonoBehaviour
 
         if(_enemy != null)
         {
-            _enemyPos = _resetPos;
+            //_enemyPos = _resetPos;
         }
     }
 
@@ -71,7 +71,7 @@ public class EnemySpawnController : MonoBehaviour
         {
             _spawnComplete = true;
             _spawn = false;
-            _spawnEffect.Stop();
+            //_spawnEffect.Stop();
             _delayCnt = 0.0f;
         }
         
