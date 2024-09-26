@@ -17,6 +17,14 @@ public class MeleeAttack : MonoBehaviour
 
     BoxCollider _attackBoxCollider;
 
+    public float _damage = 5f;
+
+    [SerializeField]
+    private float _lightAttackDamage = 5f;
+
+    [SerializeField]
+    private float _heavyAttackDamage = 8f;
+
     [SerializeField]
     private float _coldTime = 1f;
 
@@ -57,12 +65,14 @@ public class MeleeAttack : MonoBehaviour
                 // attack
                 if ( _isHoldingHand )
                 {
+                    _damage = _lightAttackDamage;
                     animator.SetTrigger("Attack");
                     GameObject.Find("Oniisan").GetComponent<KnockBack>()._knockBackForce = 200f;
                     _coldTime = 0.67f;
                 }
                 else
                 {
+                    _damage = _heavyAttackDamage;
                     animator.SetTrigger("HeavyAttack");
                     GameObject.Find("Oniisan").GetComponent<KnockBack>()._knockBackForce = 300f;
                     _coldTime = 1f;

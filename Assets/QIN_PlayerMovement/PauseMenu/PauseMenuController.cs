@@ -1,17 +1,20 @@
-﻿using Autodesk.Fbx;
-using System.Collections;
-using System.Collections.Generic;
+﻿//using Autodesk.Fbx;
+//using System.Collections;
+//using System.Collections.Generic;
 using UnityEngine;
 
 public class PauseMenuController : MonoBehaviour
 {
     private PauseMenuInput _pInput;
     [SerializeField] private GameObject _PauseMenuUI;
+
+    private GameObject _oniisan;
     public static bool GameIsPaused { get; private set; } = false;
     private void Start()
     {
         _pInput = new PauseMenuInput();
         _pInput.Enable();
+        _oniisan = GameObject.Find("Oniisan");
     }
     void Update()
     {
@@ -32,12 +35,20 @@ public class PauseMenuController : MonoBehaviour
         _PauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
+        if (_oniisan != null)
+        {
+            _oniisan.GetComponent<PlayerMovement>().IsPlayerPaused = true;
+        }
     }
     public void ResumeTheGame()
     {
         _PauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
+        if (_oniisan != null)
+        {
+            _oniisan.GetComponent<PlayerMovement>().IsPlayerPaused = false;
+        }
     }
     public void BackToTitle()
     {

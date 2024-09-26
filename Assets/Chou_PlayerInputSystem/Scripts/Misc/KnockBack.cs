@@ -9,8 +9,19 @@ public class KnockBack : MonoBehaviour
 
     public void EnemyKnockBack(GameObject enemy)
     {
-        _enemy = enemy;
-        //_enemy.transform.position += transform.forward * Time.deltaTime * _knockBackForce;
-        _enemy.GetComponent<Rigidbody>().AddForce(transform.forward * _knockBackForce);
+        // enemyタグを持っているか確認
+        if (enemy.CompareTag("Enemy"))
+        {
+            _enemy = enemy;
+
+            // Rigidbodyを取得して、ノックバック方向に力を加える
+            Rigidbody enemyRigidbody = _enemy.GetComponent<Rigidbody>();
+
+            if (enemyRigidbody != null)
+            {
+                // 前方方向にノックバックの力を加える
+                enemyRigidbody.AddForce(transform.forward * _knockBackForce);
+            }
+        }
     }
 }

@@ -8,7 +8,6 @@ public class WallTrigger : MonoBehaviour
     public GameObject[] rightWalls; // 右側の壁の配列
     public Vector3 moveDistance; // 壁の移動距離
     public float moveDuration = 1.0f; // 壁が移動する時間
-    public float delayBetweenMoves = 0.5f; // 壁が移動する間の時間差
 
     private Vector3[] initialLeftPositions; // 左側の各壁の初期位置
     private Vector3[] initialRightPositions; // 右側の各壁の初期位置
@@ -33,26 +32,32 @@ public class WallTrigger : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         // プレイヤーがトリガーに触れた場合
-        if (other.GetComponent<CharacterController>() != null&& other.CompareTag("imouto"))
+        if (other.GetComponent<CharacterController>() != null && other.CompareTag("imouto"))
         {
             StartCoroutine(MoveWalls());
         }
     }
 
-    System.Collections.IEnumerator MoveWalls()
+    IEnumerator MoveWalls()
     {
         // 各壁を同時に移動させる
+        List<Coroutine> wallCoroutines = new List<Coroutine>();
+
         for (int i = 0; i < leftWalls.Length; i++)
         {
             // 左右の壁を同時に動かす
-            yield return StartCoroutine(MoveWall(leftWalls[i], initialLeftPositions[i] + moveDistance, rightWalls[i], initialRightPositions[i] - moveDistance));
+            Coroutine wallCoroutine = StartCoroutine(MoveWall(leftWalls[i], initialLeftPositions[i] + moveDistance, rightWalls[i], initialRightPositions[i] - moveDistance));
+            wallCoroutines.Add(wallCoroutine);
+        }
 
-            // 次の壁を移動させる前に時間差を待つ
-            yield return new WaitForSeconds(delayBetweenMoves);
+        // すべての壁の移動が完了するまで待つ
+        foreach (Coroutine wallCoroutine in wallCoroutines)
+        {
+            yield return wallCoroutine;
         }
     }
 
-    System.Collections.IEnumerator MoveWall(GameObject leftWall, Vector3 leftTargetPosition, GameObject rightWall, Vector3 rightTargetPosition)
+   IEnumerator MoveWall(GameObject leftWall, Vector3 leftTargetPosition, GameObject rightWall, Vector3 rightTargetPosition)
     {
         Vector3 leftStartPosition = leftWall.transform.position;
         Vector3 rightStartPosition = rightWall.transform.position;
@@ -60,8 +65,9 @@ public class WallTrigger : MonoBehaviour
 
         while (elapsedTime < moveDuration)
         {
-            leftWall.transform.position = Vector3.Lerp(leftStartPosition, leftTargetPosition, elapsedTime / moveDuration);
-            rightWall.transform.position = Vector3.Lerp(rightStartPosition, rightTargetPosition, elapsedTime / moveDuration);
+            float t = Mathf.SmoothStep(0, 1, elapsedTime / moveDuration); // 緩やかな加減速
+            leftWall.transform.position = Vector3.Lerp(leftStartPosition, leftTargetPosition, t);
+            rightWall.transform.position = Vector3.Lerp(rightStartPosition, rightTargetPosition, t);
             elapsedTime += Time.deltaTime;
             yield return null;
         }

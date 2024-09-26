@@ -28,6 +28,13 @@ public class FollowPlayer : MonoBehaviour
     [SerializeField] private bool playerIK;  // 是否啟用 IK 系統
     [SerializeField] private bool Iksystem;  // 用於存儲 IK 狀態
 
+    private ControllerVibration controllerVibration;
+
+    //追加時間：20240914＿八子遥輝
+    private PlayerMovement playerMovement;
+    private static readonly int isStandingHash = Animator.StringToHash("isStanding");
+    private static readonly int isWalkingHash = Animator.StringToHash("isWalking");
+
     void Start()
     {
         if (animator == null)
@@ -42,17 +49,22 @@ public class FollowPlayer : MonoBehaviour
         currentNPCSpeed = 0f; // 初始速度設為 0
 
         playerIK = GameObject.Find("Oniisan").GetComponent<PlayerMovement>()._grabHandFlag;
+
+        //追加時間：20240914＿八子遥輝
+        playerMovement = player.GetComponent<PlayerMovement>();
+        animator = GetComponent<Animator>();
+
+        controllerVibration = GetComponent<ControllerVibration>();
     }
 
     void Update()
     {
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
         playerIK = GameObject.Find("Oniisan").GetComponent<PlayerMovement>()._grabHandFlag;
-        currentNPCSpeed =   playerSpeed = playerAnimator.GetFloat("Speed");// プレイヤーのアニメーションパラメータ Speed を取得
+        currentNPCSpeed = playerSpeed = playerAnimator.GetFloat("Speed");// プレイヤーのアニメーションパラメータ Speed を取得
         // 計算玩家的速度
         playerSpeed = (player.position - lastPlayerPosition).magnitude / Time.deltaTime;
         lastPlayerPosition = player.position; // 更新玩家位置
-        Debug.Log("current" + currentNPCSpeed);
         // 檢查 NPC 是否可以牽手
         if (distanceToPlayer <= activationRadius)
         {
@@ -60,16 +72,18 @@ public class FollowPlayer : MonoBehaviour
             if (playerIK != false)
             {
                 isHoldingHands = true;
-
-                if (isHoldingHands)
+                //controllerVibration.StartVibration(0.5f, 0.5f, 0.3f);
+                if (isHoldingHands&&playerIK==true)
                 {
                     // 牽手時，NPC 停止移動，並保持朝向玩家
-                    
+
                     FollowAndMoveNPC();
                     transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
                     animator.SetFloat("Speed", currentNPCSpeed);
+
+                   
                 }
-             
+
             }
 
         }
@@ -78,6 +92,37 @@ public class FollowPlayer : MonoBehaviour
             // 退出牽手狀態
             isHoldingHands = false;
             canHold = false;
+        }
+
+        UpdateAnimationState();
+    }
+
+    //追加時間：20240914＿八子遥輝
+    private void UpdateAnimationState()
+    {
+        if (playerMovement != null)
+        {
+            if (isHoldingHands)
+            {
+                PlayerMovement.Motion playerMotion = playerMovement.GetMotion();
+                bool isStanding = playerMotion == PlayerMovement.Motion.Stand;
+                bool isWalking = playerMotion == PlayerMovement.Motion.Walk;
+
+                animator.SetBool(isStandingHash, isStanding);
+                animator.SetBool(isWalkingHash, isWalking);
+            }
+            else
+            {
+                // 手を繋いでいない場合は立ち状態に
+                animator.SetBool(isStandingHash, true);
+                animator.SetBool(isWalkingHash, false);
+            }
+        }
+        else
+        {
+            // プレイヤーが見つからない場合、NPCを立ち状態にする
+            animator.SetBool(isStandingHash, true);
+            animator.SetBool(isWalkingHash, false);
         }
     }
 
@@ -89,9 +134,9 @@ public class FollowPlayer : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
         // 距離に応じて移動するか停止するかを判断
-        if (distanceToPlayer > followDistance)
+        if (distanceToPlayer > followDistance && isHoldingHands)
         {
-            if (playerSpeed > 2f ||playerIK==true)  // プレイヤーの Speed パラメータに基づいてランニングかウォーキングを判断
+            if (playerSpeed > 2f || playerIK == true)
             {
                 currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, playerSpeed * runSpeedMultiplier, Time.deltaTime * speedLerpRate);
             }
@@ -105,13 +150,11 @@ public class FollowPlayer : MonoBehaviour
             // NPCの方向をrigPointに向かって調整
             transform.LookAt(new Vector3(rigPoint.position.x, transform.position.y, rigPoint.position.z));
         }
-        else if (distanceToPlayer < stopDistance)
+        else if (distanceToPlayer < stopDistance || !isHoldingHands)
         {
             currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, 0.0f, Time.deltaTime * speedLerpRate);
-            animator.SetFloat("Speed", 0.0f);
             lastPlayerPosition = player.position + initialOffset;
         }
-
         // NPCのアニメーションを更新
         animator.SetFloat("Speed", currentNPCSpeed);
     }
@@ -119,7 +162,7 @@ public class FollowPlayer : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         // 畫出牽手範圍
-        if(playerIK !=false)
+        if (playerIK != false)
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(rigPoint.position, activationRadius);

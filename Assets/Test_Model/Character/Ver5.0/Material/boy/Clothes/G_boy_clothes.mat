@@ -176,13 +176,14 @@ Material:
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 0
     - _DstBlendAlpha: 0
+    - _EmissionalStrength: 1.5
     - _EnableBlendModePreserveSpecularLighting: 0
     - _EnableFogOnTransparent: 1
     - _EnvironmentReflections: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.2
     - _GlossyReflections: 1
-    - _LightType: 2
+    - _LightType: 0
     - _LimLightPower: 3
     - _LimLightWeight: 0.5
     - _LimShadeColorWeight1: 0.5
@@ -213,7 +214,7 @@ Material:
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SpecularRate: 0.3
+    - _SpecularRate: 0.333
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _StencilRef: 0
@@ -252,6 +253,7 @@ Material:
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EMISSION_COLOR: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionalColor: {r: 0, g: 0, b: 0, a: 0}
     - _LimShadeColor1: {r: 0, g: 0, b: 0, a: 1}
     - _LimShadeColor2: {r: 0, g: 0, b: 0, a: 1}
     - _SPECULAR_COLOR: {r: 1, g: 1, b: 1, a: 1}
