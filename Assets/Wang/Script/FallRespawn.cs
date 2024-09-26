@@ -9,8 +9,7 @@ public class FallRespawn : MonoBehaviour
     public Transform npcRespawnPoint;     // NPC复活点的Transform
     public float fadeDuration = 1.0f;     // 淡入淡出的持续时间
 
-    public FadeCanvas sharedFadeCanvas;   // 共享的FadeCanvas，或为每个对象独立创建一个FadeCanvas
-
+    private Animator animator; 
     private void OnTriggerEnter(Collider other)
     {
         // 检查是玩家还是NPC
@@ -21,33 +20,36 @@ public class FallRespawn : MonoBehaviour
             // 判断是否是玩家（可以通过Tag或其他方式区分）
             if (other.CompareTag("Player")||other.CompareTag("imouto"))
             {
-                Respawn(controller, playerRespawnPoint);  // 玩家重生点
-                Respawn(controller, npcRespawnPoint);  // NPC重生点
+                StartCoroutine(Respawn(controller, playerRespawnPoint));  // 玩家重生点
+                StartCoroutine(Respawn(controller, npcRespawnPoint));  // NPC重生点
             }
             
         }
     }
 
-    private void Respawn(CharacterController controller, Transform respawnPoint)
+    private IEnumerator Respawn(CharacterController controller, Transform respawnPoint)
     {
         // 禁用角色控制器
+        
+        FadeCanvas.Instance.FadeIn();
+        yield return new WaitForSeconds(fadeDuration);
         controller.enabled = false;
+        // 设置新的重生位置
+        controller.transform.position = respawnPoint.position;
+        controller.transform.rotation = respawnPoint.rotation;
+        // CharacterControllerとAnimatorを有効にする
+        if (controller != null)
+        {
+            controller.enabled = true;
+        }
+        if (animator != null)
+        {
+            animator.enabled = true;
+        }
 
-        // 共享的FadeCanvas进行淡入淡出处理
-        Sequence fadeSequence = DOTween.Sequence();
-        fadeSequence.AppendCallback(() => sharedFadeCanvas.FadeIn())   // 淡入
-                    .AppendInterval(fadeDuration)   // 等待淡入完成
-                    .AppendCallback(() =>
-                    {
-                        // 设置新的重生位置
-                        controller.transform.position = respawnPoint.position;
-                        controller.transform.rotation = respawnPoint.rotation;
+        // フェードアウト
+        FadeCanvas.Instance.FadeOut();
+        yield return new WaitForSeconds(fadeDuration);
 
-                        // 在淡出之前重新启用角色控制器
-                        controller.enabled = true;
-                        Debug.Log(controller.name + " 已重生于 " + respawnPoint.name);
-                    })
-                    .AppendCallback(() => sharedFadeCanvas.FadeOut())  // 执行淡出
-                    .AppendInterval(fadeDuration);   // 等待淡出完成
     }
 }

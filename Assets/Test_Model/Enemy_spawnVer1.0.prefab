@@ -276,7 +276,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9031717917383032520}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.632141, y: -3.0646896, z: 8.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -298,6 +298,51 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697418315723325314, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.ctime0
+      value: 6554
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697418315723325314, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.ctime2
+      value: 20624
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697418315723325314, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.ctime3
+      value: 36430
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697418315723325314, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697418315723325314, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.key0.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697418315723325314, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.key0.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697418315723325314, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.key3.b
+      value: 0.3377025
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697418315723325314, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.key3.g
+      value: 0.16540584
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697418315723325314, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.key3.r
+      value: 0.5566038
       objectReference: {fileID: 0}
     - target: {fileID: 3178231595263460952, guid: be8683013d65c54489a65b0e7514d4dc,
         type: 3}
@@ -363,6 +408,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CollisionDetection
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6304407038466878985, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: _stopDistance
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8852225435248997330, guid: be8683013d65c54489a65b0e7514d4dc,
         type: 3}

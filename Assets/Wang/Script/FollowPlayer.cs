@@ -28,6 +28,8 @@ public class FollowPlayer : MonoBehaviour
     [SerializeField] private bool playerIK;  // 是否啟用 IK 系統
     [SerializeField] private bool Iksystem;  // 用於存儲 IK 狀態
 
+    private ControllerVibration controllerVibration;
+
     //追加時間：20240914＿八子遥輝
     private PlayerMovement playerMovement;
     private static readonly int isStandingHash = Animator.StringToHash("isStanding");
@@ -51,6 +53,8 @@ public class FollowPlayer : MonoBehaviour
         //追加時間：20240914＿八子遥輝
         playerMovement = player.GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
+
+        controllerVibration = GetComponent<ControllerVibration>();
     }
 
     void Update()
@@ -68,7 +72,7 @@ public class FollowPlayer : MonoBehaviour
             if (playerIK != false)
             {
                 isHoldingHands = true;
-
+                //controllerVibration.StartVibration(0.5f, 0.5f, 0.3f);
                 if (isHoldingHands&&playerIK==true)
                 {
                     // 牽手時，NPC 停止移動，並保持朝向玩家
@@ -76,6 +80,8 @@ public class FollowPlayer : MonoBehaviour
                     FollowAndMoveNPC();
                     transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
                     animator.SetFloat("Speed", currentNPCSpeed);
+
+                   
                 }
 
             }

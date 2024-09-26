@@ -65,6 +65,7 @@ public class CharacterActivate : MonoBehaviour
 
         // フェードアウト
         FadeCanvas.Instance.FadeOut();
+        GetComponent<Collider>().enabled = false;
         yield return new WaitForSeconds(fadeDuration);
     }
 }

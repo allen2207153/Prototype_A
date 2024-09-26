@@ -2,14 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class FallRespawnNpc : MonoBehaviour
 {
     public Transform playerRespawnPoint;  // プレイヤーのリスポーンポイント
     public Transform npcRespawnPoint;     // NPCのリスポーンポイント
     public float fadeDuration = 1.0f;     // フェードイン・フェードアウトの時間
-
-    public FadeCanvas sharedFadeCanvas;   // 共有するFadeCanvas、もしくは個別に作成したFadeCanvas
 
     private CharacterController playerController;  // プレイヤーのコントローラー
     private CharacterController npcController;     // NPCのコントローラー
@@ -28,23 +27,20 @@ public class FallRespawnNpc : MonoBehaviour
         {
             if (playerController != null && npcController != null)
             {
-                RespawnBoth(playerController, npcController, playerRespawnPoint, npcRespawnPoint);
+                StartCoroutine(RespawnBoth(playerController, npcController, playerRespawnPoint, npcRespawnPoint));
             }
         }
     }
 
-    private void RespawnBoth(CharacterController player, CharacterController npc, Transform playerRespawnPoint, Transform npcRespawnPoint)
+    private IEnumerator RespawnBoth(CharacterController player, CharacterController npc, Transform playerRespawnPoint, Transform npcRespawnPoint)
     {
         // コントローラーを無効化
+        FadeCanvas.Instance.FadeIn();
+        yield return new WaitForSeconds(fadeDuration);
         player.enabled = false;
         npc.enabled = false;
 
-        // 共有のFadeCanvasを使ってフェードイン・フェードアウトを行う
-        Sequence fadeSequence = DOTween.Sequence();
-        fadeSequence.AppendCallback(() => sharedFadeCanvas.FadeIn())   // フェードイン
-                    .AppendInterval(fadeDuration)   // フェードイン完了まで待つ
-                    .AppendCallback(() =>
-                    {
+      
                         // プレイヤーの新しいリスポーン位置を設定
                         player.transform.position = playerRespawnPoint.position;
                         player.transform.rotation = playerRespawnPoint.rotation;
@@ -56,11 +52,8 @@ public class FallRespawnNpc : MonoBehaviour
                         // フェードアウトの前にコントローラーを再有効化
                         player.enabled = true;
                         npc.enabled = true;
+        FadeCanvas.Instance.FadeOut();
+        yield return new WaitForSeconds(fadeDuration);
 
-                        Debug.Log(player.name + " が " + playerRespawnPoint.name + " にリスポーンしました");
-                        Debug.Log(npc.name + " が " + npcRespawnPoint.name + " にリスポーンしました");
-                    })
-                    .AppendCallback(() => sharedFadeCanvas.FadeOut())  // フェードアウト
-                    .AppendInterval(fadeDuration);   // フェードアウト完了まで待つ
     }
 }

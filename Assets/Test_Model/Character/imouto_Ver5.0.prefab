@@ -1557,7 +1557,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2963728977278384722
 Transform:
   m_ObjectHideFlags: 0
@@ -1591,7 +1591,7 @@ Light:
   m_InnerSpotAngle: 80.490845
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -2093,6 +2093,7 @@ GameObject:
   - component: {fileID: 5031065205172455480}
   - component: {fileID: 3200287506942824023}
   - component: {fileID: 1604423970642798798}
+  - component: {fileID: 2954524532633596883}
   m_Layer: 7
   m_Name: imouto_Ver5.0
   m_TagString: imouto
@@ -2120,7 +2121,7 @@ Transform:
   - {fileID: 2963728977278384722}
   - {fileID: 257554529753348199}
   m_Father: {fileID: 0}
-  m_RootOrder: 44
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2898611851776592254
 Animator:
@@ -2272,6 +2273,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 7243621979706308164}
   animator: {fileID: 2898611851776592254}
+--- !u!114 &2954524532633596883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5393778702274819405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece9d35e1c1b5954d839669534068349, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5490006576849478173
 GameObject:
   m_ObjectHideFlags: 0
