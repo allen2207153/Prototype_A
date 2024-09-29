@@ -96,6 +96,7 @@ public class FollowPlayer : MonoBehaviour
 
         UpdateAnimationState();
     }
+    
 
     //追加時間：20240914＿八子遥輝
     private void UpdateAnimationState()
@@ -148,7 +149,7 @@ public class FollowPlayer : MonoBehaviour
             characterController.Move(moveDirection * currentNPCSpeed * Time.deltaTime);
 
             // NPCの方向をrigPointに向かって調整
-            transform.LookAt(new Vector3(rigPoint.position.x, transform.position.y, rigPoint.position.z));
+            //transform.LookAt(new Vector3(rigPoint.position.x, transform.position.y, rigPoint.position.z));
         }
         else if (distanceToPlayer < stopDistance || !isHoldingHands)
         {

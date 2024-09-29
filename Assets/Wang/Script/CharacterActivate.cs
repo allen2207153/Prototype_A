@@ -26,7 +26,7 @@ public class CharacterActivate : MonoBehaviour
             }
             if (animator != null)
             {
-                animator.enabled = false;
+                //animator.enabled = false;
             }
         }
     }

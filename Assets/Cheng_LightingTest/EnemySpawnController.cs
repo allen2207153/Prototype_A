@@ -53,7 +53,7 @@ public class EnemySpawnController : MonoBehaviour
     {
       
 
-        if (_spawn)
+        if (_spawn )
         {
             Spawn();
         }
@@ -63,7 +63,7 @@ public class EnemySpawnController : MonoBehaviour
             ResetPosition();
         }
 
-        if (_enemyHPSystem._isDead && !_sinkComplete)
+        if (_enemyHPSystem._isDead)
         {
             SinkAndReset(); // 敵を沈めてリセット
         }
@@ -91,6 +91,7 @@ public class EnemySpawnController : MonoBehaviour
             _delayCnt = 0.0f;
 
             EnableEnemy(); // 敵のコンポーネントを有効にする
+            _spawn = false;
         }
     }
 
