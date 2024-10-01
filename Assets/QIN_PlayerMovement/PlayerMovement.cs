@@ -4,6 +4,7 @@ using Cinemachine;
 using System;
 using UnityEngine.EventSystems;
 using UnityEngine.Windows;
+using Unity.VisualScripting;
 
 public class PlayerMovement : BChara
 {
@@ -30,7 +31,7 @@ public class PlayerMovement : BChara
     [NonSerialized] public bool IsPlayerPaused = false;
 
     //重力の大きさを設定します
-    [SerializeField] private float _gravity = -9.8f; // 最大重力加速度
+    [SerializeField] private float _gravity = -0.01f; // 最大重力加速度 --------------TODO:調整
     [SerializeField] private float groundGravity = -1f; // 最大落下速度（例：-9.8f）
     [SerializeField] private float _fallAcceleration = 0.5f; // 重力加速度を制御するための倍率
     //ジャンプ変数
@@ -156,6 +157,7 @@ public class PlayerMovement : BChara
     private void FixedUpdate()
     {
         _moveCnt++;//増加する
+        Gravity();
         //_playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
     }
 
@@ -188,7 +190,7 @@ public class PlayerMovement : BChara
 
         Think();
         Move();
-        HandleGravity();
+        
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime); //追加時間：20240812＿ワンユールン
         if (animator.GetFloat("Speed") < 0.05)
         {
@@ -226,7 +228,7 @@ public class PlayerMovement : BChara
                     {
                         nm = Motion.JumpToHangingTakeOff;
                     }
-                    
+
                     else
                     {
                         nm = Motion.TakeOff;
@@ -290,7 +292,7 @@ public class PlayerMovement : BChara
                 if (CheckFoot()) { nm = Motion.Landing; }
                 if (_checkHanging && _hangingFlag == true) { nm = Motion.Hanging_ByCollider; }
 
-                animator.SetBool("Fall_Bool", true);
+                animator.SetBool("Fall_Bool", true);//TODO:Fallアニメはバッグがあります(重要)----------------------------
                 animator.SetBool("Landing_Bool", false);
                 animator.SetBool("JumpToHanging_Bool", false);
                 animator.SetBool("Hanging_ByJump_Bool", false);
@@ -498,6 +500,13 @@ public class PlayerMovement : BChara
                 break;
         }
 
+        
+    }
+    /// <summary>
+    /// 重力操作
+    /// </summary>
+    private void Gravity()
+    {
         //重力操作--------------------------------
         switch (_motion)
         {
@@ -518,6 +527,7 @@ public class PlayerMovement : BChara
                 break;
         }
     }
+    
 
     /// <summary>
     /// InputSystemのWalk_Action
@@ -635,7 +645,8 @@ public class PlayerMovement : BChara
     /// </summary>
     private void HandleJumping()
     {
-        _velocity.y = initialJumpVelocity * 0.5f; //ジャンプ実行
+        //_velocity.y = initialJumpVelocity * 0.5f; //ジャンプ実行
+        _velocity.y = _jumpForce; //ジャンプ実行_20241001更新_チンキントウ
 
         //_velocity.y = Mathf.Sqrt(_jumpForce * -2f * _gravity);
     }
@@ -657,34 +668,42 @@ public class PlayerMovement : BChara
         //        return; // 重力を適用します
         //}
 
-
+        
         // 地面に接地している場合、重力の影響をリセット（あるいは抑える）
-        if ( (_motion == Motion.Landing ||  _motion == Motion.Stand))
+        if ( (_motion == Motion.Landing ||  _motion == Motion.Stand||_motion==Motion.Walk))
         {
             _velocity.y = groundGravity; // 着地時の速度を少し下にすることで地面に接地する
         }
-        else if (isFalling)
-        {
-            float previousYVelocity = _velocity.y;
-            float newYVelocity = _velocity.y + (_gravity * _fallAcceleration * Time.deltaTime);
-            float nextYVelocity = Math.Max((previousYVelocity + newYVelocity) * 0.5f, -5f);
-
-            _velocity.y = nextYVelocity;
-        }
         else
         {
-            float previousYVelocity = _velocity.y;
-            float newYVelocity = _velocity.y + (_gravity * Time.deltaTime);
-            float nextYVelocity = (previousYVelocity + newYVelocity) * 0.5f;
-            // 空中にいる場合、重力加速度を適用する
-            _velocity.y = nextYVelocity;
-
-            //// 最大落下速度に達したら、それ以上加速しない
-            //if (_velocity.y < _maxFallSpeed)
-            //{
-            //    _velocity.y = _maxFallSpeed;
-            //}
+            //TODO:ソースコード調整
+            _velocity.y = (_velocity.y < -0.2f) ? -0.2f : _velocity.y += _gravity;
+            //_velocity.y = (_moveCnt > 40) ? 0f : _velocity.y += _gravity;
+            //_velocity.y = 0f;
         }
+
+        //else if (isFalling)
+        //{
+        //    float previousYVelocity = _velocity.y;
+        //    float newYVelocity = _velocity.y + (_gravity * _fallAcceleration * Time.deltaTime);
+        //    float nextYVelocity = Math.Max((previousYVelocity + newYVelocity) * 0.5f, -5f);
+
+        //    _velocity.y = nextYVelocity;
+        //}
+        //else
+        //{
+        //    float previousYVelocity = _velocity.y;
+        //    float newYVelocity = _velocity.y + (_gravity * Time.deltaTime);
+        //    float nextYVelocity = (previousYVelocity + newYVelocity) * 0.5f;
+        //    // 空中にいる場合、重力加速度を適用する
+        //    _velocity.y = nextYVelocity;
+
+        //    //// 最大落下速度に達したら、それ以上加速しない
+        //    //if (_velocity.y < _maxFallSpeed)
+        //    //{
+        //    //    _velocity.y = _maxFallSpeed;
+        //    //}
+        //}
 
         _cCtrl.Move(_velocity * Time.deltaTime);
     }

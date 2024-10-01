@@ -50,7 +50,7 @@ public class BChara : MonoBehaviour
         Crouching_Exit  //しゃがみながら出る
 
     }
-    protected Motion _motion = Motion.Stand;//現在のモーション
+    protected Motion _motion = Motion.Fall;//現在のモーション
     protected Motion _preMotion;//前回のモーションを記録する用
 
     protected int _moveCnt;//現在モーションに入るカウンター
