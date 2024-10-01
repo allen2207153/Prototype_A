@@ -59,41 +59,29 @@ public class FollowPlayer : MonoBehaviour
 
     void Update()
     {
+        // プレイヤーとNPCの距離を計算し、フラグを取得
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
         playerIK = GameObject.Find("Oniisan").GetComponent<PlayerMovement>()._grabHandFlag;
-        currentNPCSpeed = playerSpeed = playerAnimator.GetFloat("Speed");// プレイヤーのアニメーションパラメータ Speed を取得
-        // 計算玩家的速度
+        Debug.Log(playerIK);
+        // プレイヤーの速度と位置を更新
         playerSpeed = (player.position - lastPlayerPosition).magnitude / Time.deltaTime;
-        lastPlayerPosition = player.position; // 更新玩家位置
-        // 檢查 NPC 是否可以牽手
-        if (distanceToPlayer <= activationRadius)
+        lastPlayerPosition = player.position;
+
+        // 手を繋ぐ条件を確認し、アニメーションと移動を制御
+        canHold = (distanceToPlayer <= activationRadius);
+        if (canHold && playerIK)
         {
-            canHold = true;
-            if (playerIK != false)
-            {
-                isHoldingHands = true;
-                //controllerVibration.StartVibration(0.5f, 0.5f, 0.3f);
-                if (isHoldingHands&&playerIK==true)
-                {
-                    // 牽手時，NPC 停止移動，並保持朝向玩家
-
-                    FollowAndMoveNPC();
-                    transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
-                    animator.SetFloat("Speed", currentNPCSpeed);
-
-                   
-                }
-
-            }
-
+            isHoldingHands = true;
+            FollowAndMoveNPC();
+            transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
         }
         else
         {
-            // 退出牽手狀態
             isHoldingHands = false;
             canHold = false;
         }
 
+        // NPCのアニメーション状態を更新する関数を呼び出し
         UpdateAnimationState();
     }
     
