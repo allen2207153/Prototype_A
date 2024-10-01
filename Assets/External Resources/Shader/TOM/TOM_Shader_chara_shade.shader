@@ -37,7 +37,7 @@
 
         //キャラ微発光エフェクト
         [HDR]_EmissionalColor ("エミションカラー", Color) = (0, 0, 0, 0)
-        _EmissionalStrength ("エミションの強度", Range(0, 10)) = 1.0
+        _EmissionalStrength ("エミションの強度", Range(0, 100)) = 1.0
 
         //追加光源の情報
         //_AdditionalLightPos("追加光源の位置情報", vector) = (0,0,0,0)
