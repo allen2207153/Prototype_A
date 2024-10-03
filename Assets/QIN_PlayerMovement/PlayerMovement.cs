@@ -32,10 +32,8 @@ public class PlayerMovement : BChara
 
     //重力の大きさを設定します
     [SerializeField] private float _gravity = -0.01f; // 最大重力加速度 --------------TODO:調整
-    [SerializeField] private float groundGravity = -1f; // 最大落下速度（例：-9.8f）
-    [SerializeField] private float _fallAcceleration = 0.5f; // 重力加速度を制御するための倍率
     //ジャンプ変数
-    float initialJumpVelocity;
+    float initialJumpVelocity; 
     [SerializeField]float maxJumpHeight = 1.0f;
     [SerializeField]float maxJumpTime = 0.5f;
 
@@ -157,7 +155,7 @@ public class PlayerMovement : BChara
     private void FixedUpdate()
     {
         _moveCnt++;//増加する
-        Gravity();
+   
         //_playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
     }
 
@@ -169,6 +167,7 @@ public class PlayerMovement : BChara
         //_moveCntの値を観測するだけ
         _checkMoveCnt = _moveCnt;
         canHoldHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().canHold;
+        Gravity();
         if (isOnPlatform && platformTransform != null)//更新_追加時間：20240904＿ワンユールン
         {
             // プラットフォームの移動量を計算
@@ -186,11 +185,11 @@ public class PlayerMovement : BChara
                 isOnPlatform = false;
             }
         }
-
+        Debug.Log(_velocity.y);
 
         Think();
         Move();
-        
+  
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime); //追加時間：20240812＿ワンユールン
         if (animator.GetFloat("Speed") < 0.05)
         {
@@ -299,7 +298,7 @@ public class PlayerMovement : BChara
 
                 break;
             case Motion.Landing: //更新_追加時間：20240915＿八子遥輝
-                if (CheckFoot()) { nm = Motion.Stand; }
+               nm = Motion.Stand;
 
                 animator.SetBool("Landing_Bool", true);
                 animator.SetBool("Fall_Bool", false);
@@ -654,57 +653,49 @@ public class PlayerMovement : BChara
     /// <summary>
     /// 重力計算
     /// </summary>
-    private void HandleGravity()
+    private void HandleGravity()//修正時間：20241001_ワンユールン
     {
-        bool isFalling = _velocity.y <= 0.0f || _jumpFlag ;
-
-        //switch (_motion)
+        //bool isFalling = _velocity.y <= 0.0f || _jumpFlag ;
+        //// 地面に接地している場合、重力の影響をリセット（あるいは抑える）
+        //if ( (_motion == Motion.Landing ||  _motion == Motion.Stand||_motion==Motion.Walk))
         //{
-        //    case Motion.JumpToHangingTakeOff:
-        //    case Motion.JumpToHanging:
-        //    case Motion.Hanging_ByJump:
-        //    case Motion.Hanging_ByCollider:
-        //    case Motion.ClimbingUp:
-        //        return; // 重力を適用します
-        //}
-
-        
-        // 地面に接地している場合、重力の影響をリセット（あるいは抑える）
-        if ( (_motion == Motion.Landing ||  _motion == Motion.Stand||_motion==Motion.Walk))
-        {
-            _velocity.y = groundGravity; // 着地時の速度を少し下にすることで地面に接地する
-        }
-        else
-        {
-            //TODO:ソースコード調整
-            _velocity.y = (_velocity.y < -0.2f) ? -0.2f : _velocity.y += _gravity;
-            //_velocity.y = (_moveCnt > 40) ? 0f : _velocity.y += _gravity;
-            //_velocity.y = 0f;
-        }
-
-        //else if (isFalling)
-        //{
-        //    float previousYVelocity = _velocity.y;
-        //    float newYVelocity = _velocity.y + (_gravity * _fallAcceleration * Time.deltaTime);
-        //    float nextYVelocity = Math.Max((previousYVelocity + newYVelocity) * 0.5f, -5f);
-
-        //    _velocity.y = nextYVelocity;
+        //    _velocity.y = groundGravity; // 着地時の速度を少し下にすることで地面に接地する
         //}
         //else
         //{
-        //    float previousYVelocity = _velocity.y;
-        //    float newYVelocity = _velocity.y + (_gravity * Time.deltaTime);
-        //    float nextYVelocity = (previousYVelocity + newYVelocity) * 0.5f;
-        //    // 空中にいる場合、重力加速度を適用する
-        //    _velocity.y = nextYVelocity;
-
-        //    //// 最大落下速度に達したら、それ以上加速しない
-        //    //if (_velocity.y < _maxFallSpeed)
-        //    //{
-        //    //    _velocity.y = _maxFallSpeed;
-        //    //}
+        //    //TODO:ソースコード調整
+        //    _velocity.y = (_velocity.y < -0.2f) ? -0.2f : _velocity.y += _gravity;
+        //    //_velocity.y = (_moveCnt > 40) ? 0f : _velocity.y += _gravity;
+        //    //_velocity.y = 0f;
         //}
 
+
+
+        //_cCtrl.Move(_velocity * Time.deltaTime);
+        // キャラクターが接地しているかどうかを確認
+
+        float fallMultiplier = 2.0f;
+        if ((_motion == Motion.Landing || _motion == Motion.Stand || _motion == Motion.Walk))
+        {
+            _velocity.y = -2f;  // 地面に接地したとき、わずかに下向きの力を適用
+        }
+        //else if(_motion==Motion.Fall)
+        //{
+        //    float preYVelocity = _velocity.y;
+        //    float newYVelocity = _velocity.y + (_gravity * fallMultiplier * Time.deltaTime);
+        //    float nextYVelocity = Mathf.Max((preYVelocity + newYVelocity) * 0.5f, -20.0f);
+        //    _velocity.y = nextYVelocity;
+        //    Debug.Log(nextYVelocity);
+        //}
+        else
+        {
+            float preYVelocity = _velocity.y;
+            float newYVelocity = _velocity.y + (_gravity *  Time.deltaTime);
+            float nextYVelocity = (preYVelocity + newYVelocity) * 0.5f;
+            _velocity.y = nextYVelocity;
+        }
+
+        // キャラクターを移動
         _cCtrl.Move(_velocity * Time.deltaTime);
     }
 
@@ -854,10 +845,10 @@ public class PlayerMovement : BChara
         }
     }
 
-    //更新_追加時間：20240807＿ワンユールン
+    //更新_追加時間：20241002＿ワンユールン
     public void GrabHand(InputAction.CallbackContext _ctx)
     {
-        if (_ctx.phase == InputActionPhase.Started && canHoldHand == true)
+        if (_ctx.phase == InputActionPhase.Started )
         {
             _grabHandFlag = true;
             Debug.Log("Grab hand success");
@@ -915,12 +906,15 @@ public class PlayerMovement : BChara
         _walkSpeedMax = newSpeed;
     }
 
-    void setJumpVariables()
+    void setJumpVariables()//更新時間：20241001_ワンユールン
     {
-        float timeToApex = maxJumpTime / 2 ;
+         // ジャンプの頂点に到達するまでの時間を計算
+        float timeToApex = maxJumpTime / 2;
+        // 重力を設定
         _gravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
-
-        initialJumpVelocity = (2 * maxJumpHeight)/timeToApex;
+        // 初期ジャンプ速度を設定
+        initialJumpVelocity = (2 * maxJumpHeight) / timeToApex;
+        _jumpForce = initialJumpVelocity;
     }
 }
 

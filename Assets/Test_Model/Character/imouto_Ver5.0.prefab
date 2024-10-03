@@ -2121,7 +2121,7 @@ Transform:
   - {fileID: 2963728977278384722}
   - {fileID: 257554529753348199}
   m_Father: {fileID: 0}
-  m_RootOrder: 45
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2898611851776592254
 Animator:
@@ -2162,14 +2162,12 @@ MonoBehaviour:
   followDistance: 0.3
   stopDistance: 0.2
   activationRadius: 0.78
-  speedLerpRate: 28
+  speedLerpRate: 70
   runSpeedMultiplier: 2.5
-  holdHandKey: 104
   isHoldingHands: 0
   canHold: 0
   initialOffset: {x: -0.4, y: 0, z: 0}
   playerIK: 0
-  Iksystem: 0
 --- !u!143 &7243621979706308164
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2240,10 +2238,8 @@ MonoBehaviour:
   _attackFlag: 0
   canHoldHand: 0
   _gravity: -8
-  groundGravity: -1
-  _fallAcceleration: 0.5
   maxJumpHeight: 1
-  maxJumpTime: 0.5
+  maxJumpTime: 2
   _walkSpeedMax: 5
   _walkAddSpeed: 0.4
   _jumpForce: 20
