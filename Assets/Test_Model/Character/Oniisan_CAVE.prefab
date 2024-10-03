@@ -767,7 +767,7 @@ Light:
   m_InnerSpotAngle: 88.40131
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -2476,7 +2476,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 795.23, y: 108.1, z: 326.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7813278220709418640}
   - {fileID: 7009595564022078325}
@@ -2659,7 +2659,7 @@ CharacterController:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -2761,11 +2761,9 @@ MonoBehaviour:
     m_Bits: 64
   _attackFlag: 0
   canHoldHand: 0
-  _gravity: -8
-  groundGravity: -1
-  _fallAcceleration: 0.3
+  _gravity: -9.8
   maxJumpHeight: 1
-  maxJumpTime: 1
+  maxJumpTime: 0.5
   _walkSpeedMax: 3.5
   _walkAddSpeed: 0.1
   _jumpForce: 5
@@ -4127,7 +4125,7 @@ Light:
   m_InnerSpotAngle: 37.336773
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1

@@ -53,7 +53,7 @@ public class EnemySpawnController : MonoBehaviour
     {
       
 
-        if (_spawn)
+        if (_spawn )
         {
             Spawn();
         }
@@ -63,7 +63,7 @@ public class EnemySpawnController : MonoBehaviour
             ResetPosition();
         }
 
-        if (_enemyHPSystem._isDead && !_sinkComplete)
+        if (_enemyHPSystem._isDead)
         {
             SinkAndReset(); // 敵を沈めてリセット
         }
@@ -91,6 +91,7 @@ public class EnemySpawnController : MonoBehaviour
             _delayCnt = 0.0f;
 
             EnableEnemy(); // 敵のコンポーネントを有効にする
+            _spawn = false;
         }
     }
 
@@ -106,7 +107,7 @@ public class EnemySpawnController : MonoBehaviour
     }
 
     // 敵を沈めてリセットする処理
-    public void SinkAndReset()
+    public void SinkAndReset()//更新時間：20241001_ワンユールン
     {
         DisableEnemy();
        // _deathEffect.Play();
@@ -125,7 +126,7 @@ public class EnemySpawnController : MonoBehaviour
     }
 
     // 敵のコンポーネントを有効化する
-    private void EnableEnemy()
+    private void EnableEnemy()//更新時間：20241001_ワンユールン
     {
         if (_enemyCollider != null) _enemyCollider.enabled = true;
         if (_enemyRigidbody != null)
@@ -138,7 +139,7 @@ public class EnemySpawnController : MonoBehaviour
     }
 
     // 敵のコンポーネントを無効化する
-    private void DisableEnemy()
+    private void DisableEnemy()//更新時間：20241001_ワンユールン
     {
         if (_enemyCollider != null) _enemyCollider.enabled = false;
         if (_enemyRigidbody != null)
