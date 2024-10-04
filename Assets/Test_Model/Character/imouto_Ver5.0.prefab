@@ -2121,7 +2121,7 @@ Transform:
   - {fileID: 2963728977278384722}
   - {fileID: 257554529753348199}
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 45
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2898611851776592254
 Animator:
@@ -2135,7 +2135,7 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: a0b3d33847f6ac0408c84bbc0907343b, type: 3}
   m_Controller: {fileID: 9100000, guid: 76c84348007f23c4dbdd20ae1ad95026, type: 2}
   m_CullingMode: 1
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -2163,7 +2163,7 @@ MonoBehaviour:
   stopDistance: 0.2
   activationRadius: 0.78
   speedLerpRate: 70
-  runSpeedMultiplier: 2.5
+  runSpeedMultiplier: 1.5
   isHoldingHands: 0
   canHold: 0
   initialOffset: {x: -0.4, y: 0, z: 0}
@@ -2240,7 +2240,7 @@ MonoBehaviour:
   _gravity: -8
   maxJumpHeight: 1
   maxJumpTime: 2
-  _walkSpeedMax: 5
+  _walkSpeedMax: 3.5
   _walkAddSpeed: 0.4
   _jumpForce: 20
   _vCam: {fileID: 0}

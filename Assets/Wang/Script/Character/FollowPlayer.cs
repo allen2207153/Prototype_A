@@ -120,7 +120,7 @@ public class FollowPlayer : MonoBehaviour
         if ( isHoldingHands)
         {
             // プレイヤーの速度を基準にNPCの速度を設定（走っているかどうかで調整）
-            currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, playerSpeed * runSpeedMultiplier, Time.deltaTime * speedLerpRate);
+            currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, playerSpeed * runSpeedMultiplier,  speedLerpRate);
             characterController.Move(moveDirection * currentNPCSpeed * Time.deltaTime); // NPCを移動
         }
         else
