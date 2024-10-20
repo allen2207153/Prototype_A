@@ -5,6 +5,7 @@ using System;
 using UnityEngine.EventSystems;
 using UnityEngine.Windows;
 using Unity.VisualScripting;
+using System.Runtime.CompilerServices;
 
 public class PlayerMovement : BChara
 {
@@ -32,6 +33,7 @@ public class PlayerMovement : BChara
 
     //重力の大きさを設定します
     [SerializeField] private float _gravity = -0.01f; // 最大重力加速度 --------------TODO:調整
+    [SerializeField] private float _maxGravity = -10f;//追加時間：20241020＿ワンユールン
     //ジャンプ変数
     float initialJumpVelocity; 
     [SerializeField]float maxJumpHeight = 1.0f;
@@ -185,8 +187,8 @@ public class PlayerMovement : BChara
                 isOnPlatform = false;
             }
         }
-        Debug.Log(_velocity.y);
-
+        //  Debug.Log(_velocity.y);
+        //Debug.Log(_crouchFlag);
         Think();
         Move();
   
@@ -318,44 +320,42 @@ public class PlayerMovement : BChara
                 animator.SetBool("Landing_Bool", false);
 
                 break;
-            case Motion.JumpToHanging: //更新_追加時間：20240827＿八子遥輝
-                if ((_climbVec3 - _cCtrl.transform.position).magnitude < 0.12f)
-                {
+            case Motion.JumpToHanging: //更新_追加時間：20241021_ワンユールン
+              
                     nm = Motion.Hanging_ByJump;
                     _canRotate = true; // JumpToHangingが終わったら回転を有効化 
-                    _velocity.y = 0; // 垂直方向の速度をリセット
-                }
+                   //_velocity.y = -1; // 垂直方向の速度をリセット
+                
 
                 animator.SetBool("JumpToHanging_Bool", true);
 
                 break;
-            case Motion.Hanging_ByJump: //更新_追加時間：20240915＿八子遥輝
+            case Motion.Hanging_ByJump: //更新_追加時間：20241021_ワンユールン
                 if (_jumpFlag) { nm = Motion.ClimbingUp; }
-                if (_movementInput.y > 0.2f && _moveCnt >= 20) { nm = Motion.ClimbingUp; } // 硬直を追加しバグを起こりにくくする
-                if (_movementInput.y < -0.2f && _hasRotatedWhileHanging)
-                {
-                    nm = Motion.Fall;
-                    _canRotate = true; // Hanging_ByJumpが終わったら回転を有効化
-                }
-                animator.SetBool("Hanging_ByJump_Bool", true);
+                if ( _moveCnt >= 20) { nm = Motion.ClimbingUp; } // 硬直を追加しバグを起こりにくくする
+                //if (_movementInput.y < -0.2f && _hasRotatedWhileHanging)
+                //{
+                //    nm = Motion.Fall;
+                //    _canRotate = true; // Hanging_ByJumpが終わったら回転を有効化
+                //}
+                animator.SetBool("ClimbingUp_Bool", true);
 
                 break;
-            case Motion.Hanging_ByCollider:
-                //if (CheckHanging() == false) { nm = Motion.Fall; }
-                if (_checkHanging == false) { nm = Motion.Fall; }
-                if (_moveCnt >= 10 && _movementInput.y < -0.2f) { nm = Motion.Fall; }
+            case Motion.Hanging_ByCollider://更新_追加時間：20241021_ワンユールン
+                ////if (CheckHanging() == false) { nm = Motion.Fall; }
+                //if (_checkHanging == false) { nm = Motion.Fall; }
+                //if (_moveCnt >= 10 && _movementInput.y < -0.2f) { nm = Motion.Fall; }
 
                 break;
-            case Motion.ClimbingUp: //更新_追加時間：20240915＿八子遥輝
+            case Motion.ClimbingUp: //更新_追加時間：20241021_ワンユールン
                 //if (!_isClimbingUp) { nm = Motion.Fall; } // 変なタイミングで落下判定があるためコメントアウト
-                if (!_isClimbingUp && _moveCnt >= 60)
+                if (!_isClimbingUp && _moveCnt >= 25)
                 {
                     nm = Motion.Landing;
                     _canRotate = true; // ClimbingUpが終わったら回転を有効化
                 }
-
-                animator.SetBool("ClimbingUp_Bool", true);
-                animator.SetBool("Hanging_ByJump_Bool", false);
+                animator.SetBool("JumpToHanging_Bool", false);
+                animator.SetBool("ClimbingUp_Bool", false);
 
                 break;
 
@@ -434,14 +434,15 @@ public class PlayerMovement : BChara
                 _isClimbingUp = true; //「登る」を可能にする
                 _climbVec3.y -= _playerHangingOffset_Y; //キャラのぶら下がるの位置を計算
                 break;
-            case Motion.JumpToHanging: //追加時間：20240915＿八子遥輝
+            case Motion.JumpToHanging: //更新_追加時間：20241021_ワンユールン
                 //if (_moveCnt == 0) { _climbVec3.y -= 0.4f; }
                 _canRotate = false; // 回転を無効化
                 _hasRotatedWhileHanging = false; // リセット
                 _movementInput = Vector2.zero; // JumpToHanging中は移動入力を無視
+               // FaceTowardsWall(_climbVec3);
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
-            case Motion.Hanging_ByJump: //追加時間：20240915＿八子遥輝
+            case Motion.Hanging_ByJump: //更新_追加時間：20241021_ワンユールン
                 if (_movementInput.y < -0.2f && !_hasRotatedWhileHanging)
                 {
                     _canRotate = true; // 後ろに入力されたら回転を一時的に有効化
@@ -452,6 +453,7 @@ public class PlayerMovement : BChara
                 {
                     _canRotate = false; // それ以外は回転を無効化
                 }
+               // FaceTowardsWall(_climbVec3);
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
             case Motion.Hanging_ByCollider:
@@ -462,8 +464,10 @@ public class PlayerMovement : BChara
                 _movementInput = Vector2.zero; // ClimbingUp中は移動入力を無視
                 HandleClimbingUp();
                 break;
-            case Motion.Crouching_Enter:
+            case Motion.Crouching_Enter://更新_追加時間：20241021_ワンユールン
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                _cCtrl.height = 1.0f; // しゃがみ時のキャラクター高さ
+                _cCtrl.center = new Vector3(0, 0.57f, 0); // 中心を低く設定
                 break;
             case Motion.Crouching_Idle:
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
@@ -491,9 +495,11 @@ public class PlayerMovement : BChara
                 //SmoothRotation();
                 _perClimbVec3 = _climbVec3;
                 break;
-            case Motion.Crouching_Exit:
+            case Motion.Crouching_Exit://更新_追加時間：20241021_ワンユールン
                 _crouchFlag = false;
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                _cCtrl.height = 1.0f; // 元のキャラクター高さに戻す
+                _cCtrl.center = new Vector3(0, 0.57f, 0); // 中心を元に戻す
                 break;
             case Motion.Attack: //追加時間：20240824_チョウハク
                 break;
@@ -653,44 +659,21 @@ public class PlayerMovement : BChara
     /// <summary>
     /// 重力計算
     /// </summary>
-    private void HandleGravity()//修正時間：20241001_ワンユールン
+    private void HandleGravity()//更新_追加時間：20241021_ワンユールン
     {
-        //bool isFalling = _velocity.y <= 0.0f || _jumpFlag ;
-        //// 地面に接地している場合、重力の影響をリセット（あるいは抑える）
-        //if ( (_motion == Motion.Landing ||  _motion == Motion.Stand||_motion==Motion.Walk))
-        //{
-        //    _velocity.y = groundGravity; // 着地時の速度を少し下にすることで地面に接地する
-        //}
-        //else
-        //{
-        //    //TODO:ソースコード調整
-        //    _velocity.y = (_velocity.y < -0.2f) ? -0.2f : _velocity.y += _gravity;
-        //    //_velocity.y = (_moveCnt > 40) ? 0f : _velocity.y += _gravity;
-        //    //_velocity.y = 0f;
-        //}
+        
 
 
-
-        //_cCtrl.Move(_velocity * Time.deltaTime);
-        // キャラクターが接地しているかどうかを確認
-
-        float fallMultiplier = 2.0f;
         if ((_motion == Motion.Landing || _motion == Motion.Stand || _motion == Motion.Walk))
         {
             _velocity.y = -2f;  // 地面に接地したとき、わずかに下向きの力を適用
         }
-        //else if(_motion==Motion.Fall)
-        //{
-        //    float preYVelocity = _velocity.y;
-        //    float newYVelocity = _velocity.y + (_gravity * fallMultiplier * Time.deltaTime);
-        //    float nextYVelocity = Mathf.Max((preYVelocity + newYVelocity) * 0.5f, -20.0f);
-        //    _velocity.y = nextYVelocity;
-        //    Debug.Log(nextYVelocity);
-        //}
+      
         else
         {
             float preYVelocity = _velocity.y;
             float newYVelocity = _velocity.y + (_gravity *  Time.deltaTime);
+            newYVelocity = Mathf.Clamp(newYVelocity, _maxGravity, Mathf.Infinity);
             float nextYVelocity = (preYVelocity + newYVelocity) * 0.5f;
             _velocity.y = nextYVelocity;
         }
@@ -733,7 +716,7 @@ public class PlayerMovement : BChara
 
         // 移動のベクトルを計算
         Vector3 moveVector = Vector3.MoveTowards(currentPosition, targetPos, moveSpeed * Time.deltaTime);
-
+       
         // キャラを移動させる
         _cCtrl.Move(moveVector - currentPosition);
     }
@@ -742,9 +725,12 @@ public class PlayerMovement : BChara
     {
         Vector3 targetPos = _perClimbVec3 + new Vector3(0f, _playerClimbOffset, 0f);
         PlayerMoveToTarget(targetPos, _playerClimbSpeed);
+        //DisableCharacterController();
         if (_cCtrl.transform.position == targetPos) //登るの位置に到達したら
         {
+            Debug.Log("good");
             _isClimbingUp = false; //フラグを変更し、Fallモーションに切り替えを
+           // EnableCharacterController();
         }
     }
 
@@ -916,6 +902,29 @@ public class PlayerMovement : BChara
         initialJumpVelocity = (2 * maxJumpHeight) / timeToApex;
         _jumpForce = initialJumpVelocity;
     }
+
+    private void FaceTowardsWall(Vector3 wallPosition)//更新_追加時間：20241021_ワンユールン
+    {
+        // 壁の位置からキャラクターの位置へのベクトルを計算
+        Vector3 directionToWall = (wallPosition - _cCtrl.transform.position).normalized;
+
+        // キャラクターを壁の方向に向ける
+        _cCtrl.transform.rotation = Quaternion.LookRotation(new Vector3(directionToWall.x, 0, directionToWall.z));
+    }
+
+    private void DisablePlayerInput()//更新_追加時間：20241021_ワンユールン
+    {
+        // プレイヤーの入力スクリプトを無効化
+        _cCtrl.enabled = false;
+    }
+
+    private void EnablePlayerInput()//更新_追加時間：20241021_ワンユールン
+    {
+        // プレイヤーの入力スクリプトを再び有効化
+        _cCtrl.enabled = true;
+    }
+
+
 }
 
 

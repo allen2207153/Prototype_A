@@ -2691,7 +2691,7 @@ MonoBehaviour:
   _grabHand: 0
   isHoldingHand: 0
   transitionSpeed: 0.05
-  handPositionOffset: {x: 0.04, y: 0.07, z: 0.06}
+  handPositionOffset: {x: 0.02, y: 0.05, z: 0.06}
   handRotationOffset: {x: -64.76, y: -93.4, z: -6.4}
 --- !u!114 &7119692532809149055
 MonoBehaviour:
@@ -2762,6 +2762,7 @@ MonoBehaviour:
   _attackFlag: 0
   canHoldHand: 0
   _gravity: -9.8
+  _maxGravity: -10
   maxJumpHeight: 1
   maxJumpTime: 0.5
   _walkSpeedMax: 3.5
