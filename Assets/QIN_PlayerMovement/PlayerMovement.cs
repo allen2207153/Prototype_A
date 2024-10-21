@@ -35,9 +35,9 @@ public class PlayerMovement : BChara
     [SerializeField] private float _gravity = -0.01f; // 最大重力加速度 --------------TODO:調整
     [SerializeField] private float _maxGravity = -10f;//追加時間：20241020＿ワンユールン
     //ジャンプ変数
-    float initialJumpVelocity; 
-    [SerializeField]float maxJumpHeight = 1.0f;
-    [SerializeField]float maxJumpTime = 0.5f;
+    float initialJumpVelocity;
+    [SerializeField] float maxJumpHeight = 1.0f;
+    [SerializeField] float maxJumpTime = 0.5f;
 
     //移動速度を設定します
     [SerializeField] private float _walkSpeedMax = 10f;
@@ -94,7 +94,6 @@ public class PlayerMovement : BChara
     [Header("Raycastにより登るの判定位置----デバッグ観測用-----")]
     [SerializeField] private Vector3 _climbVec3;
     private Vector3 _perClimbVec3;
-    private bool _isClimbingUp = false;
 
     [Header("「ジャンプしてぶら下がる」無効の高さ")]
     [SerializeField] private float _invalidClimbHeight = 2f;
@@ -157,7 +156,7 @@ public class PlayerMovement : BChara
     private void FixedUpdate()
     {
         _moveCnt++;//増加する
-   
+
         //_playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
     }
 
@@ -191,7 +190,7 @@ public class PlayerMovement : BChara
         //Debug.Log(_crouchFlag);
         Think();
         Move();
-  
+
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime); //追加時間：20240812＿ワンユールン
         if (animator.GetFloat("Speed") < 0.05)
         {
@@ -300,7 +299,7 @@ public class PlayerMovement : BChara
 
                 break;
             case Motion.Landing: //更新_追加時間：20240915＿八子遥輝
-               nm = Motion.Stand;
+                nm = Motion.Stand;
 
                 animator.SetBool("Landing_Bool", true);
                 animator.SetBool("Fall_Bool", false);
@@ -321,18 +320,18 @@ public class PlayerMovement : BChara
 
                 break;
             case Motion.JumpToHanging: //更新_追加時間：20241021_ワンユールン
-              
-                    nm = Motion.Hanging_ByJump;
-                    _canRotate = true; // JumpToHangingが終わったら回転を有効化 
-                   //_velocity.y = -1; // 垂直方向の速度をリセット
-                
+
+                nm = Motion.Hanging_ByJump;
+                _canRotate = true; // JumpToHangingが終わったら回転を有効化 
+                                   //_velocity.y = -1; // 垂直方向の速度をリセット
+
 
                 animator.SetBool("JumpToHanging_Bool", true);
 
                 break;
             case Motion.Hanging_ByJump: //更新_追加時間：20241021_ワンユールン
                 if (_jumpFlag) { nm = Motion.ClimbingUp; }
-                if ( _moveCnt >= 20) { nm = Motion.ClimbingUp; } // 硬直を追加しバグを起こりにくくする
+                if (_moveCnt >= 20) { nm = Motion.ClimbingUp; } // 硬直を追加しバグを起こりにくくする
                 //if (_movementInput.y < -0.2f && _hasRotatedWhileHanging)
                 //{
                 //    nm = Motion.Fall;
@@ -348,8 +347,7 @@ public class PlayerMovement : BChara
 
                 break;
             case Motion.ClimbingUp: //更新_追加時間：20241021_ワンユールン
-                //if (!_isClimbingUp) { nm = Motion.Fall; } // 変なタイミングで落下判定があるためコメントアウト
-                if (!_isClimbingUp && _moveCnt >= 25)
+                if (_moveCnt >= 25)
                 {
                     nm = Motion.Landing;
                     _canRotate = true; // ClimbingUpが終わったら回転を有効化
@@ -431,7 +429,6 @@ public class PlayerMovement : BChara
                 break;
             case Motion.JumpToHangingTakeOff:
                 _jumpFlag = false; //ジャンプ可能にする
-                _isClimbingUp = true; //「登る」を可能にする
                 _climbVec3.y -= _playerHangingOffset_Y; //キャラのぶら下がるの位置を計算
                 break;
             case Motion.JumpToHanging: //更新_追加時間：20241021_ワンユールン
@@ -439,7 +436,7 @@ public class PlayerMovement : BChara
                 _canRotate = false; // 回転を無効化
                 _hasRotatedWhileHanging = false; // リセット
                 _movementInput = Vector2.zero; // JumpToHanging中は移動入力を無視
-               // FaceTowardsWall(_climbVec3);
+                                               // FaceTowardsWall(_climbVec3);
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
             case Motion.Hanging_ByJump: //更新_追加時間：20241021_ワンユールン
@@ -453,7 +450,7 @@ public class PlayerMovement : BChara
                 {
                     _canRotate = false; // それ以外は回転を無効化
                 }
-               // FaceTowardsWall(_climbVec3);
+                // FaceTowardsWall(_climbVec3);
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
             case Motion.Hanging_ByCollider:
@@ -505,7 +502,7 @@ public class PlayerMovement : BChara
                 break;
         }
 
-        
+
     }
     /// <summary>
     /// 重力操作
@@ -532,7 +529,7 @@ public class PlayerMovement : BChara
                 break;
         }
     }
-    
+
 
     /// <summary>
     /// InputSystemのWalk_Action
@@ -661,18 +658,18 @@ public class PlayerMovement : BChara
     /// </summary>
     private void HandleGravity()//更新_追加時間：20241021_ワンユールン
     {
-        
+
 
 
         if ((_motion == Motion.Landing || _motion == Motion.Stand || _motion == Motion.Walk))
         {
             _velocity.y = -2f;  // 地面に接地したとき、わずかに下向きの力を適用
         }
-      
+
         else
         {
             float preYVelocity = _velocity.y;
-            float newYVelocity = _velocity.y + (_gravity *  Time.deltaTime);
+            float newYVelocity = _velocity.y + (_gravity * Time.deltaTime);
             newYVelocity = Mathf.Clamp(newYVelocity, _maxGravity, Mathf.Infinity);
             float nextYVelocity = (preYVelocity + newYVelocity) * 0.5f;
             _velocity.y = nextYVelocity;
@@ -716,7 +713,7 @@ public class PlayerMovement : BChara
 
         // 移動のベクトルを計算
         Vector3 moveVector = Vector3.MoveTowards(currentPosition, targetPos, moveSpeed * Time.deltaTime);
-       
+
         // キャラを移動させる
         _cCtrl.Move(moveVector - currentPosition);
     }
@@ -729,8 +726,7 @@ public class PlayerMovement : BChara
         if (_cCtrl.transform.position == targetPos) //登るの位置に到達したら
         {
             Debug.Log("good");
-            _isClimbingUp = false; //フラグを変更し、Fallモーションに切り替えを
-           // EnableCharacterController();
+                                   // EnableCharacterController();
         }
     }
 
@@ -834,7 +830,7 @@ public class PlayerMovement : BChara
     //更新_追加時間：20241002＿ワンユールン
     public void GrabHand(InputAction.CallbackContext _ctx)
     {
-        if (_ctx.phase == InputActionPhase.Started )
+        if (_ctx.phase == InputActionPhase.Started)
         {
             _grabHandFlag = true;
             Debug.Log("Grab hand success");
@@ -894,7 +890,7 @@ public class PlayerMovement : BChara
 
     void setJumpVariables()//更新時間：20241001_ワンユールン
     {
-         // ジャンプの頂点に到達するまでの時間を計算
+        // ジャンプの頂点に到達するまでの時間を計算
         float timeToApex = maxJumpTime / 2;
         // 重力を設定
         _gravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
