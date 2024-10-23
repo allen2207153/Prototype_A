@@ -2060,7 +2060,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4694100390474511539}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.3649979, z: 0}
+  m_LocalPosition: {x: 0, y: 0.924, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2191,6 +2191,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2091886364921162503}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5293882982952116861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7618743384944406138}
+  m_Layer: 7
+  m_Name: CheckFoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7618743384944406138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5293882982952116861}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.08, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2817683777034342216}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5312926200098123997
@@ -2457,7 +2488,6 @@ GameObject:
   - component: {fileID: 8804952593260899722}
   - component: {fileID: 7744539102699757478}
   - component: {fileID: 3506450905941212918}
-  - component: {fileID: 1007448221213227066}
   - component: {fileID: 3419824430346634346}
   m_Layer: 7
   m_Name: Oniisan_CAVE
@@ -2487,6 +2517,7 @@ Transform:
   - {fileID: 9219688835727810820}
   - {fileID: 8695590136347250211}
   - {fileID: 5144563714070335101}
+  - {fileID: 7618743384944406138}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2666,10 +2697,10 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.4
-  m_Radius: 0.1
+  m_Radius: 0.13
   m_SlopeLimit: 60
   m_StepOffset: 0.3
-  m_SkinWidth: 0.03
+  m_SkinWidth: 0.07
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.72, z: 0}
 --- !u!114 &5700373451933611467
@@ -2751,11 +2782,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f393a07f5c16954f8edbfe02cebc258, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _checkHead: {fileID: 8001613805611663581}
+  _checkHead: {fileID: 2298738072927275005}
   _layerMaskHead:
     serializedVersion: 2
     m_Bits: 256
-  _checkFoot: {fileID: 2817683777034342216}
+  _checkFoot: {fileID: 7618743384944406138}
   _layerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -2773,7 +2804,7 @@ MonoBehaviour:
   _checkMoveCnt: 0
   _grabHandFlag: 0
   _climbVec3: {x: 0, y: 0, z: 0}
-  _invalidClimbHeight: 2
+  _invalidClimbHeight: 1.5
   _playerHangingOffset_Y: 0.8
   _playerClimbOffset: 0.1
   _playerClimbSpeed: 2
@@ -2834,25 +2865,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _knockBackForce: 300
   _enemy: {fileID: 1554468218529968921, guid: fe55b640a68520d4486ced43c4b5502a, type: 3}
---- !u!114 &1007448221213227066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5688627627835344548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fad08a9e37fe4d4fb962a1b9ae3cb30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _movableLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  _checkDistance: 0.1
-  _pushAngle: 45
-  _pushHitNormal: {x: 0, y: 0, z: 0}
-  _movableObjectHeight: 0.5
 --- !u!114 &3419824430346634346
 MonoBehaviour:
   m_ObjectHideFlags: 0

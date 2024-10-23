@@ -19,7 +19,7 @@ public class BChara : MonoBehaviour
     [Header("着地判定用Transformm")]
     [SerializeField] protected Transform _checkFoot;
 
-    protected float _checkFootRadius = 0.2f;//着地判定の半径
+    protected float _checkFootRadius = 0.15f;//着地判定の半径
 
     [Header("着地判定有効のレイヤ")]
     [SerializeField] protected LayerMask _layerMask;//着地判定有効のレイヤ
@@ -104,10 +104,14 @@ public class BChara : MonoBehaviour
     /// <returns></returns>
     protected bool CheckFoot()
     {
-        return Physics.CheckSphere(
-            _checkFoot.position,
-            _checkFootRadius,
-            _layerMask);//円形範囲を検知
+        // 使用球形檢測來判斷地面
+        bool isOnGroundSphere = Physics.CheckSphere(_checkFoot.position, _checkFootRadius, _layerMask);
+
+        // 使用Raycast來進一步確認是否在斜坡或階梯上
+        bool isOnGroundRaycast = Physics.Raycast(_checkFoot.position, Vector3.down, _checkFootRadius + 0.1f, _layerMask);
+
+        // 如果任一檢測成功，則認為角色在地面上
+        return isOnGroundSphere || isOnGroundRaycast;
     }
 
 

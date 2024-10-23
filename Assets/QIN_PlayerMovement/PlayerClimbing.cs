@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerClimbing
 {
     // private float _climbHeight = 3f; // クライムの高さ (未使用)
-    private float _lowClimbHight = 0.5f; // クライムの低い位置
-    private float _bodyHight = 2f; // プレイヤーの身体の高さ
+    private float _lowClimbHight = 0.7f; // クライムの低い位置
+    private float _bodyHight = 1.4f; // プレイヤーの身体の高さ
     private float _checkDistance = 1f; // レイキャストのチェック距離
     private Vector3 _climbHitNormal; // クライム時にヒットした面の法線
 

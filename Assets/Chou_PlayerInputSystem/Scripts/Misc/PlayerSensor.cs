@@ -29,20 +29,37 @@ public class PlayerSensor : MonoBehaviour
 
     public MovableObject MovableObjectCheck(Transform playerTransform)
     {
-        if (Physics.Raycast(playerTransform.position + Vector3.up * _movableObjectHeight, playerTransform.forward,
-            out RaycastHit hit, _checkDistance, _movableLayer))
+        // プレイヤーの足元から、3点でRaycastを発射
+        Vector3[] raycastPositions = new Vector3[]
         {
-            _pushHitNormal = hit.normal;
-            if (Vector3.Angle(-_pushHitNormal, playerTransform.forward) > _pushAngle)
+        playerTransform.position + Vector3.up * _movableObjectHeight, // 中央
+        playerTransform.position + Vector3.up * _movableObjectHeight + playerTransform.right * 0.5f, // 右側
+        playerTransform.position + Vector3.up * _movableObjectHeight - playerTransform.right * 0.5f  // 左側
+        };
+
+        foreach (var rayStart in raycastPositions)
+        {
+            // 各位置からRaycastを発射
+            if (Physics.Raycast(rayStart, playerTransform.forward, out RaycastHit hit, _checkDistance, _movableLayer))
             {
-                return null;
-            }
-            MovableObject movableObject;
-            if (hit.collider.TryGetComponent<MovableObject>(out movableObject))
-            {
-                return movableObject;
+                _pushHitNormal = hit.normal;
+
+                // プッシュ角度の条件を満たしているか確認
+                if (Vector3.Angle(-_pushHitNormal, playerTransform.forward) > _pushAngle)
+                {
+                    continue;
+                }
+
+                // ヒットしたオブジェクトがMovableObjectかどうかチェック
+                if (hit.collider.TryGetComponent<MovableObject>(out MovableObject movableObject))
+                {
+                    return movableObject;
+                }
             }
         }
+
+        // いずれのRaycastでも検出されなければnullを返す
         return null;
     }
-}
+
+    }
