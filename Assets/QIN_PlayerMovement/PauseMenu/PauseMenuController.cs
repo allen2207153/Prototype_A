@@ -50,6 +50,11 @@ public class PauseMenuController : MonoBehaviour
             _oniisan.GetComponent<PlayerMovement>().IsPlayerPaused = false;
         }
     }
+    public void ReStart()
+    {
+        ResumeTheGame();
+        PlayerEvent.CallPlayerRespawn();
+    }
     public void BackToTitle()
     {
         GameIsPaused = false;
