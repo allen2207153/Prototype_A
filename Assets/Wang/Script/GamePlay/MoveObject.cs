@@ -4,23 +4,33 @@ using UnityEngine;
 
 public class MoveObject : MonoBehaviour
 {
-    public GameObject targetObject; // 移動させる対象の物体
-    public GameObject destinationObject; // 移動先のターゲット物体
-    public float moveSpeed = 1.0f;  // 移動速度
+    public GameObject targetObject;         // 移動させるプラットフォーム
+    public GameObject destinationObject;    // 移動先のターゲット物体
+    public float moveSpeed = 1.0f;          // 移動速度
 
-    private bool shouldMove = false; // 移動を開始するかどうか
+    private bool shouldMove = false;        // 移動を開始するかどうか
 
     void OnTriggerEnter(Collider other)
     {
-        // トリガーがプレイヤーや他の特定の物体によって発動されたかを確認
+        // トリガーがプレイヤーによって発動されたかを確認
         if (other.CompareTag("Player"))
         {
-            // トリガーが発動されたとき、対象の物体を移動開始
-            shouldMove = true;
+            // プレイヤーをプラットフォームの子オブジェクトに設定
+            other.transform.SetParent(targetObject.transform);
+            shouldMove = true; // プラットフォームの移動を開始
         }
     }
 
-    void Update()
+    void OnTriggerExit(Collider other)
+    {
+        // プレイヤーがプラットフォームから離れたら親子関係を解除
+        if (other.CompareTag("Player"))
+        {
+            other.transform.SetParent(null);
+        }
+    }
+
+    void FixedUpdate()
     {
         // 移動フラグが立ったら、物体を平滑に移動
         if (shouldMove)

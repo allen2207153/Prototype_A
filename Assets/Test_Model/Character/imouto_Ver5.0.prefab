@@ -2159,11 +2159,11 @@ MonoBehaviour:
   player: {fileID: 0}
   rigPoint: {fileID: 2212861311470475791}
   animator: {fileID: 2898611851776592254}
-  followDistance: 0.3
+  followDistance: 0.35
   stopDistance: 0.2
   activationRadius: 0.78
-  speedLerpRate: 70
-  runSpeedMultiplier: 1.5
+  speedLerpRate: 0.8
+  runSpeedMultiplier: 2.72
   isHoldingHands: 0
   canHold: 0
   initialOffset: {x: -0.4, y: 0, z: 0}
@@ -2188,10 +2188,10 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 0.8
-  m_Radius: 0.1
+  m_Radius: 0.16
   m_SlopeLimit: 60
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.03
+  m_StepOffset: 0.5
+  m_SkinWidth: 0.1
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.39, z: 0}
 --- !u!114 &5031065205172455480
@@ -2238,6 +2238,7 @@ MonoBehaviour:
   _attackFlag: 0
   canHoldHand: 0
   _gravity: -8
+  _maxGravity: -10
   maxJumpHeight: 1
   maxJumpTime: 2
   _walkSpeedMax: 3.5
