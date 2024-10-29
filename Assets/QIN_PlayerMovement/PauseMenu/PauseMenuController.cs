@@ -53,7 +53,7 @@ public class PauseMenuController : MonoBehaviour
     public void ReStart()
     {
         ResumeTheGame();
-        PlayerEvent.CallPlayerRespawn();
+        EventSystem.Instance.TriggerEvent(GameEvents.PlayerRespawn);
     }
     public void BackToTitle()
     {
