@@ -113,6 +113,7 @@ public class PlayerMovement : BChara
     [SerializeField] private bool _jumpTrigger = false;
     [SerializeField] private bool _hangTrigger = false;
     [SerializeField] private bool _crouchTrigger = false;
+    [SerializeField] private bool _interactionTrigger = false;
 
     private void OnEnable()
     {
@@ -772,14 +773,18 @@ public class PlayerMovement : BChara
     {
         _crouchTrigger = crouchTrigger;
     }
-    public void Fire(InputAction.CallbackContext _ctx)
+    public void SetInteractionTrigger(bool interactionTrigger)
+    {
+        _interactionTrigger = interactionTrigger;
+    }
+    public void interaction(InputAction.CallbackContext _ctx)
     {
         //InputActionPhase.Started;      <-これはGetKeyDown
         //InputActionPhase.Performed;    <-これはGetKey
         //InputActionPhase.Canceled;     <-これはGetKeyUp
         if (_ctx.phase == InputActionPhase.Started)
         {
-            Debug.Log("Fire!");
+            Debug.Log("Firwwwwwwwwwe!");
         }
     }
 

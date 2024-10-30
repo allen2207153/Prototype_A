@@ -22,6 +22,7 @@ public class FollowPlayer : MonoBehaviour
     public bool canHold = false;            // 手をつなげるか
     public Vector3 initialOffset;           // 初期位置のオフセット
     [SerializeField] private bool playerIK; // IKシステムの有効化フラグ
+    public Transform obj;
 
     private ControllerVibration controllerVibration;
 
@@ -111,7 +112,7 @@ public class FollowPlayer : MonoBehaviour
     private void FollowAndMoveNPC()//更新時間：20240914＿八子遥輝
     {
         Vector3 followPosition = player.position - player.forward * followDistance; // NPCが追従する目標位置
-        Vector3 moveDirection = (followPosition - transform.position).normalized;   // 移動方向を計算
+        Vector3 moveDirection = (followPosition - obj.position).normalized;   // 移動方向を計算
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
         currentNPCSpeed = 0;
         // プレイヤーの速度をAnimatorから取得

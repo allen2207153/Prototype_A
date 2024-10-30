@@ -8,6 +8,7 @@ public class CharacterActivate : MonoBehaviour
 
     private CharacterController characterController; // キャラクターコントローラー
     private Animator animator; // アニメーター
+    private Collider triggerCollider; // このオブジェクトのコライダー
 
     public float fadeDuration = 2.0f; // フェードイン/フェードアウトの持続時間
 
@@ -26,17 +27,22 @@ public class CharacterActivate : MonoBehaviour
             }
             if (animator != null)
             {
-                //animator.enabled = false;
+                animator.enabled = false;
             }
         }
+
+        // トリガーのコライダーを取得
+        triggerCollider = GetComponent<Collider>();
     }
 
     void OnTriggerEnter(Collider other)
     {
         // トリガーに触れたオブジェクトがプレイヤーの場合
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && triggerCollider != null)
         {
             StartCoroutine(FadeAndActivateCharacter());
+            // 一度トリガーを無効にする
+            triggerCollider.enabled = false;
         }
     }
 
@@ -65,7 +71,6 @@ public class CharacterActivate : MonoBehaviour
 
         // フェードアウト
         FadeCanvas.Instance.FadeOut();
-        GetComponent<Collider>().enabled = false;
         yield return new WaitForSeconds(fadeDuration);
     }
 }
