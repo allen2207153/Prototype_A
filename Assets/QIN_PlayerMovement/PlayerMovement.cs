@@ -121,15 +121,15 @@ public class PlayerMovement : BChara
     private void OnEnable()
     {
         //イベントを登録
-        PlayerEvent.CheckHanging += HandleCheckHanging; //ぶら下がるイベント
-        PlayerEvent.CheckCollider += SetTriggerActions;
+        PlayerEvent.Instance.CheckHanging += HandleCheckHanging; //ぶら下がるイベント
+        PlayerEvent.Instance.CheckCollider += SetTriggerActions;
         pushPullAction.Enable();
     }
     private void OnDisable()
     {
         //イベントを解除
-        PlayerEvent.CheckHanging -= HandleCheckHanging;
-        PlayerEvent.CheckCollider -= SetTriggerActions;
+        PlayerEvent.Instance.CheckHanging -= HandleCheckHanging;
+        PlayerEvent.Instance.CheckCollider -= SetTriggerActions;
         pushPullAction.Disable();
     }
 
