@@ -7,12 +7,12 @@ public class FollowPlayer : MonoBehaviour
     public Transform player;                // プレイヤーの位置
     public Transform rigPoint;              // リグの位置
     public Animator animator;               // NPCのアニメーター
+    public Animator playerAnimator;
     public float followDistance = 2.0f;     // NPCがプレイヤーを追従する距離
     public float stopDistance = 1.5f;       // NPCが追従を停止する距離
     [Range(0.0f, 3.0f)] public float activationRadius; // 牽手を開始する範囲
     public float speedLerpRate = 5.0f;      // 移動速度の補間率
     public float runSpeedMultiplier = 1.5f; // 走るときの速度倍数
-    private Animator playerAnimator;        // プレイヤーのアニメーター
     private CharacterController characterController;
     private Vector3 lastPlayerPosition;     // プレイヤーの前回の位置
     private float playerSpeed;              // プレイヤーの現在の速度
@@ -22,7 +22,6 @@ public class FollowPlayer : MonoBehaviour
     public bool canHold = false;            // 手をつなげるか
     public Vector3 initialOffset;           // 初期位置のオフセット
     [SerializeField] private bool playerIK; // IKシステムの有効化フラグ
-    public Transform obj;
 
     private ControllerVibration controllerVibration;
 
@@ -40,16 +39,16 @@ public class FollowPlayer : MonoBehaviour
 
         characterController = GetComponent<CharacterController>();
         lastPlayerPosition = player.position + initialOffset; // 初始位置
-        playerAnimator = player.GetComponent<Animator>();  // プレイヤーのアニメーターを取得
+      
 
         currentNPCSpeed = 0f; // 初始速度設為 0
 
         playerIK = GameObject.Find("Oniisan").GetComponent<PlayerMovement>()._grabHandFlag;
 
         //追加時間：20240914＿八子遥輝
-        playerMovement = player.GetComponent<PlayerMovement>();
+        playerMovement = GameObject.Find("Oniisan").GetComponent<PlayerMovement>();
         animator = GetComponent<Animator>();
-
+        playerAnimator = GameObject.Find("Oniisan").GetComponent<Animator>();
         controllerVibration = GetComponent<ControllerVibration>();
     }
 
@@ -67,7 +66,7 @@ public class FollowPlayer : MonoBehaviour
         {
             isHoldingHands = true;
             FollowAndMoveNPC(); // NPCを追従させる
-            transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z)); // プレイヤーの方向を向く
+            transform.LookAt(new Vector3(player.position.x+initialOffset.x, transform.position.y, player.position.z+initialOffset.z)); // プレイヤーの方向を向く
         }
         else
         {
@@ -112,7 +111,8 @@ public class FollowPlayer : MonoBehaviour
     private void FollowAndMoveNPC()//更新時間：20240914＿八子遥輝
     {
         Vector3 followPosition = player.position - player.forward * followDistance; // NPCが追従する目標位置
-        Vector3 moveDirection = (followPosition - obj.position).normalized;   // 移動方向を計算
+        Vector3 moveDirection = (followPosition - transform.position+initialOffset).normalized;   // 移動方向を計算
+        moveDirection.y = 0; // Y軸を無視する
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
         currentNPCSpeed = 0;
         // プレイヤーの速度をAnimatorから取得

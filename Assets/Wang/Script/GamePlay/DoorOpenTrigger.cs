@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DoorOpenTrigger : MonoBehaviour
 {
-    private bool BoardTrigger;
     public GameObject doorObject;          // 開くドアのオブジェクト
     public float openHeight = 3.0f;        // ドアが上に開く高さ
     public float openDuration = 1.0f;      // ドアが開くまでの時間
@@ -12,7 +11,6 @@ public class DoorOpenTrigger : MonoBehaviour
 
     private Vector3 initialDoorPosition;   // ドアの初期位置
     private Vector3 targetPosition;        // ドアが完全に開いた時の位置
-    private bool isDoorOpen = false;       // ドアが開いているかどうか
 
     void Start()
     {

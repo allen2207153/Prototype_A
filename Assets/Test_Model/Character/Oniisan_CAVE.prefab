@@ -2673,6 +2673,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 45b69513-ccfc-40ad-948b-d4c0c54608bd
     m_ActionName: Player/Attack[/XInputControllerWindows/leftTrigger,/Keyboard/j]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2a59036a-c239-47b2-b275-813953c8334a
+    m_ActionName: Player/Interaction[/XInputControllerWindows/buttonSouth]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -2812,6 +2816,17 @@ MonoBehaviour:
   _jumpTrigger: 0
   _hangTrigger: 0
   _crouchTrigger: 0
+  _interactionTrigger: 0
+  pushPullAction:
+    m_Name: Push Pull
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 50db4d38-40ff-43ad-bfc9-539c6aad160c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  interactionDistance: 1.5
 --- !u!114 &8804952593260899722
 MonoBehaviour:
   m_ObjectHideFlags: 0

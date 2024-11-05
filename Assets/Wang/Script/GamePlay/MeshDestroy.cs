@@ -2,25 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// オブジェクトのメッシュを破壊し、パーツごとに分割して物理演算を適用するクラス
 public class MeshDestroy : MonoBehaviour
 {
-    private bool edgeSet = false;
-    private Vector3 edgeVertex = Vector3.zero;
-    private Vector2 edgeUV = Vector2.zero;
-    private Plane edgePlane = new Plane();
+    private bool edgeSet = false;                  // エッジが設定されたかどうかを示すフラグ
+    private Vector3 edgeVertex = Vector3.zero;     // エッジの頂点
+    private Vector2 edgeUV = Vector2.zero;         // エッジのUV座標
+    private Plane edgePlane = new Plane();         // 分割に使用する平面
 
-    public int CutCascades = 1;
-    public float ExplodeForce = 0;
+    public int CutCascades = 1;                    // 分割の回数
+    public float ExplodeForce = 0;                 // 爆発力
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    void Start() { }
 
-    }
-
-    // Update is called once per frame
     void Update()
     {
+        // 左クリックで破壊をトリガー
         if (Input.GetMouseButtonDown(0))
         {
             DestroyMesh();
@@ -29,6 +26,7 @@ public class MeshDestroy : MonoBehaviour
 
     private void DestroyMesh()
     {
+        // オリジナルのメッシュを取得し、パーツのリストを作成
         var originalMesh = GetComponent<MeshFilter>().mesh;
         originalMesh.RecalculateBounds();
         var parts = new List<PartMesh>();
@@ -42,11 +40,14 @@ public class MeshDestroy : MonoBehaviour
             Triangles = new int[originalMesh.subMeshCount][],
             Bounds = originalMesh.bounds
         };
+
+        // メインパーツの三角形リストを初期化
         for (int i = 0; i < originalMesh.subMeshCount; i++)
             mainPart.Triangles[i] = originalMesh.GetTriangles(i);
 
         parts.Add(mainPart);
 
+        // 破壊回数分、メッシュを分割
         for (var c = 0; c < CutCascades; c++)
         {
             for (var i = 0; i < parts.Count; i++)
@@ -54,11 +55,12 @@ public class MeshDestroy : MonoBehaviour
                 var bounds = parts[i].Bounds;
                 bounds.Expand(0.5f);
 
+                // ランダムな平面を作成してメッシュを分割
                 var plane = new Plane(UnityEngine.Random.onUnitSphere, new Vector3(UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
                                                                                    UnityEngine.Random.Range(bounds.min.y, bounds.max.y),
                                                                                    UnityEngine.Random.Range(bounds.min.z, bounds.max.z)));
 
-
+                // 分割後のパーツをリストに追加
                 subParts.Add(GenerateMesh(parts[i], plane, true));
                 subParts.Add(GenerateMesh(parts[i], plane, false));
             }
@@ -66,12 +68,14 @@ public class MeshDestroy : MonoBehaviour
             subParts.Clear();
         }
 
+        // 分割された各パーツに物理演算を適用
         for (var i = 0; i < parts.Count; i++)
         {
             parts[i].MakeGameobject(this);
             parts[i].GameObject.GetComponent<Rigidbody>().AddForceAtPosition(parts[i].Bounds.center * ExplodeForce, transform.position);
         }
 
+        // 元のオブジェクトを破壊
         Destroy(gameObject);
     }
 
@@ -81,7 +85,7 @@ public class MeshDestroy : MonoBehaviour
         var ray1 = new Ray();
         var ray2 = new Ray();
 
-
+        // メッシュを三角形ごとに分割し、エッジを追加
         for (var i = 0; i < original.Triangles.Length; i++)
         {
             var triangles = original.Triangles[i];
@@ -89,17 +93,15 @@ public class MeshDestroy : MonoBehaviour
 
             for (var j = 0; j < triangles.Length; j = j + 3)
             {
+                // 各頂点が平面のどちら側にあるか判定
                 var sideA = plane.GetSide(original.Vertices[triangles[j]]) == left;
                 var sideB = plane.GetSide(original.Vertices[triangles[j + 1]]) == left;
                 var sideC = plane.GetSide(original.Vertices[triangles[j + 2]]) == left;
 
-                var sideCount = (sideA ? 1 : 0) +
-                                (sideB ? 1 : 0) +
-                                (sideC ? 1 : 0);
-                if (sideCount == 0)
-                {
-                    continue;
-                }
+                // 各頂点が同じ側にある場合のみ処理を続行
+                var sideCount = (sideA ? 1 : 0) + (sideB ? 1 : 0) + (sideC ? 1 : 0);
+                if (sideCount == 0) continue;
+
                 if (sideCount == 3)
                 {
                     partMesh.AddTriangle(i,
@@ -109,7 +111,7 @@ public class MeshDestroy : MonoBehaviour
                     continue;
                 }
 
-                //cut points
+                // カットポイントを設定
                 var singleIndex = sideB == sideC ? 0 : sideA == sideC ? 1 : 2;
 
                 ray1.origin = original.Vertices[triangles[j + singleIndex]];
@@ -124,64 +126,16 @@ public class MeshDestroy : MonoBehaviour
                 plane.Raycast(ray2, out var enter2);
                 var lerp2 = enter2 / dir2.magnitude;
 
-                //first vertex = ancor
-                AddEdge(i,
-                        partMesh,
-                        left ? plane.normal * -1f : plane.normal,
+                // エッジを追加し、部分メッシュに三角形を追加
+                AddEdge(i, partMesh, left ? plane.normal * -1f : plane.normal,
                         ray1.origin + ray1.direction.normalized * enter1,
                         ray2.origin + ray2.direction.normalized * enter2,
                         Vector2.Lerp(original.UV[triangles[j + singleIndex]], original.UV[triangles[j + ((singleIndex + 1) % 3)]], lerp1),
                         Vector2.Lerp(original.UV[triangles[j + singleIndex]], original.UV[triangles[j + ((singleIndex + 2) % 3)]], lerp2));
-
-                if (sideCount == 1)
-                {
-                    partMesh.AddTriangle(i,
-                                        original.Vertices[triangles[j + singleIndex]],
-                                        //Vector3.Lerp(originalMesh.vertices[triangles[j + singleIndex]], originalMesh.vertices[triangles[j + ((singleIndex + 1) % 3)]], lerp1),
-                                        //Vector3.Lerp(originalMesh.vertices[triangles[j + singleIndex]], originalMesh.vertices[triangles[j + ((singleIndex + 2) % 3)]], lerp2),
-                                        ray1.origin + ray1.direction.normalized * enter1,
-                                        ray2.origin + ray2.direction.normalized * enter2,
-                                        original.Normals[triangles[j + singleIndex]],
-                                        Vector3.Lerp(original.Normals[triangles[j + singleIndex]], original.Normals[triangles[j + ((singleIndex + 1) % 3)]], lerp1),
-                                        Vector3.Lerp(original.Normals[triangles[j + singleIndex]], original.Normals[triangles[j + ((singleIndex + 2) % 3)]], lerp2),
-                                        original.UV[triangles[j + singleIndex]],
-                                        Vector2.Lerp(original.UV[triangles[j + singleIndex]], original.UV[triangles[j + ((singleIndex + 1) % 3)]], lerp1),
-                                        Vector2.Lerp(original.UV[triangles[j + singleIndex]], original.UV[triangles[j + ((singleIndex + 2) % 3)]], lerp2));
-
-                    continue;
-                }
-
-                if (sideCount == 2)
-                {
-                    partMesh.AddTriangle(i,
-                                        ray1.origin + ray1.direction.normalized * enter1,
-                                        original.Vertices[triangles[j + ((singleIndex + 1) % 3)]],
-                                        original.Vertices[triangles[j + ((singleIndex + 2) % 3)]],
-                                        Vector3.Lerp(original.Normals[triangles[j + singleIndex]], original.Normals[triangles[j + ((singleIndex + 1) % 3)]], lerp1),
-                                        original.Normals[triangles[j + ((singleIndex + 1) % 3)]],
-                                        original.Normals[triangles[j + ((singleIndex + 2) % 3)]],
-                                        Vector2.Lerp(original.UV[triangles[j + singleIndex]], original.UV[triangles[j + ((singleIndex + 1) % 3)]], lerp1),
-                                        original.UV[triangles[j + ((singleIndex + 1) % 3)]],
-                                        original.UV[triangles[j + ((singleIndex + 2) % 3)]]);
-                    partMesh.AddTriangle(i,
-                                        ray1.origin + ray1.direction.normalized * enter1,
-                                        original.Vertices[triangles[j + ((singleIndex + 2) % 3)]],
-                                        ray2.origin + ray2.direction.normalized * enter2,
-                                        Vector3.Lerp(original.Normals[triangles[j + singleIndex]], original.Normals[triangles[j + ((singleIndex + 1) % 3)]], lerp1),
-                                        original.Normals[triangles[j + ((singleIndex + 2) % 3)]],
-                                        Vector3.Lerp(original.Normals[triangles[j + singleIndex]], original.Normals[triangles[j + ((singleIndex + 2) % 3)]], lerp2),
-                                        Vector2.Lerp(original.UV[triangles[j + singleIndex]], original.UV[triangles[j + ((singleIndex + 1) % 3)]], lerp1),
-                                        original.UV[triangles[j + ((singleIndex + 2) % 3)]],
-                                        Vector2.Lerp(original.UV[triangles[j + singleIndex]], original.UV[triangles[j + ((singleIndex + 2) % 3)]], lerp2));
-                    continue;
-                }
-
-
             }
         }
 
         partMesh.FillArrays();
-
         return partMesh;
     }
 
@@ -196,20 +150,14 @@ public class MeshDestroy : MonoBehaviour
         else
         {
             edgePlane.Set3Points(edgeVertex, vertex1, vertex2);
-
-            partMesh.AddTriangle(subMesh,
-                                edgeVertex,
+            partMesh.AddTriangle(subMesh, edgeVertex,
                                 edgePlane.GetSide(edgeVertex + normal) ? vertex1 : vertex2,
                                 edgePlane.GetSide(edgeVertex + normal) ? vertex2 : vertex1,
-                                normal,
-                                normal,
-                                normal,
-                                edgeUV,
-                                uv1,
-                                uv2);
+                                normal, normal, normal, edgeUV, uv1, uv2);
         }
     }
 
+    // PartMesh クラスは、分割されたメッシュ情報を保持し、物理演算を適用するための GameObject を生成
     public class PartMesh
     {
         private List<Vector3> _Verticies = new List<Vector3>();
@@ -222,11 +170,6 @@ public class MeshDestroy : MonoBehaviour
         public Vector2[] UV;
         public GameObject GameObject;
         public Bounds Bounds = new Bounds();
-
-        public PartMesh()
-        {
-
-        }
 
         public void AddTriangle(int submesh, Vector3 vert1, Vector3 vert2, Vector3 vert3, Vector3 normal1, Vector3 normal2, Vector3 normal3, Vector2 uv1, Vector2 uv2, Vector2 uv3)
         {
@@ -246,12 +189,9 @@ public class MeshDestroy : MonoBehaviour
             _UVs.Add(uv2);
             _UVs.Add(uv3);
 
-            Bounds.min = Vector3.Min(Bounds.min, vert1);
-            Bounds.min = Vector3.Min(Bounds.min, vert2);
-            Bounds.min = Vector3.Min(Bounds.min, vert3);
-            Bounds.max = Vector3.Min(Bounds.max, vert1);
-            Bounds.max = Vector3.Min(Bounds.max, vert2);
-            Bounds.max = Vector3.Min(Bounds.max, vert3);
+            Bounds.Encapsulate(vert1);
+            Bounds.Encapsulate(vert2);
+            Bounds.Encapsulate(vert3);
         }
 
         public void FillArrays()
@@ -294,8 +234,6 @@ public class MeshDestroy : MonoBehaviour
             var meshDestroy = GameObject.AddComponent<MeshDestroy>();
             meshDestroy.CutCascades = original.CutCascades;
             meshDestroy.ExplodeForce = original.ExplodeForce;
-
         }
-
     }
 }

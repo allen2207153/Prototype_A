@@ -47,7 +47,9 @@ public class BChara : MonoBehaviour
         Crouching_Enter,//しゃがみながら入る
         Crouching_Idle, //しゃがみ待機
         Crouching_Walk, //しゃがみ歩き
-        Crouching_Exit  //しゃがみながら出る
+        Crouching_Exit,  //しゃがみながら出る
+        Push,
+        Pull
 
     }
     protected Motion _motion = Motion.Fall;//現在のモーション

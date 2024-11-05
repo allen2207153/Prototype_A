@@ -42,7 +42,7 @@ public class Test_IKSystem : MonoBehaviour
     {
         if (animator)
         {
-            if (_grabHand || isHoldingHand)
+            if ( isHoldingHand)
             {
                 ikActive = true;
                 // 重みを時間と共に1に近づける

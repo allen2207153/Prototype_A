@@ -2121,7 +2121,7 @@ Transform:
   - {fileID: 2963728977278384722}
   - {fileID: 257554529753348199}
   m_Father: {fileID: 0}
-  m_RootOrder: 45
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2898611851776592254
 Animator:
@@ -2159,14 +2159,15 @@ MonoBehaviour:
   player: {fileID: 0}
   rigPoint: {fileID: 2212861311470475791}
   animator: {fileID: 2898611851776592254}
-  followDistance: 0.35
-  stopDistance: 0.2
+  playerAnimator: {fileID: 0}
+  followDistance: 0.2
+  stopDistance: 0.15
   activationRadius: 0.78
   speedLerpRate: 0.8
   runSpeedMultiplier: 2.72
   isHoldingHands: 0
   canHold: 0
-  initialOffset: {x: -0.4, y: 0, z: 0}
+  initialOffset: {x: 0, y: 0, z: 0}
   playerIK: 0
 --- !u!143 &7243621979706308164
 CharacterController:
@@ -2213,8 +2214,8 @@ MonoBehaviour:
   _grabHand: 0
   isHoldingHand: 0
   transitionSpeed: 0.05
-  handPositionOffset: {x: 0, y: 0, z: -0.06}
-  handRotationOffset: {x: 195.8, y: -741, z: 11.7}
+  handPositionOffset: {x: 0.03, y: 0, z: 0}
+  handRotationOffset: {x: 174, y: -729.5, z: 6.3}
 --- !u!114 &3200287506942824023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2256,6 +2257,17 @@ MonoBehaviour:
   _jumpTrigger: 0
   _hangTrigger: 0
   _crouchTrigger: 0
+  _interactionTrigger: 0
+  pushPullAction:
+    m_Name: Push Pull
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 98d6516f-503f-4852-9c3e-ce0b851131e4
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  interactionDistance: 1.5
 --- !u!114 &1604423970642798798
 MonoBehaviour:
   m_ObjectHideFlags: 0

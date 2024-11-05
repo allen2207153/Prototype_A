@@ -4,28 +4,60 @@ using UnityEngine;
 
 public class MovableObject : MonoBehaviour
 {
-    public Transform[] _interactPoints;
+    public Transform[] _interactPoints; // 箱の交互ポイント
+    public float moveSpeed = 2f; // 移動速度
+    public LayerMask obstacleLayer; // 障害物のレイヤー
 
-    public Transform GetInteractPoint(Transform playerTransform)
+    private bool isInteracting = false;
+    private Transform interactPoint;
+    private PlayerMovement playerController;
+
+    public void StartInteraction(PlayerMovement player)
     {
-        Transform interactPoint = null;
+        playerController = player;
+        isInteracting = true;
+    }
+
+    public void StopInteraction()
+    {
+        isInteracting = false;
+        playerController = null;
+    }
+
+    public Transform GetClosestInteractPoint(Transform playerTransform)
+    {
+        Transform closestPoint = null;
         float shortestDistance = float.PositiveInfinity;
 
         foreach (var point in _interactPoints)
         {
             float distance = Vector3.Distance(point.position, playerTransform.position);
-
-            // 高低差を考慮して、Y軸方向のオフセットを調整
-            Vector3 correctedPoint = new Vector3(point.position.x, playerTransform.position.y, point.position.z);
-            distance = Vector3.Distance(correctedPoint, playerTransform.position);
-
             if (distance < shortestDistance)
             {
                 shortestDistance = distance;
-                interactPoint = point;
+                closestPoint = point;
             }
         }
+        return closestPoint;
+    }
 
-        return interactPoint;
+    public void MoveBox(float input)
+    {
+        if (!isInteracting || input == 0) return;
+
+        Vector3 moveDirection = interactPoint.forward * input * moveSpeed * Time.deltaTime;
+        Vector3 targetPosition = input > 0 ? moveDirection : -moveDirection;
+
+        // 障害物をチェックしながら移動
+        if (!CheckObstacle(targetPosition))
+        {
+            transform.position += targetPosition;
+        }
     }
+
+    private bool CheckObstacle(Vector3 direction)
+    {
+        RaycastHit hit;
+        return Physics.Raycast(transform.position, direction.normalized, out hit, direction.magnitude, obstacleLayer);
     }
+}

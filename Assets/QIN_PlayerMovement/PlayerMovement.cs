@@ -115,17 +115,22 @@ public class PlayerMovement : BChara
     [SerializeField] private bool _crouchTrigger = false;
     [SerializeField] private bool _interactionTrigger = false;
 
+    public InputAction pushPullAction; // 前後方向の入力アクション
+    public float interactionDistance = 1.5f; // 交互できる最大距離
+
     private void OnEnable()
     {
         //イベントを登録
         PlayerEvent.CheckHanging += HandleCheckHanging; //ぶら下がるイベント
         PlayerEvent.CheckCollider += SetTriggerActions;
+        pushPullAction.Enable();
     }
     private void OnDisable()
     {
         //イベントを解除
         PlayerEvent.CheckHanging -= HandleCheckHanging;
         PlayerEvent.CheckCollider -= SetTriggerActions;
+        pushPullAction.Disable();
     }
 
     void Awake()
@@ -422,7 +427,6 @@ public class PlayerMovement : BChara
             case Motion.Jump:
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 if (_moveCnt == 0) { HandleJumping(); }
-                _canRotate = false;
                 HandleWalking();
                 break;
             case Motion.Fall:
@@ -437,27 +441,26 @@ public class PlayerMovement : BChara
                 break;
             case Motion.JumpToHangingTakeOff:
                 _jumpFlag = false; //ジャンプ可能にする
+                _canRotate = false;
                 _climbVec3.y -= _playerHangingOffset_Y; //キャラのぶら下がるの位置を計算
                 break;
             case Motion.JumpToHanging: //更新_追加時間：20241021_ワンユールン
                 //if (_moveCnt == 0) { _climbVec3.y -= 0.4f; }
                 _canRotate = false; // 回転を無効化
-                _hasRotatedWhileHanging = false; // リセット
+                //_hasRotatedWhileHanging = false; // リセット
                 _movementInput = Vector2.zero; // JumpToHanging中は移動入力を無視
-                                               // FaceTowardsWall(_climbVec3);
+                                                FaceTowardsWall(_climbVec3);
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
             case Motion.Hanging_ByJump: //更新_追加時間：20241021_ワンユールン
+                _canRotate = false;
                 if (_movementInput.y < -0.2f && !_hasRotatedWhileHanging)
                 {
-                    _canRotate = true; // 後ろに入力されたら回転を一時的に有効化
-                   // transform.rotation = Quaternion.LookRotation(-transform.forward); // 即座に180度回転
+                  // 後ろに入力されたら回転を一時的に有効化
+                    transform.rotation = Quaternion.LookRotation(-transform.forward); // 即座に180度回転
                     _hasRotatedWhileHanging = true; // 回転したことを記録
                 }
-                else
-                {
-                    _canRotate = false; // それ以外は回転を無効化
-                }
+             
                 // FaceTowardsWall(_climbVec3);
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
@@ -465,7 +468,7 @@ public class PlayerMovement : BChara
                 _hangingFlag = false;
                 break;
             case Motion.ClimbingUp: //追加時間：20240915＿八子遥輝
-               // _canRotate = false; // 回転を無効化
+                _canRotate = false; // 回転を無効化
                 _movementInput = Vector2.zero; // ClimbingUp中は移動入力を無視
                 HandleClimbingUp();
                 break;
@@ -585,14 +588,12 @@ public class PlayerMovement : BChara
     /// <param name="_ctx">InputSystemの変数</param>
     public void Jump(InputAction.CallbackContext _ctx)
     {
-        if (_jumpTrigger == true ||
-                _hangTrigger == true)
-        {
+      
             if (_ctx.phase == InputActionPhase.Started)
             {
                 _jumpFlag = true;
             }
-        }
+        
     }
 
     /// <summary>
@@ -628,25 +629,25 @@ public class PlayerMovement : BChara
 
 
 
-            //20240723＿チョウハク
-            if (_pushState)
-            {
-                //animator.ApplyBuiltinRootMotion();
-                //animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
-                //new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
-                //Debug.Log("PushState success");
+            ////20240723＿チョウハク
+            //if (_pushState)
+            //{
+            //    //animator.ApplyBuiltinRootMotion();
+            //    //animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
+            //    //new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
+            //    //Debug.Log("PushState success");
 
-                //20240723＿チョウハク
-                if (_movableObject)
-                {
-                    Debug.Log("moveableObject success");
-                    playerDeltaMovement = _cCtrl.transform.InverseTransformDirection(playerDeltaMovement);
-                    playerDeltaMovement.x = 0;
-                    playerDeltaMovement = _cCtrl.transform.TransformDirection(playerDeltaMovement);
-                    playerDeltaMovement.y = 0f;
-                    _movableObject.transform.Translate(playerDeltaMovement);
-                }
-            }
+            //    //20240723＿チョウハク
+            //    //if (_movableObject)
+            //    //{
+            //    //    //Debug.Log("moveableObject success");
+            //    //    //playerDeltaMovement = _cCtrl.transform.InverseTransformDirection(playerDeltaMovement);
+            //    //    //playerDeltaMovement.x = 0;
+            //    //    //playerDeltaMovement = _cCtrl.transform.TransformDirection(playerDeltaMovement);
+            //    //    //playerDeltaMovement.y = 0f;
+            //    //    //_movableObject.transform.Translate(playerDeltaMovement);
+            //    //}
+            //}
 
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
             _cCtrl.Move(playerDeltaMovement); //20240801_チョウハク　呼び出し所ここに移動して押す時左右移動を防ぎました
@@ -793,7 +794,7 @@ public class PlayerMovement : BChara
     {
         //_isPushPressed = _ctx.ReadValueAsButton();
 
-        if (_ctx.phase == InputActionPhase.Started)
+        if (_ctx.phase == InputActionPhase.Performed)
         {
             _isPushPressed = true;
 
@@ -811,30 +812,36 @@ public class PlayerMovement : BChara
     /// </summary>
     void Push()
     {
-        if (_isPushPressed)
+        float input = pushPullAction.ReadValue<float>();
+
+        if (_isPushPressed==true)
         {
-            
-            _movableObject = _playerSensor.MovableObjectCheck(_cCtrl.transform);
-            if (_movableObject)
+            // 移動可能なオブジェクトが近くにあるかチェック
+            _movableObject = CheckForMovableObject();
+            if (_movableObject != null)
             {
                 animator.SetBool("isPush", true);
-                _canRotate = false;
-                _interactPoint = _movableObject.GetInteractPoint(_cCtrl.transform);
                 _pushState = true;
+                _interactPoint = _movableObject.GetClosestInteractPoint(transform);
+                _movableObject.StartInteraction(this);
             }
         }
-        else if (!_isPushPressed)
+        else if (_isPushPressed==false)
         {
+            // プッシュを解除
             animator.SetBool("isPush", false);
-            _canRotate = true;
             _pushState = false;
-        }
-        else if (_pushState)
-        {
-            if (Vector3.Distance(_interactPoint.position, _cCtrl.transform.position) > 1f)
+            if (_movableObject != null)
             {
-                _pushState = false;
+                _movableObject.StopInteraction();
+                _movableObject = null;
             }
+        }
+
+        if (_pushState && _movableObject != null)
+        {
+            // 箱の移動を制御
+            _movableObject.MoveBox(input);
         }
     }
 
@@ -848,6 +855,7 @@ public class PlayerMovement : BChara
                 _crouchFlag = true;
             }
         }
+
     }
 
     //更新_追加時間：20241002＿ワンユールン
@@ -943,7 +951,29 @@ public class PlayerMovement : BChara
         _cCtrl.enabled = true;
     }
 
+    private void StopPushInteraction()
+    {
+        // プッシュ/プルを停止
+        animator.SetBool("isPush", false);
+        _canRotate = true;
+        _pushState = false;
+    }
 
+    private MovableObject CheckForMovableObject()
+    {
+        // レイキャストで前方の移動可能なオブジェクトをチェック
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, interactionDistance))
+        {
+            return hit.collider.GetComponent<MovableObject>();
+        }
+        return null;
+    }
+
+    private void OnAnimatorMove()
+    {
+      //  if()
+    }
 }
 
 
