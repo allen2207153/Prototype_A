@@ -23,8 +23,8 @@ public class PlayerRespawnController : MonoBehaviour
     // イベントを登録
     private void OnEnable()
     {
-        PlayerEvent.PlayerRespawn += PlayerRespawn;
-        PlayerEvent.UpdateRespawnPoint += UpdateRespawnPoint;
+        EventSystem.Instance.StartListening(GameEvents.PlayerRespawn, PlayerRespawn);
+        EventSystem.Instance.StartListening(GameEvents.PlayerUpdateRespawnPoint, UpdateRespawnPoint);
     }
 
     void Start()
@@ -77,7 +77,7 @@ public class PlayerRespawnController : MonoBehaviour
 
     private void OnDisable()
     {
-        PlayerEvent.PlayerRespawn -= PlayerRespawn;
-        PlayerEvent.UpdateRespawnPoint -= UpdateRespawnPoint;
+        EventSystem.Instance.StopListening(GameEvents.PlayerRespawn, PlayerRespawn);
+        EventSystem.Instance.StopListening(GameEvents.PlayerUpdateRespawnPoint, UpdateRespawnPoint);
     }
 }

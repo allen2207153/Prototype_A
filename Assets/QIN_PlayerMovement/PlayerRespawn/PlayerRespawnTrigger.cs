@@ -8,7 +8,7 @@ public class PlayerRespawnTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player") || other.CompareTag("imouto"))
         {
-            PlayerEvent.CallUpdateRespawnPoint();
+            EventSystem.Instance.TriggerEvent(GameEvents.PlayerUpdateRespawnPoint);
         }
     }
 }

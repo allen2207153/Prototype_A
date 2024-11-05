@@ -6,10 +6,10 @@ public class PlayerTriggerActionSystem : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        PlayerEvent.CallCheckCollider(other, true);
+        PlayerEvent.Instance.CallCheckCollider(other, true);
     }
     private void OnTriggerExit(Collider other)
     {
-        PlayerEvent.CallCheckCollider(other, false);
+        PlayerEvent.Instance.CallCheckCollider(other, false);
     }
 }
