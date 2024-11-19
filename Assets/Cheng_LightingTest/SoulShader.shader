@@ -8,7 +8,7 @@
 
         [Header(Fresnel)]
         _FresnelColor ("フレネルの色", Color) = (0.5, 0.8, 1,1)
-        _FresnelPower ("フレネルの強度", Range(0, 1)) = 0.5
+        _FresnelPower ("フレネルの強度", Range(-1, 1)) = 0.5
 
         [Header(Transparency)]
         _Transparency ("透明度", Range(0,1)) = 0.5
@@ -88,11 +88,6 @@
                 o.worldPos = TransformObjectToWorld(v.vertex.xyz);
                 o.normal = TransformObjectToWorldNormal(v.normal);
                 return o;
-            }
-
-            float noise(float2 uv)
-            {
-                return frac(sin(dot(uv.xy, float2(12.9898, 78.233))) * 43758.5453);
             }
 
             float4 frag(v2f i) : SV_Target
