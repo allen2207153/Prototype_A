@@ -794,8 +794,9 @@ public class PlayerMovement : BChara
     {
         //_isPushPressed = _ctx.ReadValueAsButton();
 
-        if (_ctx.phase == InputActionPhase.Performed)
+        if (_ctx.phase == InputActionPhase.Started)
         {
+            Debug.Log("Success");
             _isPushPressed = true;
 
         }
@@ -812,38 +813,27 @@ public class PlayerMovement : BChara
     /// </summary>
     void Push()
     {
-        float input = pushPullAction.ReadValue<float>();
-
-        if (_isPushPressed==true)
+        if (_isPushPressed)
         {
-            // 移動可能なオブジェクトが近くにあるかチェック
-            _movableObject = CheckForMovableObject();
-            if (_movableObject != null)
+            _movableObject = _playerSensor.MovableObjectCheck(_cCtrl.transform);
+            if (_movableObject)
             {
-                animator.SetBool("isPush", true);
+                _interactPoint = _movableObject.GetInteractPoint(_cCtrl.transform);
                 _pushState = true;
-                _interactPoint = _movableObject.GetClosestInteractPoint(transform);
-                _movableObject.StartInteraction(this);
             }
         }
-        else if (_isPushPressed==false)
+        else if (!_isPushPressed)
         {
-            // プッシュを解除
-            animator.SetBool("isPush", false);
             _pushState = false;
-            if (_movableObject != null)
+        }
+        else if (_pushState)
+        {
+            if (Vector3.Distance(_interactPoint.position, _cCtrl.transform.position) > 1f)
             {
-                _movableObject.StopInteraction();
-                _movableObject = null;
+                _pushState = false;
             }
         }
-
-        if (_pushState && _movableObject != null)
-        {
-            // 箱の移動を制御
-            _movableObject.MoveBox(input);
-        }
-    }
+    }   
 
     //更新_追加時間：20240824＿八子遥輝
     public void Crouch(InputAction.CallbackContext _ctx)
