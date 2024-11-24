@@ -7,10 +7,8 @@ public class ObjectFallController : MonoBehaviour
 {
     // パラメータ設定
     public GameObject targetObject;// 落下させる対象のオブジェクト
-    public Vector3 fallDirection = Vector3.forward; // 落下の方向
-    public float fallForce = 10f;// 落下させる力の強さ
     public Animator playerAnimator; // プレイヤーのアニメーターコンポーネント
-
+    public float animationTime = 0.4f;//アニメーション遷移時間
     private Rigidbody rb;// 対象オブジェクトの Rigidbody への参照
 
   
@@ -43,27 +41,16 @@ public class ObjectFallController : MonoBehaviour
         }
 
         
-        yield return new WaitForSeconds(0.4f);
-
+        yield return new WaitForSeconds(animationTime);
+        DisableTrigger();
         // オブジェクトに力を加える処理
-        if (rb != null)
-        {
-            rb.isKinematic = false; 
-            rb.AddForce(fallDirection.normalized * fallForce, ForceMode.Impulse);
-
-            
-            if (playerAnimator != null)
-            {
-                playerAnimator.SetBool("isPush", false);
-            }
-        }
-
-        
-        Invoke("StopMovement", 1f);
+        rb.isKinematic = false; 
+        playerAnimator.SetBool("isPush", false);
+        Invoke("activeKinematic", 1.3f);
     }
 
     // オブジェクトの動きを停止するメソッド
-    void StopMovement()
+    void activeKinematic()
     {
         
         if (rb != null)
@@ -72,5 +59,10 @@ public class ObjectFallController : MonoBehaviour
             rb.angularVelocity = Vector3.zero;
             rb.isKinematic = true;
         }
+    }
+
+    private void DisableTrigger()
+    {
+        gameObject.SetActive(false);
     }
 }

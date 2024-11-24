@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5401660371406182306}
   - component: {fileID: 745617082291418272}
   - component: {fileID: 1806855315531789754}
-  - component: {fileID: 6348189598431824224}
   - component: {fileID: 697831014825582443}
   m_Layer: 0
   m_Name: Trigger_Door
@@ -27,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7617070603298674097}
-  m_LocalRotation: {x: -0.70710576, y: -0, z: -0, w: 0.70710784}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 793.79, y: 109.541, z: 332.68436}
   m_LocalScale: {x: 0.29, y: 1, z: 0.39}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &745617082291418272
 MeshFilter:
@@ -85,22 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6348189598431824224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7617070603298674097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2daf0d30eeb97d469c116617abc59a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  doorObject: {fileID: 7617070603298674097}
-  openHeight: 3
-  openDuration: 1
-  closeDuration: 1
 --- !u!65 &697831014825582443
 BoxCollider:
   m_ObjectHideFlags: 0

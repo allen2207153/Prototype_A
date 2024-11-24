@@ -115,22 +115,19 @@ public class PlayerMovement : BChara
     [SerializeField] private bool _crouchTrigger = false;
     [SerializeField] private bool _interactionTrigger = false;
 
-    public InputAction pushPullAction; // 前後方向の入力アクション
-    public float interactionDistance = 1.5f; // 交互できる最大距離
+    public bool interactionActive = false;
 
     private void OnEnable()
     {
         //イベントを登録
         PlayerEvent.Instance.CheckHanging += HandleCheckHanging; //ぶら下がるイベント
         PlayerEvent.Instance.CheckCollider += SetTriggerActions;
-        pushPullAction.Enable();
     }
     private void OnDisable()
     {
         //イベントを解除
         PlayerEvent.Instance.CheckHanging -= HandleCheckHanging;
         PlayerEvent.Instance.CheckCollider -= SetTriggerActions;
-        pushPullAction.Disable();
     }
 
     void Awake()
@@ -629,25 +626,23 @@ public class PlayerMovement : BChara
 
 
 
-            ////20240723＿チョウハク
-            //if (_pushState)
-            //{
-            //    //animator.ApplyBuiltinRootMotion();
-            //    //animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
-            //    //new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
-            //    //Debug.Log("PushState success");
+            //20240723＿チョウハク
+            if (_pushState)
+            {
+                //animator.ApplyBuiltinRootMotion();
+                //animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
+                //new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
 
-            //    //20240723＿チョウハク
-            //    //if (_movableObject)
-            //    //{
-            //    //    //Debug.Log("moveableObject success");
-            //    //    //playerDeltaMovement = _cCtrl.transform.InverseTransformDirection(playerDeltaMovement);
-            //    //    //playerDeltaMovement.x = 0;
-            //    //    //playerDeltaMovement = _cCtrl.transform.TransformDirection(playerDeltaMovement);
-            //    //    //playerDeltaMovement.y = 0f;
-            //    //    //_movableObject.transform.Translate(playerDeltaMovement);
-            //    //}
-            //}
+                //20240723＿チョウハク
+                if (_movableObject)
+                {
+                    playerDeltaMovement = _cCtrl.transform.InverseTransformDirection(playerDeltaMovement);
+                    playerDeltaMovement.x = 0;
+                    playerDeltaMovement = _cCtrl.transform.TransformDirection(playerDeltaMovement);
+                    playerDeltaMovement.y = 0f;
+                    _movableObject.transform.Translate(playerDeltaMovement);
+                }
+            }
 
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
             _cCtrl.Move(playerDeltaMovement); //20240801_チョウハク　呼び出し所ここに移動して押す時左右移動を防ぎました
@@ -785,6 +780,7 @@ public class PlayerMovement : BChara
         //InputActionPhase.Canceled;     <-これはGetKeyUp
         if (_ctx.phase == InputActionPhase.Started)
         {
+            interactionActive = true;
             Debug.Log("Firwwwwwwwwwe!");
         }
     }
@@ -796,15 +792,11 @@ public class PlayerMovement : BChara
 
         if (_ctx.phase == InputActionPhase.Started)
         {
-            Debug.Log("Success");
             _isPushPressed = true;
-
         }
         else if (_ctx.phase == InputActionPhase.Canceled)
         {
             _isPushPressed = false;
-         
-
         }
 
     }
@@ -833,7 +825,7 @@ public class PlayerMovement : BChara
                 _pushState = false;
             }
         }
-    }   
+    }
 
     //更新_追加時間：20240824＿八子遥輝
     public void Crouch(InputAction.CallbackContext _ctx)
@@ -929,41 +921,7 @@ public class PlayerMovement : BChara
         _cCtrl.transform.rotation = Quaternion.LookRotation(new Vector3(directionToWall.x, 0, directionToWall.z));
     }
 
-    private void DisablePlayerInput()//更新_追加時間：20241021_ワンユールン
-    {
-        // プレイヤーの入力スクリプトを無効化
-        _cCtrl.enabled = false;
-    }
-
-    private void EnablePlayerInput()//更新_追加時間：20241021_ワンユールン
-    {
-        // プレイヤーの入力スクリプトを再び有効化
-        _cCtrl.enabled = true;
-    }
-
-    private void StopPushInteraction()
-    {
-        // プッシュ/プルを停止
-        animator.SetBool("isPush", false);
-        _canRotate = true;
-        _pushState = false;
-    }
-
-    private MovableObject CheckForMovableObject()
-    {
-        // レイキャストで前方の移動可能なオブジェクトをチェック
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, interactionDistance))
-        {
-            return hit.collider.GetComponent<MovableObject>();
-        }
-        return null;
-    }
-
-    private void OnAnimatorMove()
-    {
-      //  if()
-    }
+    
 }
 
 

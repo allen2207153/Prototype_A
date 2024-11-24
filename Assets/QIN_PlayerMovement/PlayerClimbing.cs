@@ -11,9 +11,6 @@ public class PlayerClimbing:MonoBehaviour
     private Vector3 _climbHitNormal; // クライム時にヒットした面の法線
     public float climbAngle = 45f; 
 
-    public float movableObjectHeight = 0.8f;
-    public LayerMask _movableLayer;
-
     /// <summary>
     /// クライム検測
     /// </summary>
@@ -136,22 +133,6 @@ public class PlayerClimbing:MonoBehaviour
         return false; // クライム不可
     }
 
-    public MovableObject MovableObjectCheck(Transform playerTransform, Vector3 inputDirection)
-    {
-        if (Physics.Raycast(playerTransform.position + Vector3.up * movableObjectHeight, playerTransform.forward, out RaycastHit hit, _checkDistance, _movableLayer))
-        {
-            _climbHitNormal = hit.normal;
-            if (Vector3.Angle(-_climbHitNormal, playerTransform.forward) > climbAngle || Vector3.Angle(-_climbHitNormal, inputDirection) > climbAngle)
-            {
-                return null;
-            }
-            MovableObject movableObject;
-            if (hit.collider.TryGetComponent<MovableObject>(out movableObject))
-            {
-                return movableObject;
-            }
-        }
-        return null;
-    }
+ 
     
 }

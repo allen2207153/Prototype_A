@@ -8,7 +8,13 @@ public class Trigger_Obstacle : MonoBehaviour, IPlayerTriggerAction
 {
     public ObjectFallController objectFallController; // オブジェクト落下のコントローラー
     private bool playerInRange = false;               // プレイヤーが範囲内にいるかどうかを判定するフラグ
+    private bool activeEvent;
 
+
+    void Start()
+    {
+        activeEvent = GameObject.Find("Oniisan").GetComponent<PlayerMovement>().interactionActive;
+    }
     // プレイヤーのトリガーアクションを開始するメソッド
     public void TriggerAction(PlayerMovement playerMovement)
     {
@@ -26,7 +32,10 @@ public class Trigger_Obstacle : MonoBehaviour, IPlayerTriggerAction
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("WAAA");
             playerInRange = true; // プレイヤーが範囲内にいることをフラグで管理
+            objectFallController.TriggerFall();
+            
         }
     }
 
@@ -36,17 +45,14 @@ public class Trigger_Obstacle : MonoBehaviour, IPlayerTriggerAction
         if (other.CompareTag("Player"))
         {
             playerInRange = false; // プレイヤーが範囲外に出たことをフラグで管理
+            // 自分自身を無効化
+            DisableTrigger();
         }
     }
 
-    // インタラクトボタンの入力を受け付けるメソッド
-    public void interaction(InputAction.CallbackContext _ctx)
-    {
-        // プレイヤーが範囲内にいて、かつ入力が開始されたときにオブジェクトの落下をトリガー
-        if (playerInRange && _ctx.phase == InputActionPhase.Started)
-        {
-            objectFallController.TriggerFall(); // オブジェクトを倒す処理を開始
-        }
+    private void DisableTrigger()
+    { 
+        gameObject.SetActive(false);
     }
 
     // ギズモを描画してトリガー範囲を可視化するメソッド
