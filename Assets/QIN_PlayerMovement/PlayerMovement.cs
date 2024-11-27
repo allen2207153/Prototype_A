@@ -636,12 +636,29 @@ public class PlayerMovement : BChara
                 //20240723＿チョウハク
                 if (_movableObject)
                 {
+                    
+                    if (Vector3.Dot(_cCtrl.transform.forward, _moveDirection) > 0)
+                    {
+                        animator.SetBool("isPush", true);
+                        animator.SetBool("isPull", false);
+                    }
+                    else
+                    {
+                        animator.SetBool("isPull", true);
+                        animator.SetBool("isPush", false);
+                    }
+
                     playerDeltaMovement = _cCtrl.transform.InverseTransformDirection(playerDeltaMovement);
                     playerDeltaMovement.x = 0;
                     playerDeltaMovement = _cCtrl.transform.TransformDirection(playerDeltaMovement);
                     playerDeltaMovement.y = 0f;
                     _movableObject.transform.Translate(playerDeltaMovement);
                 }
+            }
+            else
+            {
+                animator.SetBool("isPush", false);
+                animator.SetBool("isPull", false);
             }
 
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
