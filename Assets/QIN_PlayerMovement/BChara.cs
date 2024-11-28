@@ -48,6 +48,7 @@ public class BChara : MonoBehaviour
         Crouching_Idle, //しゃがみ待機
         Crouching_Walk, //しゃがみ歩き
         Crouching_Exit,  //しゃがみながら出る
+        Push_Idle,
         Push,
         Pull
 

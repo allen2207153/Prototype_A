@@ -1032,7 +1032,7 @@ PrefabInstance:
     - target: {fileID: 8457222265993454569, guid: edf2e1de2c2f1c5438a0ef6171936728,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.26
+      value: -8.67
       objectReference: {fileID: 0}
     - target: {fileID: 8457222265993454569, guid: edf2e1de2c2f1c5438a0ef6171936728,
         type: 3}
@@ -1211,6 +1211,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: imouto
       objectReference: {fileID: 0}
+    - target: {fileID: 1897319245928516972, guid: 2f8737be01b3abf488a0f9772e8fe3f6,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 76c84348007f23c4dbdd20ae1ad95026, type: 2}
     - target: {fileID: 3278401048170983080, guid: 2f8737be01b3abf488a0f9772e8fe3f6,
         type: 3}
       propertyPath: m_RootOrder
@@ -1271,6 +1276,11 @@ PrefabInstance:
       propertyPath: _vCam
       value: 
       objectReference: {fileID: 798841490}
+    - target: {fileID: 4913777280605351090, guid: 2f8737be01b3abf488a0f9772e8fe3f6,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8445120808965707244, guid: 2f8737be01b3abf488a0f9772e8fe3f6,
         type: 3}
       propertyPath: player
@@ -2932,7 +2942,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!1 &1437485537
 GameObject:

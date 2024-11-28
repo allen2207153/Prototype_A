@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Windows;
 using Unity.VisualScripting;
 using System.Runtime.CompilerServices;
+using Autodesk.Fbx;
 
 public class PlayerMovement : BChara
 {
@@ -193,12 +194,15 @@ public class PlayerMovement : BChara
         //Debug.Log(_crouchFlag);
         Think();
         Move();
+        Push();
         //Debug.Log(CheckFoot());
         animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime); //追加時間：20240812＿ワンユールン
         if (animator.GetFloat("Speed") < 0.05)
         {
             animator.SetFloat("Speed", 0);
         }
+
+        Debug.Log(_pushState);
 
 
 #if DEBUG
@@ -252,6 +256,11 @@ public class PlayerMovement : BChara
                 animator.SetBool("ClimbingUp_Bool", false); //更新_追加時間：20240915＿八子遥輝
 
                 animator.SetFloat("Time", 0.0f); //しゃがみ中や登り中にカウントした時間をリセット 
+
+                if(_pushState)
+                {
+                    nm = Motion.Push_Idle;
+                }
 
                 break;
             case Motion.Walk: //更新_追加時間：20240826＿八子遥輝
@@ -399,6 +408,55 @@ public class PlayerMovement : BChara
                 if (!_isAttacking) { nm = Motion.Stand; }
 
                 break;
+
+             case Motion.Push_Idle:
+                
+                if (_moveCnt >= 25&& Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0) { nm = Motion.Push; }
+                if (_moveCnt >= 25&&Vector3.Dot(_cCtrl.transform.forward, moveDirection) <= 0) { nm = Motion.Pull; }
+                Debug.Log("Push_idle");
+                animator.SetBool("isInteracting", true);
+                _canRotate = false;
+                if (_pushState == false)
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    animator.SetBool("isInteracting", false);
+                    nm = Motion.Stand;
+                }
+                break;
+
+            case Motion.Push:
+                Debug.Log("Pushing");
+              
+                if (_moveCnt >= 25 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) <= 0) { nm = Motion.Pull; }
+                animator.SetBool("isPush", true);
+                animator.SetBool("isPull", false);
+                _canRotate = false;
+                if (_pushState == false)
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    animator.SetBool("isInteracting", false);
+                    nm = Motion.Stand;
+                }
+                break;
+
+            case Motion.Pull:
+                Debug.Log("Pulling");
+                
+                if (_moveCnt >= 25 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0) { nm = Motion.Push; }
+                animator.SetBool("isPull", true);
+                animator.SetBool("isPush", false);
+             _canRotate = false;
+                if (_pushState == false)
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    animator.SetBool("isInteracting", false);
+                    nm = Motion.Stand;
+                }
+                break;
+
         }
 
         UpdataMotion(nm);
@@ -509,6 +567,20 @@ public class PlayerMovement : BChara
                 break;
             case Motion.Attack: //追加時間：20240824_チョウハク
                 break;
+
+            case Motion.Push:
+                HandleWalking();
+
+                break;
+
+            case Motion.Pull:
+                //HandleWalking();
+                if(_movementInput.x<0)
+                {
+                     Pulling();
+                }
+               
+                break;
         }
 
 
@@ -599,7 +671,7 @@ public class PlayerMovement : BChara
     private void HandleWalking()
     {
         //20240723＿チョウハク
-        Push();
+      
         //移動入力に基づいて方向ベクトルを計算し、正規化します
         Vector3 direction = new Vector3(_movementInput.x, 0f, _movementInput.y).normalized;
 
@@ -637,29 +709,30 @@ public class PlayerMovement : BChara
                 if (_movableObject)
                 {
                     
-                    if (Vector3.Dot(_cCtrl.transform.forward, _moveDirection) > 0)
-                    {
-                        animator.SetBool("isPush", true);
-                        animator.SetBool("isPull", false);
-                    }
-                    else
-                    {
-                        animator.SetBool("isPull", true);
-                        animator.SetBool("isPush", false);
-                    }
+                    //if (Vector3.Dot(_cCtrl.transform.forward, _moveDirection) > 0)
+                    //{
+                    //    animator.SetBool("isPush", true);
+                    //    animator.SetBool("isPull", false);
+                    //}
+                    //else
+                    //{
+                    //    animator.SetBool("isPull", true);
+                    //    animator.SetBool("isPush", false);
+                    //}
 
-                    playerDeltaMovement = _cCtrl.transform.InverseTransformDirection(playerDeltaMovement);
-                    playerDeltaMovement.x = 0;
-                    playerDeltaMovement = _cCtrl.transform.TransformDirection(playerDeltaMovement);
-                    playerDeltaMovement.y = 0f;
-                    _movableObject.transform.Translate(playerDeltaMovement);
+                    //playerDeltaMovement = _cCtrl.transform.InverseTransformDirection(playerDeltaMovement);
+                    //playerDeltaMovement.x = 0;
+                    //playerDeltaMovement = _cCtrl.transform.TransformDirection(playerDeltaMovement);
+                    //playerDeltaMovement.y = 0f;
+                    //_movableObject.transform.Translate(playerDeltaMovement);
                 }
             }
-            else
-            {
-                animator.SetBool("isPush", false);
-                animator.SetBool("isPull", false);
-            }
+            //else
+            //{
+            //    animator.SetBool("isPush", false);
+            //    animator.SetBool("isPull", false);
+            //    animator.SetBool("isInteracting", false); 
+            //}
 
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
             _cCtrl.Move(playerDeltaMovement); //20240801_チョウハク　呼び出し所ここに移動して押す時左右移動を防ぎました
@@ -810,6 +883,7 @@ public class PlayerMovement : BChara
         if (_ctx.phase == InputActionPhase.Started)
         {
             _isPushPressed = true;
+            Debug.Log("sssssssssssssssssssss");
         }
         else if (_ctx.phase == InputActionPhase.Canceled)
         {
@@ -822,20 +896,30 @@ public class PlayerMovement : BChara
     /// </summary>
     void Push()
     {
-        if (_isPushPressed)
+        if (_isPushPressed) // 如果按下推的按钮
         {
             _movableObject = _playerSensor.MovableObjectCheck(_cCtrl.transform);
-            if (_movableObject)
+            if (_movableObject) // 如果检测到了可推动的对象
             {
                 _interactPoint = _movableObject.GetInteractPoint(_cCtrl.transform);
-                _pushState = true;
+                animator.MatchTarget(
+           _interactPoint.position, // 目标位置（与箱子的位置一致）
+           _interactPoint.rotation, // 目标旋转
+           AvatarTarget.Root,     // 角色的根节点作为对齐目标
+           new MatchTargetWeightMask(Vector3.one, 1), // 对位置和旋转的权重 (Vector3.one 表示对齐所有轴的位移)
+           0.5f,                  // 匹配开始的归一化时间 (0.1f = 动画的10%开始匹配)
+           0.9f);
+
+               _pushState = true; // 设置推状态为 true
             }
         }
-        else if (!_isPushPressed)
+        else // 如果没有按下推的按钮
         {
-            _pushState = false;
+            _pushState = false; // 直接设置推状态为 false
         }
-        else if (_pushState)
+
+        // 检查推的状态是否需要取消
+        if (_pushState)
         {
             if (Vector3.Distance(_interactPoint.position, _cCtrl.transform.position) > 1f)
             {
@@ -938,7 +1022,20 @@ public class PlayerMovement : BChara
         _cCtrl.transform.rotation = Quaternion.LookRotation(new Vector3(directionToWall.x, 0, directionToWall.z));
     }
 
-    
+    private void Pulling()
+    {
+        Rigidbody rb = _movableObject.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            // 计算推拉方向：角色的前方向
+            Vector3 pushDirection = _cCtrl.transform.forward;
+
+            // 为物体添加力，使其朝推拉方向移动
+            float pushForce = -20.0f; // 可以根据需求调整推拉力的大小
+            rb.AddForce(pushDirection * pushForce, ForceMode.Force);
+        }
+
+    }
 }
 
 
