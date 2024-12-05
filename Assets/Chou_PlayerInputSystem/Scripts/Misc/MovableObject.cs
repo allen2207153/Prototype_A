@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MovableObject : MonoBehaviour
 {
     public Transform[] _interactPoints;
+
+    public bool _touchObstacle;
 
     public Transform GetInteractPoint(Transform playerTransform)
     {
@@ -23,6 +26,22 @@ public class MovableObject : MonoBehaviour
         }
 
         return interactPoint;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Obstacle"))
+        {
+            _touchObstacle = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Obstacle"))
+        {
+            _touchObstacle = false;
+        }
     }
 
 }
