@@ -2,11 +2,7 @@
 using UnityEngine.InputSystem;
 using Cinemachine;
 using System;
-using UnityEngine.EventSystems;
-using UnityEngine.Windows;
-using Unity.VisualScripting;
-using System.Runtime.CompilerServices;
-using Autodesk.Fbx;
+
 
 public class PlayerMovement : BChara
 {
@@ -42,9 +38,11 @@ public class PlayerMovement : BChara
 
     //移動速度を設定します
     [SerializeField] private float _walkSpeedMax = 10f;
+    [SerializeField] private float _pushSpeed = 1f;
     //移動の加速------------------------------------
     private float _walkSpeedMin = 0f; //移動開始速度
     [SerializeField] private float _walkAddSpeed = 0.4f; //移動加速
+
 
     //ジャンプ力を設定します
     [SerializeField] private float _jumpForce = 20.0f;
@@ -81,6 +79,8 @@ public class PlayerMovement : BChara
 
     //キャラクターコントローラーの参照
     private CharacterController _cCtrl;
+
+
 
     //ジャンプのフラグ
     private bool _jumpFlag = false;
@@ -121,14 +121,15 @@ public class PlayerMovement : BChara
     private void OnEnable()
     {
         //イベントを登録
-        PlayerEvent.Instance.CheckHanging += HandleCheckHanging; //ぶら下がるイベント
-        PlayerEvent.Instance.CheckCollider += SetTriggerActions;
+        PlayerEvent.CheckHanging += HandleCheckHanging;//ぶら下がるイベント
+        PlayerEvent.CheckCollider += SetTriggerActions;
+
     }
     private void OnDisable()
     {
         //イベントを解除
-        PlayerEvent.Instance.CheckHanging -= HandleCheckHanging;
-        PlayerEvent.Instance.CheckCollider -= SetTriggerActions;
+        PlayerEvent.CheckHanging -= HandleCheckHanging;
+        PlayerEvent.CheckCollider -= SetTriggerActions;
     }
 
     void Awake()
@@ -240,7 +241,7 @@ public class PlayerMovement : BChara
                         nm = Motion.JumpToHangingTakeOff;
                     }
 
-                    else
+                    else if (_jumpTrigger)
                     {
                         nm = Motion.TakeOff;
                     }
@@ -280,7 +281,7 @@ public class PlayerMovement : BChara
                         nm = Motion.JumpToHangingTakeOff;
                     }
 
-                    else
+                    else if (_jumpTrigger)
                     {
                         nm = Motion.TakeOff;
                     }
@@ -415,8 +416,13 @@ public class PlayerMovement : BChara
 
              case Motion.Push_Idle:
                 
-                if (_moveCnt >= 25&& Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0) { nm = Motion.Push; }
-                if (_moveCnt >= 25&&Vector3.Dot(_cCtrl.transform.forward, moveDirection) <= 0) { nm = Motion.Pull; }
+                if (_moveCnt >= 135&& Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0) 
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    nm = Motion.Push; 
+                }
+                if (_moveCnt >= 135&&Vector3.Dot(_cCtrl.transform.forward, moveDirection) < 0) { nm = Motion.Pull; }
                 Debug.Log("Push_idle");
                 animator.SetBool("isInteracting", true);
                 animator.SetBool("IsPushAndPull", true);
@@ -433,8 +439,13 @@ public class PlayerMovement : BChara
 
             case Motion.Push:
                 Debug.Log("Pushing");
-                
-                if (_moveCnt >= 25 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) <= 0) { nm = Motion.Pull; }
+                if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) == 0) 
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    nm = Motion.Push_Idle; 
+                }
+                if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) < 0) { nm = Motion.Pull; }
                 animator.SetBool("isPush", true);
                 animator.SetBool("isPull", false);
                 _canRotate = false;
@@ -450,20 +461,29 @@ public class PlayerMovement : BChara
 
             case Motion.Pull:
                 Debug.Log("Pulling");
-                
-                if (_moveCnt >= 25 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0) { nm = Motion.Push; }
+                if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) == 0) { nm = Motion.Push_Idle; }
+                if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0) { nm = Motion.Push; }
                 animator.SetBool("isPull", true);
                 animator.SetBool("isPush", false);
                 _canRotate = false;
                 if (_pushState == false)
                 {
+                   
+                    nm = Motion.PushPull_Exit;
+                }
+                break;
+
+            case Motion.PushPull_Exit:
+                if(_moveCnt >=100)
+                {
                     animator.SetBool("isPush", false);
                     animator.SetBool("isPull", false);
                     animator.SetBool("isInteracting", false);
                     animator.SetBool("IsPushAndPull", false);
-                    nm = Motion.Stand;
                 }
+                
                 break;
+               
 
         }
 
@@ -668,8 +688,12 @@ public class PlayerMovement : BChara
       
             if (_ctx.phase == InputActionPhase.Started)
             {
+             if (_jumpTrigger == true)
+             {
                 _jumpFlag = true;
+
             }
+        }
         
     }
 
@@ -680,14 +704,15 @@ public class PlayerMovement : BChara
     {
         //20240723＿チョウハク
         //Push();
-      
+       
         //移動入力に基づいて方向ベクトルを計算し、正規化します
         Vector3 direction = new Vector3(_movementInput.x, 0f, _movementInput.y).normalized;
 
         //方向ベクトルの大きさが0.1以上の場合に移動を実行します
         if (direction.magnitude >= 0.1f)
         {
-
+           
+           
             //前方向と右方向を基に移動方向を計算します
             //修正時間：20240829＿ワンユールン
             Vector3 _moveDirection = moveDirection;
@@ -710,6 +735,7 @@ public class PlayerMovement : BChara
             //20240723＿チョウハク
             if (_pushState)
             {
+                _walkSpeedMax = _pushSpeed;
                 AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
                 if (info.IsName("Push Start") || info.IsName("Move Layer"))
                 {
@@ -717,7 +743,7 @@ public class PlayerMovement : BChara
                     animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
                     new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
                 }
-
+                
                 //20240723＿チョウハク
                 if (_movableObject)
                 {
@@ -748,13 +774,12 @@ public class PlayerMovement : BChara
                     _movableObject.transform.Translate(playerDeltaMovement);
                 }
             }
-            //else
-            //{
-            //    animator.SetBool("isPush", false);
-            //    animator.SetBool("isPull", false);
-            //    animator.SetBool("isInteracting", false); 
-            //}
-
+            else
+            {
+               _walkSpeedMax = 3.5f ;
+            }
+           
+           
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
             _cCtrl.Move(playerDeltaMovement); //20240801_チョウハク　呼び出し所ここに移動して押す時左右移動を防ぎました
 
