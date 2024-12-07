@@ -79,8 +79,6 @@ public class PlayerMovement : BChara
     //重力やジャンプの速度を保存する変数
     private Vector3 _velocity = Vector3.zero;
 
-    //キャラクターコントローラーの参照
-    private CharacterController _cCtrl;
 
     //ジャンプのフラグ
     private bool _jumpFlag = false;
@@ -114,9 +112,12 @@ public class PlayerMovement : BChara
     [SerializeField] private bool _jumpTrigger = false;
     [SerializeField] private bool _hangTrigger = false;
     [SerializeField] private bool _crouchTrigger = false;
-    [SerializeField] private bool _interactionTrigger = false;
+    //[SerializeField] private bool _interactionTrigger = false;
 
     public bool interactionActive = false;
+
+    //追加時間：20241207_チンキントウ
+    private PlayerControls _playerControls;
 
     private void OnEnable()
     {
@@ -156,6 +157,11 @@ public class PlayerMovement : BChara
 
         //追加時間：20240814＿ワンユールン
         canHoldHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().canHold;
+
+        //追加時間：20241207_チンキントウ
+        _playerControls = new PlayerControls();
+        _playerControls.Enable();
+
     }
     private void FixedUpdate()
     {
@@ -196,7 +202,7 @@ public class PlayerMovement : BChara
         Push();
         Think();
         Move();
-           
+
 
 
         //Debug.Log(CheckFoot());
@@ -261,10 +267,18 @@ public class PlayerMovement : BChara
 
                 animator.SetFloat("Time", 0.0f); //しゃがみ中や登り中にカウントした時間をリセット 
 
-                if(_pushState)
+                if (_pushState)
                 {
                     nm = Motion.Push_Idle;
                 }
+                if (CheckPushBrige())
+                {
+                    if (_playerControls.Player.Interaction.triggered)
+                    {
+                        nm = Motion.PushTheBrige;
+                    }
+                }
+
 
                 break;
             case Motion.Walk: //更新_追加時間：20240826＿八子遥輝
@@ -293,7 +307,11 @@ public class PlayerMovement : BChara
                 {
                     nm = Motion.Attack;
                 }
-
+                if (_playerControls.Player.Interaction.triggered
+                    && CheckPushBrige())
+                {
+                    nm = Motion.PushTheBrige;
+                }
                 animator.SetBool("Walk_Bool", true);
 
                 break;
@@ -413,10 +431,10 @@ public class PlayerMovement : BChara
 
                 break;
 
-             case Motion.Push_Idle:
-                
-                if (_moveCnt >= 25&& Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0) { nm = Motion.Push; }
-                if (_moveCnt >= 25&&Vector3.Dot(_cCtrl.transform.forward, moveDirection) <= 0) { nm = Motion.Pull; }
+            case Motion.Push_Idle:
+
+                if (_moveCnt >= 25 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0) { nm = Motion.Push; }
+                if (_moveCnt >= 25 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) <= 0) { nm = Motion.Pull; }
                 Debug.Log("Push_idle");
                 animator.SetBool("isInteracting", true);
                 animator.SetBool("IsPushAndPull", true);
@@ -433,7 +451,7 @@ public class PlayerMovement : BChara
 
             case Motion.Push:
                 Debug.Log("Pushing");
-                
+
                 if (_moveCnt >= 25 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) <= 0) { nm = Motion.Pull; }
                 animator.SetBool("isPush", true);
                 animator.SetBool("isPull", false);
@@ -450,7 +468,7 @@ public class PlayerMovement : BChara
 
             case Motion.Pull:
                 Debug.Log("Pulling");
-                
+
                 if (_moveCnt >= 25 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0) { nm = Motion.Push; }
                 animator.SetBool("isPull", true);
                 animator.SetBool("isPush", false);
@@ -464,7 +482,12 @@ public class PlayerMovement : BChara
                     nm = Motion.Stand;
                 }
                 break;
-
+            case Motion.PushTheBrige:
+                if (_moveCnt >= 40)
+                {
+                    nm = Motion.Stand;
+                }
+                break;
         }
 
         UpdataMotion(nm);
@@ -512,18 +535,18 @@ public class PlayerMovement : BChara
                 _canRotate = false; // 回転を無効化
                 //_hasRotatedWhileHanging = false; // リセット
                 _movementInput = Vector2.zero; // JumpToHanging中は移動入力を無視
-                                                FaceTowardsWall(_climbVec3);
+                FaceTowardsWall(_climbVec3);
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
             case Motion.Hanging_ByJump: //更新_追加時間：20241021_ワンユールン
                 _canRotate = false;
                 if (_movementInput.y < -0.2f && !_hasRotatedWhileHanging)
                 {
-                  // 後ろに入力されたら回転を一時的に有効化
+                    // 後ろに入力されたら回転を一時的に有効化
                     transform.rotation = Quaternion.LookRotation(-transform.forward); // 即座に180度回転
                     _hasRotatedWhileHanging = true; // 回転したことを記録
                 }
-             
+
                 // FaceTowardsWall(_climbVec3);
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
@@ -542,7 +565,7 @@ public class PlayerMovement : BChara
 
                 break;
             case Motion.Crouching_Idle:
-               // _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                // _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 break;
             case Motion.Crouching_Walk: //更新_追加時間：20240827＿八子遥輝
                 //_playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
@@ -565,11 +588,11 @@ public class PlayerMovement : BChara
                 _walkAddSpeed = crouchWalkAddSpeed;
 
                 //SmoothRotation();
-               // _perClimbVec3 = _climbVec3;
+                // _perClimbVec3 = _climbVec3;
                 break;
             case Motion.Crouching_Exit://更新_追加時間：20241021_ワンユールン
                 _crouchFlag = false;
-               // _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                // _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 _cCtrl.height = 1.4f; // 元のキャラクター高さに戻す
                 _cCtrl.center = new Vector3(0, 0.72f, 0); // 中心を元に戻す
                 break;
@@ -587,7 +610,14 @@ public class PlayerMovement : BChara
                 //{
                 //     Pulling();
                 //}
-               
+
+                break;
+            case Motion.PushTheBrige:
+                _canRotate = false; // 回転を無効化
+                if (_moveCnt == 1)
+                {
+                    EventSystem.Instance.TriggerEvent(GameEvents.PushTheBrige);
+                }
                 break;
         }
 
@@ -665,12 +695,12 @@ public class PlayerMovement : BChara
     /// <param name="_ctx">InputSystemの変数</param>
     public void Jump(InputAction.CallbackContext _ctx)
     {
-      
-            if (_ctx.phase == InputActionPhase.Started)
-            {
-                _jumpFlag = true;
-            }
-        
+
+        if (_ctx.phase == InputActionPhase.Started)
+        {
+            _jumpFlag = true;
+        }
+
     }
 
     /// <summary>
@@ -680,7 +710,7 @@ public class PlayerMovement : BChara
     {
         //20240723＿チョウハク
         //Push();
-      
+
         //移動入力に基づいて方向ベクトルを計算し、正規化します
         Vector3 direction = new Vector3(_movementInput.x, 0f, _movementInput.y).normalized;
 
@@ -843,8 +873,8 @@ public class PlayerMovement : BChara
         //DisableCharacterController();
         if (_cCtrl.transform.position == targetPos) //登るの位置に到達したら
         {
-           // Debug.Log("good");
-                                   // EnableCharacterController();
+            // Debug.Log("good");
+            // EnableCharacterController();
         }
     }
 
@@ -880,21 +910,21 @@ public class PlayerMovement : BChara
     {
         _crouchTrigger = crouchTrigger;
     }
-    public void SetInteractionTrigger(bool interactionTrigger)
-    {
-        _interactionTrigger = interactionTrigger;
-    }
-    public void interaction(InputAction.CallbackContext _ctx)
-    {
-        //InputActionPhase.Started;      <-これはGetKeyDown
-        //InputActionPhase.Performed;    <-これはGetKey
-        //InputActionPhase.Canceled;     <-これはGetKeyUp
-        if (_ctx.phase == InputActionPhase.Started)
-        {
-            interactionActive = true;
-            Debug.Log("Firwwwwwwwwwe!");
-        }
-    }
+    //public void SetInteractionTrigger(bool interactionTrigger)
+    //{
+    //    _interactionTrigger = interactionTrigger;
+    //}
+    //public void interaction(InputAction.CallbackContext _ctx)
+    //{
+    //    //InputActionPhase.Started;      <-これはGetKeyDown
+    //    //InputActionPhase.Performed;    <-これはGetKey
+    //    //InputActionPhase.Canceled;     <-これはGetKeyUp
+    //    //if (_ctx.phase == InputActionPhase.Started)
+    //    //{
+    //    //    interactionActive = true;
+    //    //    Debug.Log("Firwwwwwwwwwe!");
+    //    //}
+    //}
 
     //追加時間：20240723＿チョウハク
     public void OnPush(InputAction.CallbackContext _ctx)
@@ -923,15 +953,15 @@ public class PlayerMovement : BChara
             if (_movableObject) // 如果检测到了可推动的对象
             {
                 _interactPoint = _movableObject.GetInteractPoint(_cCtrl.transform);
-        //        animator.MatchTarget(
-        //   _interactPoint.position, // 目标位置（与箱子的位置一致）
-        //   _interactPoint.rotation, // 目标旋转
-        //   AvatarTarget.Root,     // 角色的根节点作为对齐目标
-        //   new MatchTargetWeightMask(Vector3.one, 1), // 对位置和旋转的权重 (Vector3.one 表示对齐所有轴的位移)
-        //   0.5f,                  // 匹配开始的归一化时间 (0.1f = 动画的10%开始匹配)
-        //   0.9f);
-         
-               _pushState = true; // 设置推状态为 true
+                //        animator.MatchTarget(
+                //   _interactPoint.position, // 目标位置（与箱子的位置一致）
+                //   _interactPoint.rotation, // 目标旋转
+                //   AvatarTarget.Root,     // 角色的根节点作为对齐目标
+                //   new MatchTargetWeightMask(Vector3.one, 1), // 对位置和旋转的权重 (Vector3.one 表示对齐所有轴的位移)
+                //   0.5f,                  // 匹配开始的归一化时间 (0.1f = 动画的10%开始匹配)
+                //   0.9f);
+
+                _pushState = true; // 设置推状态为 true
             }
         }
         else // 如果没有按下推的按钮

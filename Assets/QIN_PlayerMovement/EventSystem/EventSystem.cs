@@ -9,6 +9,7 @@ public enum GameEvents
     SampleEvent,//使用例
     PlayerDied,//プレイヤが死亡するイベント
     PlayerRespawn,//プレイヤがRespawnするイベント
+    PushTheBrige,
     PlayerUpdateRespawnPoint,
 
 }
