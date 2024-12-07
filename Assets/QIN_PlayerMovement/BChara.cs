@@ -52,6 +52,7 @@ public class BChara : MonoBehaviour
         Push_Idle,
         Push,
         Pull,
+        PushPull_Exit,
         PushTheBrige,
 
     }
