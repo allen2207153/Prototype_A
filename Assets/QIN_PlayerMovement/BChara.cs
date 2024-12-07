@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class BChara : MonoBehaviour
 {
@@ -48,8 +49,11 @@ public class BChara : MonoBehaviour
         Crouching_Idle, //しゃがみ待機
         Crouching_Walk, //しゃがみ歩き
         Crouching_Exit,  //しゃがみながら出る
+        Push_Idle,
         Push,
-        Pull
+        Pull,
+        PushPull_Exit,
+        PushTheBrige,
 
     }
     protected Motion _motion = Motion.Fall;//現在のモーション
@@ -57,6 +61,9 @@ public class BChara : MonoBehaviour
 
     protected int _moveCnt;//現在モーションに入るカウンター
     protected int _perMoveCnt;//前回のモーションに入るカウンターの最後の値
+
+    //キャラクターコントローラーの参照
+    protected CharacterController _cCtrl;
 
     /// <summary>
     /// モーション更新
@@ -114,6 +121,32 @@ public class BChara : MonoBehaviour
 
         // 如果任一檢測成功，則認為角色在地面上
         return isOnGroundSphere || isOnGroundRaycast;
+    }
+
+    protected bool CheckPushBrige()
+    {
+        var rayStartPosition = _cCtrl.transform.position + (_cCtrl.transform.up * 0.6f);
+        var checkDistance = 0.8f;
+        Ray ray = new Ray(rayStartPosition, _cCtrl.transform.forward);
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, checkDistance))
+        {
+            Debug.DrawRay(rayStartPosition, _cCtrl.transform.forward * checkDistance, Color.blue);
+
+            if (hit.collider.CompareTag("Bridge"))
+            {
+                return true;
+            }
+            //if (hit.collider.isTrigger && hit.collider.CompareTag("Bridge"))
+            //{
+            //    hit.collider.enabled = false;
+            //    return true;
+            //}
+        }
+
+        return false;
     }
 
 
