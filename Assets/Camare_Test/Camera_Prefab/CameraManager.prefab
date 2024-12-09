@@ -27,10 +27,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 45.262352, y: -0.89718056, z: 15.826078}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8314326661429870847
 MonoBehaviour:
@@ -44,16 +44,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7dc2d2b9442d7248b1da65aa688ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _vCam0: {fileID: 0}
-  _vCam1: {fileID: 0}
-  _vCam2: {fileID: 0}
-  _vCam3: {fileID: 0}
-  _vCam4: {fileID: 0}
-  _vCam5: {fileID: 0}
-  _vCam6: {fileID: 0}
-  _vCam7: {fileID: 0}
-  _vCamList: []
-  _CameraTest: {fileID: 0}
+  _vCamList:
+  - _vCam: {fileID: 0}
+  - _vCam: {fileID: 0}
+  - _vCam: {fileID: 0}
+  - _vCam: {fileID: 0}
+  - _vCam: {fileID: 0}
+  - _vCam: {fileID: 0}
+  - _vCam: {fileID: 0}
+  - _vCam: {fileID: 0}
+  _playerMovement: {fileID: 0}
   _nowvCam: {fileID: 0}
   _hPriority: 100
   _rPriority: 10

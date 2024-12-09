@@ -137,6 +137,7 @@ public class BChara : MonoBehaviour
 
             if (hit.collider.CompareTag("Bridge"))
             {
+                Debug.Log("Success");
                 return true;
             }
             //if (hit.collider.isTrigger && hit.collider.CompareTag("Bridge"))

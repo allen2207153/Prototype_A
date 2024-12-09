@@ -631,11 +631,8 @@ public class PlayerMovement : BChara
                 break;
 
             case Motion.PushTheBrige:
-                _canRotate = false; // 回転を無効化
-                if (_moveCnt == 1)
-                {
-                    EventSystem.Instance.TriggerEvent(GameEvents.PushTheBrige);
-                }
+                _canRotate = false;//回転を無効化
+                EventSystem.Instance.TriggerEvent(GameEvents.PushTheBrige);
                 break;
         }
 

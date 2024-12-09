@@ -48,10 +48,10 @@ public class Trigger_Obstacle : MonoBehaviour
     {
         //debug
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            objectFallController.TriggerFall();
-        }
+        //if (Input.GetKeyDown(KeyCode.H))
+        //{
+        //    objectFallController.TriggerFall();
+        //}
 #endif
     }
     //トリガーからプレイヤーが出たときの処理
