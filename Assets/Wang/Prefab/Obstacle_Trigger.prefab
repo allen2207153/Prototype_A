@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 791659842981310557}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.34, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52,8 +52,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.32243264, y: 1, z: 0.75743496}
-  m_Center: {x: -0.3387838, y: 0, z: -0.00889933}
+  m_Size: {x: 0.7598588, y: 1, z: 0.75743496}
+  m_Center: {x: -0.120070815, y: 0, z: -0.00889933}
 --- !u!114 &8239229485681089313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,7 +82,7 @@ GameObject:
   - component: {fileID: 326708577128346102}
   m_Layer: 0
   m_Name: Obstacle_Trigger
-  m_TagString: PushTheBrigeTrigger
+  m_TagString: Bridge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103,7 +103,7 @@ Transform:
   - {fileID: 2278505016981688981}
   - {fileID: 1058504998148971540}
   m_Father: {fileID: 0}
-  m_RootOrder: 25
+  m_RootOrder: 31
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1721625129138436323
 MeshFilter:
@@ -174,8 +174,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.78938305, y: 1, z: 0.7563732}
-  m_Center: {x: -0.10530859, y: 0, z: -0.0077956454}
+  m_Size: {x: 0.8352206, y: 1, z: 0.7563734}
+  m_Center: {x: -0.082390174, y: 0, z: -0.007795645}
 --- !u!114 &326708577128346102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectFallController: {fileID: 6597964963502262677}
+  hintController: {fileID: 791659842981310557}
 --- !u!1 &7509130994942615389
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +202,6 @@ GameObject:
   - component: {fileID: 7459813151707665919}
   - component: {fileID: 6371527007474784627}
   - component: {fileID: 3382501404760773208}
-  - component: {fileID: 3619110501400386972}
   m_Layer: 5
   m_Name: UIHint
   m_TagString: Untagged
@@ -293,18 +293,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &3619110501400386972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7509130994942615389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd7925435e3a93247bca7cb1213322de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7668356868144699334
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,17 +365,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816877126897510741}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.24}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 2.3}
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2278505016981688981}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 5.82}
+  m_AnchoredPosition: {x: -40.4, y: 5.8200097}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5862638312115972934

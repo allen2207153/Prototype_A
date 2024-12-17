@@ -37,16 +37,17 @@ public class ObjectFallController : MonoBehaviour
     {
         if (playerAnimator != null)
         {
-            playerAnimator.SetBool("isPush", true); 
+            playerAnimator.SetBool("interaction_Push", true); 
         }
 
         
         yield return new WaitForSeconds(animationTime);
-        DisableTrigger();
+        
         // オブジェクトに力を加える処理
         rb.isKinematic = false; 
-        playerAnimator.SetBool("isPush", false);
+        playerAnimator.SetBool("interaction_Push", false);
         Invoke("activeKinematic", 1.3f);
+     //   DisableTrigger();
     }
 
     // オブジェクトの動きを停止するメソッド
