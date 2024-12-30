@@ -32,7 +32,7 @@ public class ObjectFallController : MonoBehaviour
         StartCoroutine(FallWithAnimation());
     }
 
-    // アニメーションとともに力を加えてオブジェクトを落下させるコルーチン
+    // オブジェクトを落下させるコルーチン
     private IEnumerator FallWithAnimation()
     {
         if (playerAnimator != null)
@@ -62,8 +62,5 @@ public class ObjectFallController : MonoBehaviour
         }
     }
 
-    private void DisableTrigger()
-    {
-        gameObject.SetActive(false);
-    }
+   
 }

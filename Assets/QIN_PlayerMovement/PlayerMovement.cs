@@ -2,6 +2,7 @@
 using UnityEngine.InputSystem;
 using Cinemachine;
 using System;
+using Keto;
 
 
 public class PlayerMovement : BChara
@@ -116,6 +117,9 @@ public class PlayerMovement : BChara
     public bool interactionActive = false;
     //追加時間：20241207_チンキントウ
     private PlayerControls _playerControls;
+
+    //追加時間：20241218_ワンユールン
+    private DissolveTest dissolveTest; // DissolveTestの参照
     private void OnEnable()
     {
         //イベントを登録
@@ -153,8 +157,10 @@ public class PlayerMovement : BChara
         //追加時間：20240723＿チョウハク
         _playerSensor = GetComponent<PlayerSensor>();
 
-        //追加時間：20240814＿ワンユールン
+        //追加時間：20241218＿ワンユールン
         canHoldHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().canHold;
+        // 同じGameObjectにアタッチされたDissolveTestコンポーネントを取得
+        dissolveTest = GetComponent<DissolveTest>();
 
         //追加時間：20241207_チンキントウ
         _playerControls = new PlayerControls();
@@ -201,7 +207,11 @@ public class PlayerMovement : BChara
         Push();
         Think();
         Move();
-
+        // Bキーが押されたときにDissolve()を実行
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            test();
+        }
 
 
         //Debug.Log(CheckFoot());
@@ -1089,19 +1099,10 @@ public class PlayerMovement : BChara
         _cCtrl.transform.rotation = Quaternion.LookRotation(new Vector3(directionToWall.x, 0, directionToWall.z));
     }
 
-    private void Pulling()
+    private void test()
     {
-        Rigidbody rb = _movableObject.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            // 计算推拉方向：角色的前方向
-            Vector3 pushDirection = _cCtrl.transform.forward;
-
-            // 为物体添加力，使其朝推拉方向移动
-            float pushForce = -20.0f; // 可以根据需求调整推拉力的大小
-            rb.AddForce(pushDirection * pushForce, ForceMode.Force);
-        }
-
+        dissolveTest.Reset();
+        dissolveTest.Dissolve();
     }
 }
 
