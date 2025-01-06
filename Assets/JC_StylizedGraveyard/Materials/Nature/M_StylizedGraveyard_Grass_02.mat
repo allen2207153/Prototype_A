@@ -16,19 +16,6 @@ MonoBehaviour:
   hdPluginSubTargetMaterialVersions:
     m_Keys: []
     m_Values: 
---- !u!114 &-5473761113325482610
-MonoBehaviour:
-  m_ObjectHideFlags: 11
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 0
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -37,7 +24,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_StylizedGraveyard_Grass_02
-  m_Shader: {fileID: -6465566751694194690, guid: 9b8926b8222dec6468ddaac9db1a112d, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 53f819cbf80caa34aa36f5d888ee059e,
+    type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -84,8 +72,6 @@ Material:
     - _AlphaCutoffEnable: 1
     - _AlphaDstBlend: 0
     - _AlphaSrcBlend: 1
-    - _BUILTIN_QueueControl: 0
-    - _BUILTIN_QueueOffset: 0
     - _BlendMode: 0
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
@@ -97,8 +83,8 @@ Material:
     - _DstBlend: 0
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
-    - _GradientHight: 0.5
-    - _GradientSmooth: 0.65
+    - _GradientHight: 0.62
+    - _GradientSmooth: 1
     - _GrtadientSmooth: 1
     - _Offset: 0.5
     - _OpaqueCullMode: 2
@@ -138,8 +124,8 @@ Material:
     - _ZTestTransparent: 4
     - _ZWrite: 1
     m_Colors:
-    - _Color1: {r: 0.9528302, g: 0.7144864, b: 0.4284739, a: 1}
-    - _Color2: {r: 0.6320754, g: 0.416226, b: 0.14112371, a: 1}
+    - _Color1: {r: 1, g: 0.7600132, b: 0.44968545, a: 0}
+    - _Color2: {r: 0.38431373, g: 0.24109226, b: 0.019607835, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []

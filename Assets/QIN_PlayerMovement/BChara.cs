@@ -54,6 +54,7 @@ public class BChara : MonoBehaviour
         Pull,
         PushPull_Exit,
         PushTheBrige,
+        Interaction,
 
     }
     protected Motion _motion = Motion.Fall;//現在のモーション

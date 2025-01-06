@@ -1,17 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Playables;
 
 public class TimelineTrigger : MonoBehaviour
 {
-    public PlayableDirector playableDirector;  
+    public PlayableDirector playableDirector; // 再生するタイムライン
+    private bool _hasTriggered = false; // 既にトリガーされたかどうかを判定するフラグ
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("imouto"))  
+        // 妹（imouto）が範囲内に入った場合、かつまだトリガーされていない場合
+        if (other.CompareTag("imouto") && !_hasTriggered)
         {
-            playableDirector.Play();  //Timelineをプレイする
+            _hasTriggered = true; // トリガー済みとしてフラグを設定
+            playableDirector.Play(); // タイムラインを再生
+            DisableTrigger(); // トリガーを無効化
         }
+    }
+
+    private void DisableTrigger()
+    {
+        GetComponent<Collider>().enabled = false; // 現在のトリガーを無効化
     }
 }

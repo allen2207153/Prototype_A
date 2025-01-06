@@ -11,7 +11,7 @@ public enum GameEvents
     PlayerRespawn,//プレイヤがRespawnするイベント
     PushTheBrige,
     PlayerUpdateRespawnPoint,
-
+    Interaction
 }
 
 

@@ -280,6 +280,10 @@ public class PlayerMovement : BChara
                 {
                     nm = Motion.Push_Idle;
                 }
+                if(_playerControls.Player.Interaction.triggered)
+                {
+                    nm = Motion.Interaction;
+                }
                 if (CheckPushBrige())
                 {
                     if (_playerControls.Player.Interaction.triggered)
@@ -317,6 +321,11 @@ public class PlayerMovement : BChara
 
                 animator.SetBool("Walk_Bool", true);
 
+
+                if (_playerControls.Player.Interaction.triggered)
+                {
+                    nm = Motion.Interaction;
+                }
                 if (_playerControls.Player.Interaction.triggered
                     && CheckPushBrige())
                 {
@@ -508,6 +517,12 @@ public class PlayerMovement : BChara
             //    }
 
             //    break;
+            case Motion.Interaction:
+                if(_moveCnt >=40)
+                {
+                    nm = Motion.Stand;
+                }
+                break;
 
             case Motion.PushTheBrige:
                 if (_moveCnt >= 40)
@@ -638,6 +653,11 @@ public class PlayerMovement : BChara
                 //     Pulling();
                 //}
 
+                break;
+
+            case Motion.Interaction:
+                _canRotate = false;
+                EventSystem.Instance.TriggerEvent(GameEvents.Interaction);
                 break;
 
             case Motion.PushTheBrige:
