@@ -1,4 +1,4 @@
-
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,8 +10,7 @@ namespace Keto
         public float DissolveSpeed = 0.01f;
         public float DissolveYield = 0.1f;
 
-        public ParticleSystem Particle = null;
-
+       
         private const string DISSOVE_AMOUNT = "_DissolveAmount";
 
         private SkinnedMeshRenderer[] m_skinnedMeshRenderers = null;
@@ -47,10 +46,7 @@ namespace Keto
 
         private IEnumerator DissolveCoroutine()
         {
-            if (Particle != null)
-            {
-                Particle.Play();
-            }
+           
 
             if (m_materials.Count > 0)
             {

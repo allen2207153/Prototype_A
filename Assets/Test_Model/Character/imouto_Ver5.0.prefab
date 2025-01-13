@@ -2122,7 +2122,7 @@ Transform:
   - {fileID: 257554529753348199}
   - {fileID: 7658779778466930415}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 43
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2898611851776592254
 Animator:
@@ -2135,7 +2135,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: a0b3d33847f6ac0408c84bbc0907343b, type: 3}
   m_Controller: {fileID: 9100000, guid: 76c84348007f23c4dbdd20ae1ad95026, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -2164,7 +2164,7 @@ MonoBehaviour:
   followDistance: 0.2
   stopDistance: 0.15
   activationRadius: 0.78
-  speedLerpRate: 0.8
+  speedLerpRate: 1.6
   runSpeedMultiplier: 2.72
   isHoldingHands: 0
   canHold: 0
@@ -2244,6 +2244,7 @@ MonoBehaviour:
   maxJumpHeight: 1
   maxJumpTime: 2
   _walkSpeedMax: 3.5
+  _pushSpeed: 1
   _walkAddSpeed: 0.4
   _jumpForce: 20
   _vCam: {fileID: 0}
@@ -2258,17 +2259,7 @@ MonoBehaviour:
   _jumpTrigger: 0
   _hangTrigger: 0
   _crouchTrigger: 0
-  _interactionTrigger: 0
-  pushPullAction:
-    m_Name: Push Pull
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 98d6516f-503f-4852-9c3e-ce0b851131e4
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  interactionDistance: 1.5
+  interactionActive: 0
 --- !u!114 &1604423970642798798
 MonoBehaviour:
   m_ObjectHideFlags: 0

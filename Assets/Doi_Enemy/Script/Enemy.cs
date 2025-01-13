@@ -1,9 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.ProBuilder;
-using static UnityEngine.GraphicsBuffer;
 
 public class Enemy : MonoBehaviour
 {
@@ -31,31 +28,38 @@ public class Enemy : MonoBehaviour
     [Header("攻撃終了後の硬直時間")]
     public float _attackFreezeTime;
     [Header("imoutoを追跡する距離")]
-    public float _followDistance = 10f; // imoutoに近づいたら追跡する距離
+    public float _followDistance = 10f;
     [Header("imoutoの前で停止する距離")]
-    public float _stopDistance = 2.0f;  // imoutoの前で停止する距離
+    public float _stopDistance = 2.0f;
     [Header("imoutoの近くでIdleに変わる距離")]
-    public float _idleDistance = 1.5f;  // Idle状態に移行する距離
-    private bool _walkPointSet;         // 巡回位置が決定したかどうかの確認
-    private Transform _targetTransform; // ターゲットの情報
-    private Vector3 _destination;       // 目的地の位置情報を格納するためのパラメータ
-    private GameObject _imouto;         // タグ "imouto" を持つターゲット
+    public float _idleDistance = 1.5f;
+    [Header("光照範囲")]
+    public float _lightRadius = 5f; // 光的照射半径
+    [Header("imouto移動速度")]
+    public float _imoutoMoveSpeed = 3f;
+
+    private bool _walkPointSet;
+    private Transform _targetTransform;
+    private Vector3 _destination;
+    private GameObject _imouto;
+    private Light _pointLight; // 光源
 
     void Start()
     {
         _walkPointSet = false;
         SetState(EnemyState.Patrol);
 
-        //// "imouto" タグを持つオブジェクトを探す
+        // "imouto" タグを持つオブジェクトを探す
         _imouto = GameObject.FindWithTag("imouto");
-        //CharacterController imoutoController = GameObject.FindWithTag("imouto").GetComponent<CharacterController>();
-        CharacterController playerController = GameObject.FindWithTag("Player").GetComponent<CharacterController>();
-        Collider enemyCollider = this.GetComponent<Collider>();
-        Physics.IgnoreCollision(playerController, enemyCollider,true);
 
-        //// CharacterControllerと敵のColliderの衝突を無視
-        //Physics.IgnoreCollision(imoutoController, enemyCollider );
-        //Physics.IgnoreCollision(playerController, enemyCollider);
+        // 添加头顶的Point Light
+        GameObject lightObj = new GameObject("EnemyPointLight");
+        lightObj.transform.parent = transform;
+        lightObj.transform.localPosition = new Vector3(0, 2, 0); // 光源位置稍微高于敌人
+        _pointLight = lightObj.AddComponent<Light>();
+        _pointLight.type = LightType.Point;
+        _pointLight.range = _lightRadius;
+        _pointLight.intensity = 1.5f;
     }
 
     void Update()
@@ -65,42 +69,47 @@ public class Enemy : MonoBehaviour
         {
             float distanceToImouto = Vector3.Distance(transform.position, _imouto.transform.position);
 
-            // imoutoが指定された距離以内にいる場合、追跡モードに切り替え
-            if (distanceToImouto <= _followDistance && _state != EnemyState.Idle)
+            // 距離が十分近い場合、Idle状態に切り替え
+            if (distanceToImouto <= _idleDistance)
             {
-                SetState(EnemyState.Chase, _imouto.transform);
+                SetState(EnemyState.Idle);
             }
-
-            // imoutoの前で停止し、Idle状態に移行
-            if (_state == EnemyState.Chase)
+            else if (_state != EnemyState.Idle && distanceToImouto <= _followDistance)
             {
-                if (distanceToImouto <= _stopDistance)
-                {
-                    if (distanceToImouto <= _idleDistance)
-                    {
-                        SetState(EnemyState.Idle);
-                    }
-                }
-            }
-
-            // imoutoが一定範囲から離れたらChase状態に戻す
-            if (_state == EnemyState.Idle && distanceToImouto > _stopDistance)
-            {
+                // imoutoが追跡距離に入った場合、Chase状態に切り替え
                 SetState(EnemyState.Chase, _imouto.transform);
             }
         }
 
+
+        // 状態ごとの動作
         if (_state == EnemyState.Patrol)
         {
             Patrol();
         }
-        else if (_state == EnemyState.Chase || _state == EnemyState.Idle)
+        else if (_state == EnemyState.Chase)
         {
-            // Chase状態やIdle状態では、敵がimoutoに常に向く
+            Chase();
             FaceImouto();
-            if (_state == EnemyState.Chase)
+            HandleLightDetection();
+        }
+        else if (_state == EnemyState.Idle)
+        {
+            FaceImouto(); // Idleでもimoutoの方向を向く
+        }
+    }
+    
+
+    private void HandleLightDetection()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, _lightRadius);
+        foreach (Collider collider in hitColliders)
+        {
+            if (collider.gameObject == _imouto)
             {
-                Chase();
+                // 让imouto向敌人移动
+                Vector3 directionToEnemy = (transform.position - _imouto.transform.position).normalized;
+                _imouto.transform.position += directionToEnemy * _imoutoMoveSpeed * Time.deltaTime;
             }
         }
     }
@@ -110,16 +119,13 @@ public class Enemy : MonoBehaviour
         if (_walkPointSet)
         {
             transform.position = Vector3.MoveTowards(transform.position, _destination, _patrolSpeed * Time.deltaTime);
-            // 敵の向きを巡回ポイントの方向に少しずつ変える
             var dir = (GetDestination() - transform.position).normalized;
             dir.y = 0;
             Quaternion setRotation = Quaternion.LookRotation(dir);
-            // 算出した方向の角度を敵の角度に設定
             transform.rotation = Quaternion.Slerp(transform.rotation, setRotation, _angularSpeed * Time.deltaTime);
         }
 
         Vector3 distanceToWalkPoint = transform.position - _destination;
-        // Walkpointに到着
         if (distanceToWalkPoint.magnitude < 1f && _walkPointSet)
         {
             _walkPointSet = false;
@@ -142,11 +148,10 @@ public class Enemy : MonoBehaviour
 
     private void FaceImouto()
     {
-        // imoutoの方向に向ける
         if (_imouto != null)
         {
             Vector3 direction = (_imouto.transform.position - transform.position).normalized;
-            direction.y = 0; // 上下方向の回転を抑制
+            direction.y = 0;
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _angularSpeed * Time.deltaTime);
         }
@@ -166,16 +171,7 @@ public class Enemy : MonoBehaviour
         }
         else if (tempState == EnemyState.Idle)
         {
-            // Idle時には動かず、ターゲットもリセット
-            _targetTransform = null;
-        }
-        else if (tempState == EnemyState.Attack)
-        {
-            SetState(EnemyState.Freeze);
-        }
-        else if (tempState == EnemyState.Freeze)
-        {
-            Invoke("ResetChase", _arrivalFreezeTime);
+            _targetTransform = null; // Idle時にはターゲットもリセット
         }
     }
 
@@ -183,7 +179,6 @@ public class Enemy : MonoBehaviour
     {
         if (_state == EnemyState.Patrol)
         {
-            // ランダムでPatrol位置を決定
             float randomZ = Random.Range(-_walkPointRange, _walkPointRange);
             float randomX = Random.Range(-_walkPointRange, _walkPointRange);
 
@@ -201,10 +196,5 @@ public class Enemy : MonoBehaviour
     public Vector3 GetDestination()
     {
         return _destination;
-    }
-
-    private void ResetChase()
-    {
-        SetState(EnemyState.Chase, _targetTransform);
     }
 }

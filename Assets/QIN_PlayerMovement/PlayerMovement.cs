@@ -210,7 +210,7 @@ public class PlayerMovement : BChara
         // Bキーが押されたときにDissolve()を実行
         if (Input.GetKeyDown(KeyCode.B))
         {
-            test();
+            disslove();
         }
 
 
@@ -1119,7 +1119,7 @@ public class PlayerMovement : BChara
         _cCtrl.transform.rotation = Quaternion.LookRotation(new Vector3(directionToWall.x, 0, directionToWall.z));
     }
 
-    private void test()
+    private void disslove()
     {
         dissolveTest.Reset();
         dissolveTest.Dissolve();

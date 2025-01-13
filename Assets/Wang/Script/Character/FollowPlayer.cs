@@ -112,7 +112,7 @@ public class FollowPlayer : MonoBehaviour
     {
         Vector3 followPosition = player.position - player.forward * followDistance; // NPCが追従する目標位置
         Vector3 moveDirection = (followPosition - transform.position+initialOffset).normalized;   // 移動方向を計算
-        moveDirection.y = 0; // Y軸を無視する
+        //moveDirection.y = 0; // Y軸を無視する
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
         currentNPCSpeed = 0;
         // プレイヤーの速度をAnimatorから取得
@@ -121,8 +121,8 @@ public class FollowPlayer : MonoBehaviour
         if ( isHoldingHands)
         {
             // プレイヤーの速度を基準にNPCの速度を設定（走っているかどうかで調整）
-            currentNPCSpeed = Mathf.Lerp(currentNPCSpeed, playerSpeed * runSpeedMultiplier,  speedLerpRate);
-            characterController.Move(moveDirection * currentNPCSpeed * Time.deltaTime); // NPCを移動
+            currentNPCSpeed = playerSpeed;
+            characterController.Move(moveDirection * currentNPCSpeed *speedLerpRate* Time.deltaTime); // NPCを移動
         }
         else
         {

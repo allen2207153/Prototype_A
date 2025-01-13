@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4870161957072414606}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,10 +26,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6743193193187491288}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6743193191271017320
 GameObject:
@@ -42,7 +43,8 @@ GameObject:
   - component: {fileID: 6743193191271017237}
   - component: {fileID: 6743193191271017238}
   - component: {fileID: 6743193191271017239}
-  m_Layer: 0
+  - component: {fileID: 4376509669734627693}
+  m_Layer: 6
   m_Name: Brick_4 (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,6 +61,7 @@ Transform:
   m_LocalRotation: {x: -0.70710576, y: -0.0000042021275, z: -0.000004172325, w: -0.7071079}
   m_LocalPosition: {x: -0.00565984, y: 0.018142141, z: -0.005709517}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 6
@@ -82,10 +85,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -110,6 +115,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4376509669734627693
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193191271017320}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193191335951980
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +149,8 @@ GameObject:
   - component: {fileID: 6743193191335951977}
   - component: {fileID: 6743193191335951978}
   - component: {fileID: 6743193191335951979}
-  m_Layer: 0
+  - component: {fileID: 6678688802653888632}
+  m_Layer: 6
   m_Name: Brick_4 (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,6 +167,7 @@ Transform:
   m_LocalRotation: {x: -1.249788e-13, y: -0.0000018966164, z: -0.7071099, w: -0.70710367}
   m_LocalPosition: {x: -0.00565984, y: 0.018142156, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 7
@@ -161,10 +191,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -189,6 +221,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6678688802653888632
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193191335951980}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193191527040368
 GameObject:
   m_ObjectHideFlags: 0
@@ -200,7 +255,8 @@ GameObject:
   - component: {fileID: 6743193191527040381}
   - component: {fileID: 6743193191527040382}
   - component: {fileID: 6743193191527040383}
-  m_Layer: 0
+  - component: {fileID: 5613070194620837431}
+  m_Layer: 6
   m_Name: Brick_4 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,6 +273,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0.000002682209, z: -1, w: 0.00000295043}
   m_LocalPosition: {x: -0.0035175781, y: 0.012117051, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 4
@@ -240,10 +297,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -268,6 +327,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5613070194620837431
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193191527040368}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193191560747825
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,7 +361,8 @@ GameObject:
   - component: {fileID: 6743193191560747838}
   - component: {fileID: 6743193191560747839}
   - component: {fileID: 6743193191560747824}
-  m_Layer: 0
+  - component: {fileID: 7622571311681102381}
+  m_Layer: 6
   m_Name: Brick_3 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -296,6 +379,7 @@ Transform:
   m_LocalRotation: {x: -0.0000012726136, y: -0.0000014066511, z: -0, w: 1}
   m_LocalPosition: {x: -0.0025516306, y: 0.003175145, z: 0.011744095}
   m_LocalScale: {x: 1.0590029, y: 1.059003, z: 1.059003}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 15
@@ -319,10 +403,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -347,6 +433,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7622571311681102381
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193191560747825}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4103817876172484628, guid: 7f6a7d1ec9d26d84fbe80634270f7b3a, type: 3}
 --- !u!1 &6743193191978539639
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,7 +467,8 @@ GameObject:
   - component: {fileID: 6743193191978539636}
   - component: {fileID: 6743193191978539637}
   - component: {fileID: 6743193191978539638}
-  m_Layer: 0
+  - component: {fileID: 6781230917822574374}
+  m_Layer: 6
   m_Name: Brick_4 (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,6 +485,7 @@ Transform:
   m_LocalRotation: {x: -0.499997, y: -0.5000028, z: -0.50000167, w: -0.4999985}
   m_LocalPosition: {x: -0.0035175781, y: 0.012117035, z: -0.005709501}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 5
@@ -398,10 +509,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -426,6 +539,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6781230917822574374
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193191978539639}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193192134522410
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,7 +573,8 @@ GameObject:
   - component: {fileID: 6743193192134521303}
   - component: {fileID: 6743193192134522408}
   - component: {fileID: 6743193192134522409}
-  m_Layer: 0
+  - component: {fileID: 1891179935056945014}
+  m_Layer: 6
   m_Name: Brick_4 (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -454,6 +591,7 @@ Transform:
   m_LocalRotation: {x: 0.5000001, y: -0.49999982, z: -0.49999866, w: 0.5000015}
   m_LocalPosition: {x: 0, y: 0, z: -0.0057094684}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 10
@@ -477,10 +615,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -505,6 +645,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1891179935056945014
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193192134522410}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193192336878095
 GameObject:
   m_ObjectHideFlags: 0
@@ -516,7 +679,8 @@ GameObject:
   - component: {fileID: 6743193192336878092}
   - component: {fileID: 6743193192336878093}
   - component: {fileID: 6743193192336878094}
-  m_Layer: 0
+  - component: {fileID: 2502529768210487891}
+  m_Layer: 6
   m_Name: Brick_4 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -533,6 +697,7 @@ Transform:
   m_LocalRotation: {x: 0.000002115965, y: -0.70710766, z: -0.707106, w: 0.000002115965}
   m_LocalPosition: {x: -0.001671788, y: 0.006053767, z: -0.0057094847}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 2
@@ -556,10 +721,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -584,6 +751,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2502529768210487891
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193192336878095}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193192365638390
 GameObject:
   m_ObjectHideFlags: 0
@@ -595,7 +785,8 @@ GameObject:
   - component: {fileID: 6743193192365638387}
   - component: {fileID: 6743193192365638388}
   - component: {fileID: 6743193192365638389}
-  m_Layer: 0
+  - component: {fileID: 3283540456004055100}
+  m_Layer: 6
   m_Name: Brick_5 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -612,6 +803,7 @@ Transform:
   m_LocalRotation: {x: -1, y: -0.0000014603136, z: 0.0000014119211, w: -0.0000013621799}
   m_LocalPosition: {x: -0.0069987033, y: 0.006206742, z: -0.011753678}
   m_LocalScale: {x: 0.5580081, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 13
@@ -635,10 +827,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -663,6 +857,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3283540456004055100
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193192365638390}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2468847525940389491, guid: 7912c2010719703458300c85d69437d0, type: 3}
 --- !u!1 &6743193192396140982
 GameObject:
   m_ObjectHideFlags: 0
@@ -674,7 +891,8 @@ GameObject:
   - component: {fileID: 6743193192396140979}
   - component: {fileID: 6743193192396140980}
   - component: {fileID: 6743193192396140981}
-  m_Layer: 0
+  - component: {fileID: 3778865031978673026}
+  m_Layer: 6
   m_Name: Brick_5 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -691,6 +909,7 @@ Transform:
   m_LocalRotation: {x: -0.0000014751377, y: 0.0000012989553, z: 1, w: -0.0000014603136}
   m_LocalPosition: {x: -0.0069987033, y: 0.0062068044, z: 0.011619755}
   m_LocalScale: {x: 0.5580081, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 16
@@ -714,10 +933,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -742,6 +963,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3778865031978673026
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193192396140982}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2468847525940389491, guid: 7912c2010719703458300c85d69437d0, type: 3}
 --- !u!1 &6743193192453054163
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,7 +997,8 @@ GameObject:
   - component: {fileID: 6743193192453054160}
   - component: {fileID: 6743193192453054161}
   - component: {fileID: 6743193192453054162}
-  m_Layer: 0
+  - component: {fileID: 5338781222668080038}
+  m_Layer: 6
   m_Name: Brick_4 (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -770,6 +1015,7 @@ Transform:
   m_LocalRotation: {x: 0.70710576, y: -0.000000029802322, z: -0.000000029802322, w: 0.7071079}
   m_LocalPosition: {x: 0, y: 0, z: 0.0058911867}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 9
@@ -793,10 +1039,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -821,6 +1069,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5338781222668080038
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193192453054163}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193192549456546
 GameObject:
   m_ObjectHideFlags: 0
@@ -832,7 +1103,8 @@ GameObject:
   - component: {fileID: 6743193192549456559}
   - component: {fileID: 6743193192549456544}
   - component: {fileID: 6743193192549456545}
-  m_Layer: 0
+  - component: {fileID: 766653507981239663}
+  m_Layer: 6
   m_Name: Brick_4 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -849,6 +1121,7 @@ Transform:
   m_LocalRotation: {x: 0.000002115965, y: -0.70710766, z: -0.707106, w: 0.000002115965}
   m_LocalPosition: {x: -0.0035175781, y: 0.0121170655, z: 0.005891154}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 3
@@ -872,10 +1145,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -900,6 +1175,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &766653507981239663
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193192549456546}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193192634489943
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,7 +1209,8 @@ GameObject:
   - component: {fileID: 6743193192634489940}
   - component: {fileID: 6743193192634489941}
   - component: {fileID: 6743193192634489942}
-  m_Layer: 0
+  - component: {fileID: 1159187757626900275}
+  m_Layer: 6
   m_Name: Brick_4 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -928,6 +1227,7 @@ Transform:
   m_LocalRotation: {x: 0.50000006, y: -0.49999988, z: -0.49999866, w: 0.50000143}
   m_LocalPosition: {x: -0.001671788, y: 0.006053799, z: 0.0058911704}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 0
@@ -951,10 +1251,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -979,6 +1281,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1159187757626900275
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193192634489943}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193192793677320
 GameObject:
   m_ObjectHideFlags: 0
@@ -990,7 +1315,8 @@ GameObject:
   - component: {fileID: 6743193192793677365}
   - component: {fileID: 6743193192793677366}
   - component: {fileID: 6743193192793677367}
-  m_Layer: 0
+  - component: {fileID: 6545034242033372970}
+  m_Layer: 6
   m_Name: Brick_3 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1007,6 +1333,7 @@ Transform:
   m_LocalRotation: {x: -0.0000012726136, y: -0.0000014066511, z: -0, w: 1}
   m_LocalPosition: {x: -0.007333463, y: 0.015129627, z: 0.011744062}
   m_LocalScale: {x: 1.0590029, y: 1.059003, z: 1.059003}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 14
@@ -1030,10 +1357,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1058,6 +1387,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6545034242033372970
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193192793677320}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4103817876172484628, guid: 7f6a7d1ec9d26d84fbe80634270f7b3a, type: 3}
 --- !u!1 &6743193192992789128
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,7 +1421,8 @@ GameObject:
   - component: {fileID: 6743193192992789173}
   - component: {fileID: 6743193192992789174}
   - component: {fileID: 6743193192992789175}
-  m_Layer: 0
+  - component: {fileID: 3645591684586133145}
+  m_Layer: 6
   m_Name: Brick_3 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1086,6 +1439,7 @@ Transform:
   m_LocalRotation: {x: 0.00000295043, y: -1, z: 0.0000012515445, w: 0.0000014382651}
   m_LocalPosition: {x: -0.0025516306, y: 0.0031750824, z: -0.011629338}
   m_LocalScale: {x: 1.0590029, y: 1.059003, z: 1.059003}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 12
@@ -1109,10 +1463,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1137,6 +1493,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3645591684586133145
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193192992789128}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4103817876172484628, guid: 7f6a7d1ec9d26d84fbe80634270f7b3a, type: 3}
 --- !u!1 &6743193193187491291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,7 +1527,8 @@ GameObject:
   - component: {fileID: 6743193193187491288}
   - component: {fileID: 6743193193187491289}
   - component: {fileID: 6743193193187491290}
-  m_Layer: 0
+  - component: {fileID: 5841942898572509979}
+  m_Layer: 6
   m_Name: Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1165,6 +1545,7 @@ Transform:
   m_LocalRotation: {x: -0.70710784, y: 0.70710576, z: -0.0000009483027, w: 0.00000094830534}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 104.56319, y: 104.56317, z: 104.56317}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6743193192634489940}
   - {fileID: 6743193193299619674}
@@ -1205,10 +1586,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1233,6 +1616,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5841942898572509979
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193193187491291}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193193299619677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1244,7 +1650,8 @@ GameObject:
   - component: {fileID: 6743193193299619674}
   - component: {fileID: 6743193193299619675}
   - component: {fileID: 6743193193299619676}
-  m_Layer: 0
+  - component: {fileID: 8685194890018447398}
+  m_Layer: 6
   m_Name: Brick_4 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1261,6 +1668,7 @@ Transform:
   m_LocalRotation: {x: 1.1368684e-13, y: -0.0000018966053, z: -0.70710576, w: 0.70710784}
   m_LocalPosition: {x: -0.001671788, y: 0.0060537825, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 1
@@ -1284,10 +1692,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1312,6 +1722,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8685194890018447398
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193193299619677}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193193343883482
 GameObject:
   m_ObjectHideFlags: 0
@@ -1323,7 +1756,8 @@ GameObject:
   - component: {fileID: 6743193193343883463}
   - component: {fileID: 6743193193343883480}
   - component: {fileID: 6743193193343883481}
-  m_Layer: 0
+  - component: {fileID: 8111422138379899739}
+  m_Layer: 6
   m_Name: Brick_4 (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1340,6 +1774,7 @@ Transform:
   m_LocalRotation: {x: -0.49999696, y: -0.5000028, z: -0.50000167, w: -0.4999985}
   m_LocalPosition: {x: -0.00565984, y: 0.018142173, z: 0.005891138}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 8
@@ -1363,10 +1798,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1391,6 +1828,29 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8111422138379899739
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193193343883482}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6084649520977173615, guid: e57221d12f7e6944d898fea0fd3b52c3, type: 3}
 --- !u!1 &6743193193355332758
 GameObject:
   m_ObjectHideFlags: 0
@@ -1402,7 +1862,8 @@ GameObject:
   - component: {fileID: 6743193193355332755}
   - component: {fileID: 6743193193355332756}
   - component: {fileID: 6743193193355332757}
-  m_Layer: 0
+  - component: {fileID: 8703164422733217907}
+  m_Layer: 6
   m_Name: Brick_3 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1419,6 +1880,7 @@ Transform:
   m_LocalRotation: {x: 0.0000011026859, y: -0.7071068, z: 0.000000923872, w: 0.7071068}
   m_LocalPosition: {x: -0.007333463, y: 0.015129565, z: -0.011629371}
   m_LocalScale: {x: 1.0590029, y: 1.059003, z: 1.0590025}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6743193193187491288}
   m_RootOrder: 11
@@ -1442,10 +1904,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -1470,3 +1934,26 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8703164422733217907
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743193193355332758}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4103817876172484628, guid: 7f6a7d1ec9d26d84fbe80634270f7b3a, type: 3}
