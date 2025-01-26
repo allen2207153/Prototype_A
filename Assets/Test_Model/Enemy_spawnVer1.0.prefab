@@ -294,6 +294,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9029310879724433085}
     m_Modifications:
+    - target: {fileID: 777329135451831663, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 777329135451831663, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_SpotAngle
+      value: 41.347286
+      objectReference: {fileID: 0}
+    - target: {fileID: 777329135451831663, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_InnerSpotAngle
+      value: 29.471031
+      objectReference: {fileID: 0}
     - target: {fileID: 2335883028582135161, guid: be8683013d65c54489a65b0e7514d4dc,
         type: 3}
       propertyPath: m_Name
@@ -343,6 +358,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_PropertySheet.m_Gradient.m_Array.Array.data[0].m_Value.key3.r
       value: 0.5566038
+      objectReference: {fileID: 0}
+    - target: {fileID: 3178231595263460952, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: _currentHealth
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3178231595263460952, guid: be8683013d65c54489a65b0e7514d4dc,
         type: 3}
@@ -411,8 +431,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6304407038466878985, guid: be8683013d65c54489a65b0e7514d4dc,
         type: 3}
+      propertyPath: _spotLight
+      value: 
+      objectReference: {fileID: 9089039435081697516}
+    - target: {fileID: 6304407038466878985, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
       propertyPath: _stopDistance
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6304407038466878985, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: _imoutoMoveSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6304407038466878985, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: maxIntensityDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6304407038466878985, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: _maxSpotlightIntensity
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6304407038466878985, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: _spotlightIntensityChangeSpeed
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981874389692384349, guid: be8683013d65c54489a65b0e7514d4dc,
+        type: 3}
+      propertyPath: m_Name
+      value: SpotLight
       objectReference: {fileID: 0}
     - target: {fileID: 8852225435248997330, guid: be8683013d65c54489a65b0e7514d4dc,
         type: 3}
@@ -460,3 +510,9 @@ MonoBehaviour:
   _sinkSpeed: 1
   _spawn: 0
   _reset: 0
+--- !u!108 &9089039435081697516 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 777329135451831663, guid: be8683013d65c54489a65b0e7514d4dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 8424934795500664195}
+  m_PrefabAsset: {fileID: 0}

@@ -120,6 +120,7 @@ public class PlayerMovement : BChara
 
     //追加時間：20241218_ワンユールン
     private DissolveTest dissolveTest; // DissolveTestの参照
+
     private void OnEnable()
     {
         //イベントを登録
@@ -207,21 +208,17 @@ public class PlayerMovement : BChara
         Push();
         Think();
         Move();
-        // Bキーが押されたときにDissolve()を実行
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            disslove();
-        }
+       
+        if(Input.GetKeyDown(KeyCode.L)) { dissolve(); }
 
 
-        //Debug.Log(CheckFoot());
-        animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime); //追加時間：20240812＿ワンユールン
+            //Debug.Log(CheckFoot());
+            animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime); //追加時間：20240812＿ワンユールン
         if (animator.GetFloat("Speed") < 0.05)
         {
             animator.SetFloat("Speed", 0);
         }
 
-        Debug.Log(_pushState);
 
 
 #if DEBUG
@@ -276,14 +273,14 @@ public class PlayerMovement : BChara
 
                 animator.SetFloat("Time", 0.0f); //しゃがみ中や登り中にカウントした時間をリセット 
 
-                if (_pushState)
+                if (_pushState&&_isPushPressed)
                 {
                     nm = Motion.Push_Idle;
                 }
-                if(_playerControls.Player.Interaction.triggered)
-                {
-                    nm = Motion.Interaction;
-                }
+                //if(_playerControls.Player.Interaction.triggered)
+                //{
+                //    nm = Motion.Interaction;
+                //}
                 if (CheckPushBrige())
                 {
                     if (_playerControls.Player.Interaction.triggered)
@@ -449,30 +446,36 @@ public class PlayerMovement : BChara
                 break;
 
             case Motion.Push_Idle:
+                Debug.Log("Push_idle");
+                animator.SetBool("IsPushAndPull", true);
+                animator.SetBool("isPush", false);
+                animator.SetBool("isPull", false);
 
-                if (_moveCnt >= 135 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0)
+                _canRotate = false;
+
+                if (_moveCnt >= 15 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0)
                 {
-                    animator.SetBool("isPush", false);
-                    animator.SetBool("isPull", false);
                     nm = Motion.Push;
                 }
-                if (_moveCnt >= 135 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) < 0) { nm = Motion.Pull; }
-                Debug.Log("Push_idle");
-                animator.SetBool("isInteracting", true);
-                animator.SetBool("IsPushAndPull", true);
-                _canRotate = false;
+                if (_moveCnt >= 15 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) < 0) 
+                {
+                    nm = Motion.Pull; 
+                }
+               
                 if (_pushState == false)
                 {
                     animator.SetBool("isPush", false);
                     animator.SetBool("isPull", false);
-                    animator.SetBool("isInteracting", false);
                     animator.SetBool("IsPushAndPull", false);
-                    nm = Motion.Stand;
+                    nm = Motion.PushPull_Exit;
                 }
                 break;
 
             case Motion.Push:
                 Debug.Log("Pushing");
+                animator.SetBool("isPush", true);
+                animator.SetBool("isPull", false);
+                _canRotate = false;
                 if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) == 0)
                 {
                     animator.SetBool("isPush", false);
@@ -480,26 +483,37 @@ public class PlayerMovement : BChara
                     nm = Motion.Push_Idle;
                 }
                 if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) < 0) { nm = Motion.Pull; }
-                animator.SetBool("isPush", true);
-                animator.SetBool("isPull", false);
-                _canRotate = false;
-                if (_pushState == false)
+               
+                if (_moveCnt >= 20&&_pushState == false)
                 {
                     animator.SetBool("isPush", false);
                     animator.SetBool("isPull", false);
-                    animator.SetBool("isInteracting", false);
                     animator.SetBool("IsPushAndPull", false);
-                    nm = Motion.Stand;
+                    nm = Motion.PushPull_Exit;
                 }
                 break;
 
             case Motion.Pull:
                 Debug.Log("Pulling");
-                if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) == 0) { nm = Motion.Push_Idle; }
-                if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0) { nm = Motion.Push; }
+                _canRotate = false;
                 animator.SetBool("isPull", true);
                 animator.SetBool("isPush", false);
-                _canRotate = false;
+                if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) == 0) 
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    nm = Motion.Push_Idle; 
+                }
+                
+                if (_moveCnt >= 20 && _pushState == false)
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    animator.SetBool("IsPushAndPull", false);
+                    nm = Motion.PushPull_Exit;
+                }
+
+               
                 //if (_pushState == false)
                 //{
 
@@ -507,18 +521,20 @@ public class PlayerMovement : BChara
                 //}
                 break;
 
-            //case Motion.PushPull_Exit:
-            //    if (_moveCnt >= 100)
-            //    {
-            //        animator.SetBool("isPush", false);
-            //        animator.SetBool("isPull", false);
-            //        animator.SetBool("isInteracting", false);
-            //        animator.SetBool("IsPushAndPull", false);
-            //    }
+            case Motion.PushPull_Exit:
+                _canRotate = false;
+                if (_moveCnt >= 40)
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                  
+                    animator.SetBool("IsPushAndPull", false);
+                    nm = Motion.Stand;
+                }
 
-            //    break;
+                break;
             case Motion.Interaction:
-                if(_moveCnt >=40)
+                if(_moveCnt >=0)
                 {
                     nm = Motion.Stand;
                 }
@@ -1005,7 +1021,7 @@ public class PlayerMovement : BChara
                 //   new MatchTargetWeightMask(Vector3.one, 1), // 对位置和旋转的权重 (Vector3.one 表示对齐所有轴的位移)
                 //   0.5f,                  // 匹配开始的归一化时间 (0.1f = 动画的10%开始匹配)
                 //   0.9f);
-
+                Debug.Log("us");
                 _pushState = true; // 设置推状态为 true
             }
         }
@@ -1119,10 +1135,15 @@ public class PlayerMovement : BChara
         _cCtrl.transform.rotation = Quaternion.LookRotation(new Vector3(directionToWall.x, 0, directionToWall.z));
     }
 
-    private void disslove()
+    public void dissolve()
+    {
+     
+        dissolveTest.Dissolve();
+
+    }
+    public void Reset()
     {
         dissolveTest.Reset();
-        dissolveTest.Dissolve();
     }
 }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class DoorOpenTrigger : MonoBehaviour
 {
     public GameObject doorObject;          // 開くドアのオブジェクト
-    public float openHeight = 3.0f;        // ドアが上に開く高さ
+    public Vector3 openOffset = new Vector3(0, 3.0f, 0); // ドアが開くオフセット
     public float openDuration = 1.0f;      // ドアが開くまでの時間
     public float closeDuration = 1.0f;     // ドアが閉まるまでの時間
 
@@ -18,14 +18,12 @@ public class DoorOpenTrigger : MonoBehaviour
         if (doorObject != null)
         {
             initialDoorPosition = doorObject.transform.position;
-            targetPosition = initialDoorPosition + new Vector3(0, openHeight, 0); // ドアが開く目標位置
+            targetPosition = initialDoorPosition + openOffset; // ドアが開く目標位置
         }
         else
         {
             Debug.LogError("Door object is not assigned!");
         }
-
-      
     }
 
     public void OpenDoor()
@@ -42,7 +40,7 @@ public class DoorOpenTrigger : MonoBehaviour
     {
         float elapsedTime = 0;
 
-        // ドアが指定した高さまで上昇する
+        // ドアが指定したオフセット分移動する
         while (elapsedTime < openDuration)
         {
             doorObject.transform.position = Vector3.Lerp(initialDoorPosition, targetPosition, elapsedTime / openDuration);

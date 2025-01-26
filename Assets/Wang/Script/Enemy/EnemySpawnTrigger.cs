@@ -18,7 +18,7 @@ public class EnemySpawnTrigger : MonoBehaviour
     }
 
     // 全てのEnemySpawnControllerでスポーンを開始
-    private void ActivateAllSpawns()
+    public void ActivateAllSpawns()
     {
         foreach (var spawnController in enemySpawnControllers)
         {
@@ -26,6 +26,17 @@ public class EnemySpawnTrigger : MonoBehaviour
             {
                 spawnController._spawn = true; // スポーンを有効にする
                 Debug.Log("Spawn triggered for: " + spawnController.gameObject.name);
+            }
+        }
+    }
+
+    public void ResetAllSpawn()
+    {
+        foreach (var spawnController in enemySpawnControllers)
+        {
+            if (spawnController != null)
+            {
+                spawnController._reset = true;
             }
         }
     }

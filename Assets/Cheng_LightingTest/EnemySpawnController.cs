@@ -149,5 +149,6 @@ public class EnemySpawnController : MonoBehaviour
         }
         if (_enemyScript != null) _enemyScript.enabled = false;
         if (_enemyHPSystem != null) _enemyHPSystem.enabled = false;
+        _enemyScript.StopVibration();
     }
 }
