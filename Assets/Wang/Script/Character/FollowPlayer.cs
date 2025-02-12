@@ -108,32 +108,39 @@ public class FollowPlayer : MonoBehaviour
     }
 
     // NPC がプレイヤーを追従するロジック
-    private void FollowAndMoveNPC()//更新時間：20240914＿八子遥輝
+    private void FollowAndMoveNPC()
     {
-        Vector3 followPosition = player.position - player.forward * followDistance; // NPCが追従する目標位置
-        Vector3 moveDirection = (followPosition - transform.position+initialOffset).normalized;   // 移動方向を計算
-        //moveDirection.y = 0; // Y軸を無視する
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
-        currentNPCSpeed = 0;
-        // プレイヤーの速度をAnimatorから取得
-        playerSpeed = playerAnimator.GetFloat("Speed");
 
-        if ( isHoldingHands)
+        // **1. 停止追蹤當距離過近**
+        if (distanceToPlayer <= stopDistance)
         {
-            // プレイヤーの速度を基準にNPCの速度を設定（走っているかどうかで調整）
-            currentNPCSpeed = playerSpeed;
-            characterController.Move(moveDirection * currentNPCSpeed *speedLerpRate* Time.deltaTime); // NPCを移動
-        }
-        else
-        {
-            // 停止時は速度を0に設定し、位置を更新
             currentNPCSpeed = 0;
-            lastPlayerPosition = player.position + initialOffset;
+            animator.SetFloat("Speed", 0);
+            return;
         }
 
-        // NPCのアニメーションパラメータ「Speed」を更新
+        // **2. 計算 NPC 目標位置**
+        Vector3 targetPosition = player.position - player.forward * followDistance;
+        targetPosition.y = transform.position.y; // 讓 NPC 保持在相同的 Y 軸高度
+
+        // **3. 使用 Lerp 平滑移動**
+        transform.position = Vector3.Lerp(transform.position, targetPosition, speedLerpRate * Time.deltaTime);
+
+        // **4. 設定移動方向並平滑旋轉**
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        if (direction != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speedLerpRate * Time.deltaTime);
+        }
+
+        // **5. 讓 NPC 速度跟隨玩家**
+        playerSpeed = playerAnimator.GetFloat("Speed");
+        currentNPCSpeed = playerSpeed;
         animator.SetFloat("Speed", currentNPCSpeed);
     }
+
 
     void OnDrawGizmosSelected()
     {

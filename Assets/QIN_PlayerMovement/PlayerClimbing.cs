@@ -25,114 +25,53 @@ public class PlayerClimbing:MonoBehaviour
     }
     public bool ClimbDetect(Transform playerTransform, Vector3 playerInput, out Vector3 climbPos)
     {
-        climbPos = default(Vector3); // クライム位置の初期化
-        Vector3 rayStart = playerTransform.position + Vector3.up * _lowClimbHight; // レイキャストの開始位置
-        Vector3 rayDirection = playerTransform.forward; // レイキャストの方向
+        climbPos = default(Vector3);
+        Vector3 rayStart = playerTransform.position + Vector3.up * _lowClimbHight;
+        Vector3 rayDirection = playerTransform.forward;
 
-        Debug.DrawRay(rayStart, rayDirection * _checkDistance, Color.red); // デバッグ用のレイを描画
+        Debug.DrawRay(rayStart, rayDirection * _checkDistance, Color.red);
 
-        if (Vector3.Angle(-_climbHitNormal, playerTransform.forward) > climbAngle || Vector3.Angle(-_climbHitNormal, playerInput) > climbAngle)
+        // 障害物にヒットしたか？
+        if (!Physics.Raycast(rayStart, rayDirection, out RaycastHit obsHit, _checkDistance))
         {
-            //Debug.Log("角度不正");
             return false;
         }
-        
 
-        // 障害物にヒットしたかどうかをチェック
-        if (Physics.Raycast(rayStart, rayDirection, out RaycastHit obsHit, _checkDistance))
+        _climbHitNormal = obsHit.normal; // ヒットした面の法線を取得
+
+        // クライム角度の判定をここで行う（初期化後）
+        if (Vector3.Angle(-_climbHitNormal, playerTransform.forward) > climbAngle ||
+            Vector3.Angle(-_climbHitNormal, playerInput) > climbAngle)
         {
-            _climbHitNormal = obsHit.normal; // ヒットした面の法線を取得
-            // プレイヤーの前方方向とヒット面の法線の角度をチェック
-            if (Vector3.Angle(-_climbHitNormal, playerTransform.forward) > 45
-                || Vector3.Angle(-_climbHitNormal, playerInput) > 45)
+            return false;
+        }
+
+        // 段階的に壁をチェック
+        for (int i = 0; i < 3; i++)
+        {
+            Vector3 checkPos = playerTransform.position + Vector3.up * (_lowClimbHight + _bodyHight * i);
+
+            if (!Physics.Raycast(checkPos, -_climbHitNormal, out RaycastHit wallHit, _checkDistance))
             {
-                return false; // クライム不可
+                continue; // 次の段階へ
             }
 
-            // 最初の壁にヒットしたかどうかをチェック
-            if (Physics.Raycast(playerTransform.position + Vector3.up * _lowClimbHight
-                , -_climbHitNormal
-                , out RaycastHit firstWallHit
-                , _checkDistance))
+            Debug.DrawRay(checkPos, -_climbHitNormal * _checkDistance, Color.red);
+
+            // 上方向に Raycast を打ち、足場の有無を確認
+            Vector3 ledgeCheckPos = wallHit.point + Vector3.up * _bodyHight;
+
+            if (Physics.Raycast(ledgeCheckPos, Vector3.down, out RaycastHit ledgeHit, _bodyHight))
             {
-                Debug.DrawRay(playerTransform.position + Vector3.up * _lowClimbHight
-                    , -_climbHitNormal * _checkDistance
-                    , Color.red); // デバッグ用のレイを描画
-
-                // 2番目の壁にヒットしたかどうかをチェック
-                if (Physics.Raycast(playerTransform.position + Vector3.up * (_lowClimbHight + _bodyHight)
-                    , -_climbHitNormal
-                    , out RaycastHit secondWallHit
-                    , _checkDistance))
-                {
-                    Debug.DrawRay(playerTransform.position + Vector3.up * (_lowClimbHight + _bodyHight)
-                        , -_climbHitNormal * _checkDistance
-                        , Color.red); // デバッグ用のレイを描画
-
-                    // 3番目の壁にヒットしたかどうかをチェック
-                    if (Physics.Raycast(playerTransform.position + Vector3.up * (_lowClimbHight + _bodyHight * 2)
-                        , -_climbHitNormal
-                        , out RaycastHit thirdWallHit
-                        , _checkDistance))
-                    {
-                        Debug.DrawRay(playerTransform.position + Vector3.up * (_lowClimbHight + _bodyHight * 2)
-                            , -_climbHitNormal * _checkDistance
-                            , Color.red); // デバッグ用のレイを描画
-
-                        // 4番目の壁にヒットしたかどうかをチェック
-                        if (Physics.Raycast(playerTransform.position + Vector3.up * (_lowClimbHight + _bodyHight * 3)
-                            , -_climbHitNormal
-                            , _checkDistance))
-                        {
-                            Debug.DrawRay(playerTransform.position + Vector3.up * (_lowClimbHight + _bodyHight * 3)
-                                , -_climbHitNormal * _checkDistance
-                                , Color.red); // デバッグ用のレイを描画
-
-                            return false; // クライム不可
-                        }
-                        else if (Physics.Raycast(thirdWallHit.point + Vector3.up * _bodyHight
-                            , Vector3.down
-                            , out RaycastHit ledgeHit
-                            , _bodyHight))
-                        {
-                            Debug.DrawRay(thirdWallHit.point + Vector3.up * _bodyHight
-                                , Vector3.down * _bodyHight
-                                , Color.red); // デバッグ用のレイを描画
-
-                            climbPos = ledgeHit.point; // クライム位置を設定
-                            return true; // クライム可能
-                        }
-                    }
-                    else if (Physics.Raycast(secondWallHit.point + Vector3.up * _bodyHight
-                            , Vector3.down
-                            , out RaycastHit ledgeHit
-                            , _bodyHight))
-                    {
-                        Debug.DrawRay(secondWallHit.point + Vector3.up * _bodyHight
-                                , Vector3.down * _bodyHight
-                                , Color.red); // デバッグ用のレイを描画
-
-                        climbPos = ledgeHit.point; // クライム位置を設定
-                        return true; // クライム可能
-                    }
-                }
-                else if (Physics.Raycast(firstWallHit.point + Vector3.up * _bodyHight
-                            , Vector3.down
-                            , out RaycastHit ledgeHit
-                            , _bodyHight))
-                {
-                    Debug.DrawRay(firstWallHit.point + Vector3.up * _bodyHight
-                                , Vector3.down * _bodyHight
-                                , Color.red); // デバッグ用のレイを描画
-
-                    climbPos = ledgeHit.point; // クライム位置を設定
-                    return true; // クライム可能
-                }
+                Debug.DrawRay(ledgeCheckPos, Vector3.down * _bodyHight, Color.green); // ヒット確認用
+                climbPos = ledgeHit.point;
+                return true;
             }
         }
-        return false; // クライム不可
+
+        return false;
     }
 
- 
-    
+
+
 }

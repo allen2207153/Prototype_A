@@ -277,10 +277,10 @@ public class PlayerMovement : BChara
                 {
                     nm = Motion.Push_Idle;
                 }
-                //if(_playerControls.Player.Interaction.triggered)
-                //{
-                //    nm = Motion.Interaction;
-                //}
+                if (_playerControls.Player.Interaction.triggered)
+                {
+                    nm = Motion.Interaction;
+                }
                 if (CheckPushBrige())
                 {
                     if (_playerControls.Player.Interaction.triggered)
@@ -484,12 +484,16 @@ public class PlayerMovement : BChara
                 }
                 if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) < 0) { nm = Motion.Pull; }
                
-                if (_moveCnt >= 20&&_pushState == false)
+                if (_moveCnt >= 20&&_pushState == false )
                 {
                     animator.SetBool("isPush", false);
                     animator.SetBool("isPull", false);
                     animator.SetBool("IsPushAndPull", false);
                     nm = Motion.PushPull_Exit;
+                }
+                else if( _movableObject._touchObstacle == true)
+                {
+                    nm = Motion.Stand;
                 }
                 break;
 
@@ -505,15 +509,19 @@ public class PlayerMovement : BChara
                     nm = Motion.Push_Idle; 
                 }
                 
-                if (_moveCnt >= 20 && _pushState == false)
+                if (_moveCnt >= 20 && _pushState == false )
                 {
                     animator.SetBool("isPush", false);
                     animator.SetBool("isPull", false);
                     animator.SetBool("IsPushAndPull", false);
                     nm = Motion.PushPull_Exit;
                 }
+                else if (_movableObject._touchObstacle == true)
+                {
+                    nm = Motion.Stand;
+                }
 
-               
+
                 //if (_pushState == false)
                 //{
 
@@ -541,7 +549,7 @@ public class PlayerMovement : BChara
                 break;
 
             case Motion.PushTheBrige:
-                if (_moveCnt >= 40)
+                if (_moveCnt >= 60)
                 {
                     nm = Motion.Stand;
                 }
@@ -560,7 +568,7 @@ public class PlayerMovement : BChara
             case Motion.Stand:
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 _canRotate = true;
-                _perClimbVec3 = _climbVec3;
+                //_perClimbVec3 = _climbVec3;
                 break;
             case Motion.Walk:
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
@@ -1021,7 +1029,7 @@ public class PlayerMovement : BChara
                 //   new MatchTargetWeightMask(Vector3.one, 1), // 对位置和旋转的权重 (Vector3.one 表示对齐所有轴的位移)
                 //   0.5f,                  // 匹配开始的归一化时间 (0.1f = 动画的10%开始匹配)
                 //   0.9f);
-                Debug.Log("us");
+                //Debug.Log("us");
                 _pushState = true; // 设置推状态为 true
             }
         }

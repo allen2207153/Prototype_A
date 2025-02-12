@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.XR.Oculus.Input;
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Test_IKSystem : MonoBehaviour
 {
@@ -15,6 +13,7 @@ public class Test_IKSystem : MonoBehaviour
 
     [SerializeField] private bool _grabHand;
     [SerializeField] private bool isHoldingHand;
+    private bool wasHoldingHand = false; // 前のフレームの状態を保持
 
     private float ikWeightRightHand = 0f;
     private float ikWeightLeftHand = 0f;
@@ -30,22 +29,29 @@ public class Test_IKSystem : MonoBehaviour
 
         _grabHand = GetComponent<PlayerMovement>()._grabHandFlag;
         isHoldingHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().isHoldingHands;
+        wasHoldingHand = isHoldingHand;  // 初期状態を保存
     }
 
     void Update()
     {
         _grabHand = GetComponent<PlayerMovement>()._grabHandFlag;
         isHoldingHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().isHoldingHands;
+
+        // isHoldingHand が true になった瞬間に振動
+        if (isHoldingHand && !wasHoldingHand)
+        {
+            StartCoroutine(VibrateController(0.1f, 0.5f));  // 0.1秒間、振動強度0.5
+        }
+        wasHoldingHand = isHoldingHand;  // 前回の状態を更新
     }
 
     void OnAnimatorIK()
     {
         if (animator)
         {
-            if ( isHoldingHand)
+            if (isHoldingHand)
             {
                 ikActive = true;
-                // 重みを時間と共に1に近づける
                 ikWeightRightHand = Mathf.Lerp(ikWeightRightHand, 1f, transitionSpeed);
                 ikWeightLeftHand = Mathf.Lerp(ikWeightLeftHand, 1f, transitionSpeed);
                 lookAtWeight = Mathf.Lerp(lookAtWeight, 1f, transitionSpeed);
@@ -53,20 +59,17 @@ public class Test_IKSystem : MonoBehaviour
             else
             {
                 ikActive = false;
-                // 重みを時間と共に0に減少させる
                 ikWeightRightHand = Mathf.Lerp(ikWeightRightHand, 0f, transitionSpeed);
                 ikWeightLeftHand = Mathf.Lerp(ikWeightLeftHand, 0f, transitionSpeed);
                 lookAtWeight = Mathf.Lerp(lookAtWeight, 0f, transitionSpeed);
             }
 
-            // 設置目標位置と重み
             if (lookObj != null)
             {
                 animator.SetLookAtWeight(lookAtWeight);
                 animator.SetLookAtPosition(lookObj.position);
             }
 
-            // 設置右手目標位置と重み
             if (rightHandObj != null)
             {
                 Vector3 targetPosition = rightHandObj.position + handPositionOffset;
@@ -78,7 +81,6 @@ public class Test_IKSystem : MonoBehaviour
                 animator.SetIKRotation(AvatarIKGoal.RightHand, targetRotation);
             }
 
-            // 設置左手目標位置と重み
             if (leftHandObj != null)
             {
                 Vector3 targetPosition = leftHandObj.position + handPositionOffset;
@@ -89,6 +91,16 @@ public class Test_IKSystem : MonoBehaviour
                 animator.SetIKPosition(AvatarIKGoal.LeftHand, targetPosition);
                 animator.SetIKRotation(AvatarIKGoal.LeftHand, targetRotation);
             }
+        }
+    }
+
+    IEnumerator VibrateController(float duration, float intensity)
+    {
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(intensity, intensity);
+            yield return new WaitForSeconds(duration);
+            Gamepad.current.SetMotorSpeeds(0, 0);
         }
     }
 }
