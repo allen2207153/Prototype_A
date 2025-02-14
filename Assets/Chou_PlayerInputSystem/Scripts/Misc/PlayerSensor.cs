@@ -8,7 +8,7 @@ public class PlayerSensor : MonoBehaviour
 
     [Header("箱が検出できる距離")]
     public float _checkDistance = 1f;
-    
+
     public float _pushAngle = 45f;
     public Vector3 _pushHitNormal;
 
@@ -24,7 +24,7 @@ public class PlayerSensor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public MovableObject MovableObjectCheck(Transform playerTransform)

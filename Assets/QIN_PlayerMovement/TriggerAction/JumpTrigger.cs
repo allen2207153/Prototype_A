@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class JumpTrigger : MonoBehaviour,IPlayerTriggerAction
 {
-    private ControllerVibration controllerVibration;
+   // private ControllerVibration controllerVibration;
 
     void Start()
     {
-        controllerVibration = GetComponent<ControllerVibration>();
+      //  controllerVibration = GetComponent<ControllerVibration>();
     }
     public void TriggerAction(PlayerMovement playerMovement)
     {
         playerMovement.SetJumpTrigger(true);
-        controllerVibration.StartVibration(0.3f, 0.3f, 0.5f); // 1秒間、低・高周波数で振動
+       // controllerVibration.StartVibration(0.3f, 0.3f, 0.5f); // 1秒間、低・高周波数で振動
     }
     public void EndAction(PlayerMovement playerMovement)
     {

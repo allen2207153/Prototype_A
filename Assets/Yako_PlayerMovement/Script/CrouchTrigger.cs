@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class CrouchTrigger : MonoBehaviour, IPlayerTriggerAction
 {
+    private ButtonHintController buttonHintController;
+    
+    void Start()
+    {
+        buttonHintController = GetComponent<ButtonHintController>();
+    }
     public void TriggerAction(PlayerMovement playerMovement)
     {
         playerMovement.SetCrouchTrigger(true);
+       // buttonHintController.SetButtonPrompt(false);
     }
     public void EndAction(PlayerMovement playerMovement)
     {

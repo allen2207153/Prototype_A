@@ -2,9 +2,8 @@
 using UnityEngine.InputSystem;
 using Cinemachine;
 using System;
-using UnityEngine.EventSystems;
-using UnityEngine.Windows;
-using Unity.VisualScripting;
+using Keto;
+
 
 public class PlayerMovement : BChara
 {
@@ -32,16 +31,19 @@ public class PlayerMovement : BChara
 
     //重力の大きさを設定します
     [SerializeField] private float _gravity = -0.01f; // 最大重力加速度 --------------TODO:調整
+    [SerializeField] private float _maxGravity = -10f;//追加時間：20241020＿ワンユールン
     //ジャンプ変数
-    float initialJumpVelocity; 
-    [SerializeField]float maxJumpHeight = 1.0f;
-    [SerializeField]float maxJumpTime = 0.5f;
+    float initialJumpVelocity;
+    [SerializeField] float maxJumpHeight = 1.0f;
+    [SerializeField] float maxJumpTime = 0.5f;
 
     //移動速度を設定します
     [SerializeField] private float _walkSpeedMax = 10f;
+    [SerializeField] private float _pushSpeed = 1f;
     //移動の加速------------------------------------
     private float _walkSpeedMin = 0f; //移動開始速度
     [SerializeField] private float _walkAddSpeed = 0.4f; //移動加速
+
 
     //ジャンプ力を設定します
     [SerializeField] private float _jumpForce = 20.0f;
@@ -76,8 +78,8 @@ public class PlayerMovement : BChara
     //重力やジャンプの速度を保存する変数
     private Vector3 _velocity = Vector3.zero;
 
-    //キャラクターコントローラーの参照
-    private CharacterController _cCtrl;
+
+
 
     //ジャンプのフラグ
     private bool _jumpFlag = false;
@@ -92,7 +94,6 @@ public class PlayerMovement : BChara
     [Header("Raycastにより登るの判定位置----デバッグ観測用-----")]
     [SerializeField] private Vector3 _climbVec3;
     private Vector3 _perClimbVec3;
-    private bool _isClimbingUp = false;
 
     [Header("「ジャンプしてぶら下がる」無効の高さ")]
     [SerializeField] private float _invalidClimbHeight = 2f;
@@ -113,17 +114,25 @@ public class PlayerMovement : BChara
     [SerializeField] private bool _hangTrigger = false;
     [SerializeField] private bool _crouchTrigger = false;
 
+    public bool interactionActive = false;
+    //追加時間：20241207_チンキントウ
+    private PlayerControls _playerControls;
+
+    //追加時間：20241218_ワンユールン
+    private DissolveTest dissolveTest; // DissolveTestの参照
+
     private void OnEnable()
     {
         //イベントを登録
-        PlayerEvent.CheckHanging += HandleCheckHanging; //ぶら下がるイベント
-        PlayerEvent.CheckCollider += SetTriggerActions;
+        PlayerEvent.Instance.CheckHanging += HandleCheckHanging;//ぶら下がるイベント
+        PlayerEvent.Instance.CheckCollider += SetTriggerActions;
+
     }
     private void OnDisable()
     {
         //イベントを解除
-        PlayerEvent.CheckHanging -= HandleCheckHanging;
-        PlayerEvent.CheckCollider -= SetTriggerActions;
+        PlayerEvent.Instance.CheckHanging -= HandleCheckHanging;
+        PlayerEvent.Instance.CheckCollider -= SetTriggerActions;
     }
 
     void Awake()
@@ -149,13 +158,21 @@ public class PlayerMovement : BChara
         //追加時間：20240723＿チョウハク
         _playerSensor = GetComponent<PlayerSensor>();
 
-        //追加時間：20240814＿ワンユールン
+        //追加時間：20241218＿ワンユールン
         canHoldHand = GameObject.Find("imouto").GetComponent<FollowPlayer>().canHold;
+        // 同じGameObjectにアタッチされたDissolveTestコンポーネントを取得
+        dissolveTest = GetComponent<DissolveTest>();
+
+        //追加時間：20241207_チンキントウ
+        _playerControls = new PlayerControls();
+        _playerControls.Enable();
     }
+
+
     private void FixedUpdate()
     {
         _moveCnt++;//増加する
-   
+
         //_playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
     }
 
@@ -185,16 +202,23 @@ public class PlayerMovement : BChara
                 isOnPlatform = false;
             }
         }
-        Debug.Log(_velocity.y);
+        //  Debug.Log(_velocity.y);
+        //Debug.Log(_crouchFlag);
 
+        Push();
         Think();
         Move();
-  
-        animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime); //追加時間：20240812＿ワンユールン
+       
+        if(Input.GetKeyDown(KeyCode.L)) { dissolve(); }
+
+
+            //Debug.Log(CheckFoot());
+            animator.SetFloat("Speed", _movementInput.magnitude * _walkSpeedMax, 0.1f, Time.deltaTime); //追加時間：20240812＿ワンユールン
         if (animator.GetFloat("Speed") < 0.05)
         {
             animator.SetFloat("Speed", 0);
         }
+
 
 
 #if DEBUG
@@ -249,6 +273,21 @@ public class PlayerMovement : BChara
 
                 animator.SetFloat("Time", 0.0f); //しゃがみ中や登り中にカウントした時間をリセット 
 
+                if (_pushState&&_isPushPressed)
+                {
+                    nm = Motion.Push_Idle;
+                }
+                if (_playerControls.Player.Interaction.triggered)
+                {
+                    nm = Motion.Interaction;
+                }
+                if (CheckPushBrige())
+                {
+                    if (_playerControls.Player.Interaction.triggered)
+                    {
+                        nm = Motion.PushTheBrige;
+                    }
+                }
                 break;
             case Motion.Walk: //更新_追加時間：20240826＿八子遥輝
                 if (_movementInput.x == 0 && _movementInput.y == 0) { nm = Motion.Stand; }
@@ -279,6 +318,16 @@ public class PlayerMovement : BChara
 
                 animator.SetBool("Walk_Bool", true);
 
+
+                if (_playerControls.Player.Interaction.triggered)
+                {
+                    nm = Motion.Interaction;
+                }
+                if (_playerControls.Player.Interaction.triggered
+                    && CheckPushBrige())
+                {
+                    nm = Motion.PushTheBrige;
+                }
                 break;
             case Motion.Jump: //更新_追加時間：20240824＿八子遥輝
                 if (_velocity.y < 0) { nm = Motion.Fall; }
@@ -298,7 +347,7 @@ public class PlayerMovement : BChara
 
                 break;
             case Motion.Landing: //更新_追加時間：20240915＿八子遥輝
-               nm = Motion.Stand;
+                nm = Motion.Stand;
 
                 animator.SetBool("Landing_Bool", true);
                 animator.SetBool("Fall_Bool", false);
@@ -318,44 +367,44 @@ public class PlayerMovement : BChara
                 animator.SetBool("Landing_Bool", false);
 
                 break;
-            case Motion.JumpToHanging: //更新_追加時間：20240827＿八子遥輝
-                if ((_climbVec3 - _cCtrl.transform.position).magnitude < 0.12f)
-                {
-                    nm = Motion.Hanging_ByJump;
-                    _canRotate = true; // JumpToHangingが終わったら回転を有効化 
-                    _velocity.y = 0; // 垂直方向の速度をリセット
-                }
+            case Motion.JumpToHanging: //更新_追加時間：20241021_ワンユールン
+
+                nm = Motion.Hanging_ByJump;
+                _canRotate = true; // JumpToHangingが終わったら回転を有効化 
+                                   //_velocity.y = -1; // 垂直方向の速度をリセット
+
 
                 animator.SetBool("JumpToHanging_Bool", true);
 
                 break;
-            case Motion.Hanging_ByJump: //更新_追加時間：20240915＿八子遥輝
-                if (_jumpFlag) { nm = Motion.ClimbingUp; }
-                if (_movementInput.y > 0.2f && _moveCnt >= 20) { nm = Motion.ClimbingUp; } // 硬直を追加しバグを起こりにくくする
-                if (_movementInput.y < -0.2f && _hasRotatedWhileHanging)
-                {
-                    nm = Motion.Fall;
-                    _canRotate = true; // Hanging_ByJumpが終わったら回転を有効化
-                }
-                animator.SetBool("Hanging_ByJump_Bool", true);
+            case Motion.Hanging_ByJump: //更新_追加時間：20241021_ワンユールン
+                //if (_jumpFlag) { nm = Motion.ClimbingUp; }
+                if (_moveCnt >= 20) { nm = Motion.ClimbingUp; } // 硬直を追加しバグを起こりにくくする
+                //if (_movementInput.y < -0.2f && _hasRotatedWhileHanging)
+                //{
+                //    nm = Motion.Fall;
+                //    _canRotate = true; // Hanging_ByJumpが終わったら回転を有効化
+                //}
+                animator.SetBool("ClimbingUp_Bool", true);
 
                 break;
-            case Motion.Hanging_ByCollider:
-                //if (CheckHanging() == false) { nm = Motion.Fall; }
-                if (_checkHanging == false) { nm = Motion.Fall; }
-                if (_moveCnt >= 10 && _movementInput.y < -0.2f) { nm = Motion.Fall; }
+            case Motion.Hanging_ByCollider://更新_追加時間：20241021_ワンユールン
+                ////if (CheckHanging() == false) { nm = Motion.Fall; }
+                //if (_checkHanging == false) { nm = Motion.Fall; }
+                //if (_moveCnt >= 10 && _movementInput.y < -0.2f) { nm = Motion.Fall; }
 
                 break;
-            case Motion.ClimbingUp: //更新_追加時間：20240915＿八子遥輝
-                //if (!_isClimbingUp) { nm = Motion.Fall; } // 変なタイミングで落下判定があるためコメントアウト
-                if (!_isClimbingUp && _moveCnt >= 60)
+            case Motion.ClimbingUp: //更新_追加時間：20241021_ワンユールン
+                //_cCtrl.enabled = false;
+                if (_moveCnt >= 25)
                 {
+                    Debug.Log(_moveCnt);
+                    _cCtrl.enabled = true;
                     nm = Motion.Landing;
                     _canRotate = true; // ClimbingUpが終わったら回転を有効化
                 }
-
-                animator.SetBool("ClimbingUp_Bool", true);
-                animator.SetBool("Hanging_ByJump_Bool", false);
+                animator.SetBool("JumpToHanging_Bool", false);
+                animator.SetBool("ClimbingUp_Bool", false);
 
                 break;
 
@@ -395,6 +444,116 @@ public class PlayerMovement : BChara
                 if (!_isAttacking) { nm = Motion.Stand; }
 
                 break;
+
+            case Motion.Push_Idle:
+                Debug.Log("Push_idle");
+                animator.SetBool("IsPushAndPull", true);
+                animator.SetBool("isPush", false);
+                animator.SetBool("isPull", false);
+
+                _canRotate = false;
+
+                if (_moveCnt >= 15 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) > 0)
+                {
+                    nm = Motion.Push;
+                }
+                if (_moveCnt >= 15 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) < 0) 
+                {
+                    nm = Motion.Pull; 
+                }
+               
+                if (_pushState == false)
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    animator.SetBool("IsPushAndPull", false);
+                    nm = Motion.PushPull_Exit;
+                }
+                break;
+
+            case Motion.Push:
+                Debug.Log("Pushing");
+                animator.SetBool("isPush", true);
+                animator.SetBool("isPull", false);
+                _canRotate = false;
+                if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) == 0)
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    nm = Motion.Push_Idle;
+                }
+                if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) < 0) { nm = Motion.Pull; }
+               
+                if (_moveCnt >= 20&&_pushState == false )
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    animator.SetBool("IsPushAndPull", false);
+                    nm = Motion.PushPull_Exit;
+                }
+                else if( _movableObject._touchObstacle == true)
+                {
+                    nm = Motion.Stand;
+                }
+                break;
+
+            case Motion.Pull:
+                Debug.Log("Pulling");
+                _canRotate = false;
+                animator.SetBool("isPull", true);
+                animator.SetBool("isPush", false);
+                if (_moveCnt >= 5 && Vector3.Dot(_cCtrl.transform.forward, moveDirection) == 0) 
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    nm = Motion.Push_Idle; 
+                }
+                
+                if (_moveCnt >= 20 && _pushState == false )
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                    animator.SetBool("IsPushAndPull", false);
+                    nm = Motion.PushPull_Exit;
+                }
+                else if (_movableObject._touchObstacle == true)
+                {
+                    nm = Motion.Stand;
+                }
+
+
+                //if (_pushState == false)
+                //{
+
+                //    nm = Motion.PushPull_Exit;
+                //}
+                break;
+
+            case Motion.PushPull_Exit:
+                _canRotate = false;
+                if (_moveCnt >= 40)
+                {
+                    animator.SetBool("isPush", false);
+                    animator.SetBool("isPull", false);
+                  
+                    animator.SetBool("IsPushAndPull", false);
+                    nm = Motion.Stand;
+                }
+
+                break;
+            case Motion.Interaction:
+                if(_moveCnt >=0)
+                {
+                    nm = Motion.Stand;
+                }
+                break;
+
+            case Motion.PushTheBrige:
+                if (_moveCnt >= 60)
+                {
+                    nm = Motion.Stand;
+                }
+                break;
         }
 
         UpdataMotion(nm);
@@ -408,6 +567,8 @@ public class PlayerMovement : BChara
         {
             case Motion.Stand:
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                _canRotate = true;
+                //_perClimbVec3 = _climbVec3;
                 break;
             case Motion.Walk:
                 _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
@@ -416,6 +577,7 @@ public class PlayerMovement : BChara
                 _perClimbVec3 = _climbVec3;
                 break;
             case Motion.Jump:
+                _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 if (_moveCnt == 0) { HandleJumping(); }
                 HandleWalking();
                 break;
@@ -431,27 +593,27 @@ public class PlayerMovement : BChara
                 break;
             case Motion.JumpToHangingTakeOff:
                 _jumpFlag = false; //ジャンプ可能にする
-                _isClimbingUp = true; //「登る」を可能にする
+                _canRotate = false;
                 _climbVec3.y -= _playerHangingOffset_Y; //キャラのぶら下がるの位置を計算
                 break;
-            case Motion.JumpToHanging: //追加時間：20240915＿八子遥輝
+            case Motion.JumpToHanging: //更新_追加時間：20241021_ワンユールン
                 //if (_moveCnt == 0) { _climbVec3.y -= 0.4f; }
                 _canRotate = false; // 回転を無効化
-                _hasRotatedWhileHanging = false; // リセット
+                //_hasRotatedWhileHanging = false; // リセット
                 _movementInput = Vector2.zero; // JumpToHanging中は移動入力を無視
+                FaceTowardsWall(_climbVec3);
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
-            case Motion.Hanging_ByJump: //追加時間：20240915＿八子遥輝
+            case Motion.Hanging_ByJump: //更新_追加時間：20241021_ワンユールン
+                _canRotate = false;
                 if (_movementInput.y < -0.2f && !_hasRotatedWhileHanging)
                 {
-                    _canRotate = true; // 後ろに入力されたら回転を一時的に有効化
+                    // 後ろに入力されたら回転を一時的に有効化
                     transform.rotation = Quaternion.LookRotation(-transform.forward); // 即座に180度回転
                     _hasRotatedWhileHanging = true; // 回転したことを記録
                 }
-                else
-                {
-                    _canRotate = false; // それ以外は回転を無効化
-                }
+
+                // FaceTowardsWall(_climbVec3);
                 PlayerMoveToTarget(_climbVec3, 8f);
                 break;
             case Motion.Hanging_ByCollider:
@@ -462,14 +624,17 @@ public class PlayerMovement : BChara
                 _movementInput = Vector2.zero; // ClimbingUp中は移動入力を無視
                 HandleClimbingUp();
                 break;
-            case Motion.Crouching_Enter:
-                _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+            case Motion.Crouching_Enter://更新_追加時間：20241021_ワンユールン
+                //_playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                _cCtrl.height = 0.5f; // しゃがみ時のキャラクター高さ
+                _cCtrl.center = new Vector3(0, 0.57f, 0); // 中心を低く設定
+
                 break;
             case Motion.Crouching_Idle:
-                _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                // _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
                 break;
             case Motion.Crouching_Walk: //更新_追加時間：20240827＿八子遥輝
-                _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                //_playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
 
                 // しゃがみ歩き用の一時的な変数を作成
                 float crouchWalkSpeedMax = _walkSpeedMax;
@@ -489,17 +654,43 @@ public class PlayerMovement : BChara
                 _walkAddSpeed = crouchWalkAddSpeed;
 
                 //SmoothRotation();
-                _perClimbVec3 = _climbVec3;
+                // _perClimbVec3 = _climbVec3;
                 break;
-            case Motion.Crouching_Exit:
+            case Motion.Crouching_Exit://更新_追加時間：20241021_ワンユールン
                 _crouchFlag = false;
-                _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                // _playerClimbing.ClimbDetect(_cCtrl.transform, _cCtrl.transform.forward, out _climbVec3);
+                _cCtrl.height = 1.4f; // 元のキャラクター高さに戻す
+                _cCtrl.center = new Vector3(0, 0.72f, 0); // 中心を元に戻す
                 break;
             case Motion.Attack: //追加時間：20240824_チョウハク
                 break;
+
+            case Motion.Push:
+                HandleWalking();
+
+                break;
+
+            case Motion.Pull:
+                HandleWalking();
+                //if(_movementInput.x<0)
+                //{
+                //     Pulling();
+                //}
+
+                break;
+
+            case Motion.Interaction:
+                _canRotate = false;
+                EventSystem.Instance.TriggerEvent(GameEvents.Interaction);
+                break;
+
+            case Motion.PushTheBrige:
+                _canRotate = false;//回転を無効化
+                EventSystem.Instance.TriggerEvent(GameEvents.PushTheBrige);
+                break;
         }
 
-        
+
     }
     /// <summary>
     /// 重力操作
@@ -509,9 +700,9 @@ public class PlayerMovement : BChara
         //重力操作--------------------------------
         switch (_motion)
         {
-            //重力を使用されたくないcaseをここに追加
-            case Motion.JumpToHangingTakeOff:
-                break;
+            ////重力を使用されたくないcaseをここに追加
+            //case Motion.JumpToHangingTakeOff:
+            //    break;
             case Motion.JumpToHanging:
                 break;
             case Motion.Hanging_ByJump:
@@ -526,7 +717,7 @@ public class PlayerMovement : BChara
                 break;
         }
     }
-    
+
 
     /// <summary>
     /// InputSystemのWalk_Action
@@ -573,13 +764,10 @@ public class PlayerMovement : BChara
     /// <param name="_ctx">InputSystemの変数</param>
     public void Jump(InputAction.CallbackContext _ctx)
     {
-        if (_jumpTrigger == true ||
-                _hangTrigger == true)
+        if (_ctx.phase == InputActionPhase.Started)
         {
-            if (_ctx.phase == InputActionPhase.Started)
-            {
-                _jumpFlag = true;
-            }
+            _jumpFlag = true;
+            Debug.Log("JUMPFLAG  = " + _jumpFlag);
         }
     }
 
@@ -589,13 +777,15 @@ public class PlayerMovement : BChara
     private void HandleWalking()
     {
         //20240723＿チョウハク
-        Push();
+        //Push();
+
         //移動入力に基づいて方向ベクトルを計算し、正規化します
         Vector3 direction = new Vector3(_movementInput.x, 0f, _movementInput.y).normalized;
 
         //方向ベクトルの大きさが0.1以上の場合に移動を実行します
         if (direction.magnitude >= 0.1f)
         {
+
 
             //前方向と右方向を基に移動方向を計算します
             //修正時間：20240829＿ワンユールン
@@ -619,20 +809,50 @@ public class PlayerMovement : BChara
             //20240723＿チョウハク
             if (_pushState)
             {
-                //animator.ApplyBuiltinRootMotion();
-                //animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
-                //new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
+                _walkSpeedMax = _pushSpeed;
+                AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
+                if (info.IsName("Push Start") || info.IsName("Move Layer"))
+                {
+                    animator.ApplyBuiltinRootMotion();
+                    animator.MatchTarget(_interactPoint.position, _interactPoint.rotation, AvatarTarget.Root,
+                    new MatchTargetWeightMask(Vector3.one, 1f), 0.2f, 0.5f);
+                }
 
                 //20240723＿チョウハク
                 if (_movableObject)
                 {
+
+                    //if (Vector3.Dot(_cCtrl.transform.forward, _moveDirection) > 0)
+                    //{
+                    //    animator.SetBool("isPush", true);
+                    //    animator.SetBool("isPull", false);
+                    //}
+                    //else
+                    //{
+                    //    animator.SetBool("isPull", true);
+                    //    animator.SetBool("isPush", false);
+                    //}
+
+
                     playerDeltaMovement = _cCtrl.transform.InverseTransformDirection(playerDeltaMovement);
                     playerDeltaMovement.x = 0;
+                    if (Vector3.Dot(_cCtrl.transform.forward, _moveDirection) > 0)
+                    {
+                        if (_movableObject._touchObstacle)
+                        {
+                            playerDeltaMovement.z = 0;
+                        }
+                    }
                     playerDeltaMovement = _cCtrl.transform.TransformDirection(playerDeltaMovement);
                     playerDeltaMovement.y = 0f;
                     _movableObject.transform.Translate(playerDeltaMovement);
                 }
             }
+            else
+            {
+                _walkSpeedMax = 3.5f;
+            }
+
 
             //移動入力の大きさを基に速度を調整し、プレイヤーを移動させます
             _cCtrl.Move(playerDeltaMovement); //20240801_チョウハク　呼び出し所ここに移動して押す時左右移動を防ぎました
@@ -653,44 +873,21 @@ public class PlayerMovement : BChara
     /// <summary>
     /// 重力計算
     /// </summary>
-    private void HandleGravity()//修正時間：20241001_ワンユールン
+    private void HandleGravity()//更新_追加時間：20241021_ワンユールン
     {
-        //bool isFalling = _velocity.y <= 0.0f || _jumpFlag ;
-        //// 地面に接地している場合、重力の影響をリセット（あるいは抑える）
-        //if ( (_motion == Motion.Landing ||  _motion == Motion.Stand||_motion==Motion.Walk))
-        //{
-        //    _velocity.y = groundGravity; // 着地時の速度を少し下にすることで地面に接地する
-        //}
-        //else
-        //{
-        //    //TODO:ソースコード調整
-        //    _velocity.y = (_velocity.y < -0.2f) ? -0.2f : _velocity.y += _gravity;
-        //    //_velocity.y = (_moveCnt > 40) ? 0f : _velocity.y += _gravity;
-        //    //_velocity.y = 0f;
-        //}
 
 
 
-        //_cCtrl.Move(_velocity * Time.deltaTime);
-        // キャラクターが接地しているかどうかを確認
-
-        float fallMultiplier = 2.0f;
         if ((_motion == Motion.Landing || _motion == Motion.Stand || _motion == Motion.Walk))
         {
             _velocity.y = -2f;  // 地面に接地したとき、わずかに下向きの力を適用
         }
-        //else if(_motion==Motion.Fall)
-        //{
-        //    float preYVelocity = _velocity.y;
-        //    float newYVelocity = _velocity.y + (_gravity * fallMultiplier * Time.deltaTime);
-        //    float nextYVelocity = Mathf.Max((preYVelocity + newYVelocity) * 0.5f, -20.0f);
-        //    _velocity.y = nextYVelocity;
-        //    Debug.Log(nextYVelocity);
-        //}
+
         else
         {
             float preYVelocity = _velocity.y;
-            float newYVelocity = _velocity.y + (_gravity *  Time.deltaTime);
+            float newYVelocity = _velocity.y + (_gravity * Time.deltaTime);
+            newYVelocity = Mathf.Clamp(newYVelocity, _maxGravity, Mathf.Infinity);
             float nextYVelocity = (preYVelocity + newYVelocity) * 0.5f;
             _velocity.y = nextYVelocity;
         }
@@ -740,11 +937,13 @@ public class PlayerMovement : BChara
 
     private void HandleClimbingUp()
     {
-        Vector3 targetPos = _perClimbVec3 + new Vector3(0f, _playerClimbOffset, 0f);
+        Vector3 targetPos = _perClimbVec3 + new Vector3(0.3f, _playerClimbOffset, 0f);
         PlayerMoveToTarget(targetPos, _playerClimbSpeed);
+        //DisableCharacterController();
         if (_cCtrl.transform.position == targetPos) //登るの位置に到達したら
         {
-            _isClimbingUp = false; //フラグを変更し、Fallモーションに切り替えを
+            // Debug.Log("good");
+            // EnableCharacterController();
         }
     }
 
@@ -780,16 +979,21 @@ public class PlayerMovement : BChara
     {
         _crouchTrigger = crouchTrigger;
     }
-    public void Fire(InputAction.CallbackContext _ctx)
-    {
-        //InputActionPhase.Started;      <-これはGetKeyDown
-        //InputActionPhase.Performed;    <-これはGetKey
-        //InputActionPhase.Canceled;     <-これはGetKeyUp
-        if (_ctx.phase == InputActionPhase.Started)
-        {
-            Debug.Log("Fire!");
-        }
-    }
+    //public void SetInteractionTrigger(bool interactionTrigger)
+    //{
+    //    _interactionTrigger = interactionTrigger;
+    //}
+    //public void interaction(InputAction.CallbackContext _ctx)
+    //{
+    //    //InputActionPhase.Started;      <-これはGetKeyDown
+    //    //InputActionPhase.Performed;    <-これはGetKey
+    //    //InputActionPhase.Canceled;     <-これはGetKeyUp
+    //    if (_ctx.phase == InputActionPhase.Started)
+    //    {
+    //        interactionActive = true;
+    //        Debug.Log("Firwwwwwwwwwe!");
+    //    }
+    //}
 
     //追加時間：20240723＿チョウハク
     public void OnPush(InputAction.CallbackContext _ctx)
@@ -799,6 +1003,7 @@ public class PlayerMovement : BChara
         if (_ctx.phase == InputActionPhase.Started)
         {
             _isPushPressed = true;
+            Debug.Log("sssssssssssssssssssss");
         }
         else if (_ctx.phase == InputActionPhase.Canceled)
         {
@@ -811,26 +1016,37 @@ public class PlayerMovement : BChara
     /// </summary>
     void Push()
     {
-        if (_isPushPressed)
+        if (_isPushPressed) // 如果按下推的按钮
         {
             _movableObject = _playerSensor.MovableObjectCheck(_cCtrl.transform);
-            if (_movableObject)
+            if (_movableObject) // 如果检测到了可推动的对象
             {
                 _interactPoint = _movableObject.GetInteractPoint(_cCtrl.transform);
-                _pushState = true;
+                //        animator.MatchTarget(
+                //   _interactPoint.position, // 目标位置（与箱子的位置一致）
+                //   _interactPoint.rotation, // 目标旋转
+                //   AvatarTarget.Root,     // 角色的根节点作为对齐目标
+                //   new MatchTargetWeightMask(Vector3.one, 1), // 对位置和旋转的权重 (Vector3.one 表示对齐所有轴的位移)
+                //   0.5f,                  // 匹配开始的归一化时间 (0.1f = 动画的10%开始匹配)
+                //   0.9f);
+                //Debug.Log("us");
+                _pushState = true; // 设置推状态为 true
             }
         }
-        else if (!_isPushPressed)
+        else // 如果没有按下推的按钮
         {
-            _pushState = false;
+            _pushState = false; // 直接设置推状态为 false
         }
-        else if (_pushState)
+
+        // 检查推的状态是否需要取消
+        if (_pushState)
         {
             if (Vector3.Distance(_interactPoint.position, _cCtrl.transform.position) > 1f)
             {
                 _pushState = false;
             }
         }
+        animator.SetBool("IsPushAndPull", _pushState);
     }
 
     //更新_追加時間：20240824＿八子遥輝
@@ -843,12 +1059,13 @@ public class PlayerMovement : BChara
                 _crouchFlag = true;
             }
         }
+
     }
 
     //更新_追加時間：20241002＿ワンユールン
     public void GrabHand(InputAction.CallbackContext _ctx)
     {
-        if (_ctx.phase == InputActionPhase.Started )
+        if (_ctx.phase == InputActionPhase.Started)
         {
             _grabHandFlag = true;
             Debug.Log("Grab hand success");
@@ -908,13 +1125,33 @@ public class PlayerMovement : BChara
 
     void setJumpVariables()//更新時間：20241001_ワンユールン
     {
-         // ジャンプの頂点に到達するまでの時間を計算
+        // ジャンプの頂点に到達するまでの時間を計算
         float timeToApex = maxJumpTime / 2;
         // 重力を設定
         _gravity = (-2 * maxJumpHeight) / Mathf.Pow(timeToApex, 2);
         // 初期ジャンプ速度を設定
         initialJumpVelocity = (2 * maxJumpHeight) / timeToApex;
         _jumpForce = initialJumpVelocity;
+    }
+
+    private void FaceTowardsWall(Vector3 wallPosition)//更新_追加時間：20241021_ワンユールン
+    {
+        // 壁の位置からキャラクターの位置へのベクトルを計算
+        Vector3 directionToWall = (wallPosition - _cCtrl.transform.position).normalized;
+
+        // キャラクターを壁の方向に向ける
+        _cCtrl.transform.rotation = Quaternion.LookRotation(new Vector3(directionToWall.x, 0, directionToWall.z));
+    }
+
+    public void dissolve()
+    {
+     
+        dissolveTest.Dissolve();
+
+    }
+    public void Reset()
+    {
+        dissolveTest.Reset();
     }
 }
 

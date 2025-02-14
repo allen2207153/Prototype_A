@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shrine_3
-  m_Shader: {fileID: 4800000, guid: 1ba5d169024b94c4d941c8bd5a42d4a0, type: 3}
+  m_Shader: {fileID: 4800000, guid: 4abddfb0a260a214a8093f2983aa5b83, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -16,7 +16,7 @@ Material:
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
@@ -124,8 +124,9 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EmissionalStrength: 100
+    - _EmissionalStrength: 1
     - _EnvironmentReflections: 1
+    - _FresnelPower: 0.53
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -159,6 +160,7 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _Tiling: 1
+    - _Transparency: 0.324
     - _UVSec: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
@@ -166,10 +168,11 @@ Material:
     m_Colors:
     - _AmbientColor: {r: 0.09411765, g: 0.0627451, b: 0.5294118, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 0.96901137, b: 0.042452812, a: 1}
     - _CovColor: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionalColor: {r: 0, g: 0, b: 0, a: 0}
+    - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
     - _LimShadeColor1: {r: 0, g: 0, b: 0, a: 1}
     - _LimShadeColor2: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}

@@ -9,9 +9,6 @@ public class EnemyHPSystem : MonoBehaviour
     [SerializeField]
     private float _maxHealth = 100f;
 
-    [Header("エフェクトコントローラー")]
-    public EnemySpawnController _spawnController; // EnemySpawnControllerを参照
-
     [Header("消滅処理")]
     [SerializeField] private float _sinkSpeed = 1.0f; // 敵が沈む速度
     public bool _isDead = false;
