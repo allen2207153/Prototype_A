@@ -130,7 +130,7 @@ public class Enemy : MonoBehaviour
 
         // Spotlightの強度を調整
         HandleSpotlightIntensity();
-        Debug.Log(intensityTimer);
+        //Debug.Log(intensityTimer);
         // 光の範囲内にimoutoがいるか確認
         if (IsImoutoInLight() && _state == EnemyState.Idle)
         {
@@ -185,7 +185,7 @@ public class Enemy : MonoBehaviour
         // 光範囲外の場合、アニメーションパラメータをリセット
         if (!isInLightRange && _imoutoAnimator != null)
         {
-            _imoutoAnimator.SetBool("isWalking", false); // 歩行アニメーションを停止
+            //_imoutoAnimator.SetBool("isWalking", false); // 歩行アニメーションを停止
         }
     }
 
